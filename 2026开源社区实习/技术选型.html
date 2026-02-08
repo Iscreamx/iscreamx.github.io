@@ -1,0 +1,955 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>技术选型 - 2026开源社区实习目标</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-a2c3ad6f.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5402f447.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">2026开源社区实习目标</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="axvisor-ebpf-性能追踪---技术选型"><a class="header" href="#axvisor-ebpf-性能追踪---技术选型">AxVisor eBPF 性能追踪 - 技术选型</a></h1>
+<blockquote>
+<p>本文档详细介绍 eBPF 工作原理、VMM 层支持需求，以及技术选型依据。</p>
+</blockquote>
+<hr>
+<h2 id="1-ebpf-技术原理"><a class="header" href="#1-ebpf-技术原理">1. eBPF 技术原理</a></h2>
+<h3 id="11-什么是-ebpf"><a class="header" href="#11-什么是-ebpf">1.1 什么是 eBPF</a></h3>
+<p>eBPF (extended Berkeley Packet Filter) 是一种革命性的内核沙箱技术，允许在内核中安全地运行用户定义的程序，而无需修改内核源码或加载内核模块。</p>
+<p><strong>核心价值</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>特性</th><th>传统方案</th><th>eBPF 方案</th></tr>
+</thead>
+<tbody>
+<tr><td>添加追踪</td><td>修改源码 → 重编译 → 重启</td><td>运行时动态加载</td></tr>
+<tr><td>安全性</td><td>可能导致内核崩溃</td><td>验证器保证安全</td></tr>
+<tr><td>性能</td><td>日志 I/O 开销大</td><td>内核空间聚合，极低开销</td></tr>
+<tr><td>灵活性</td><td>固定采集逻辑</td><td>可编程采集策略</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="12-ebpf-执行流程"><a class="header" href="#12-ebpf-执行流程">1.2 eBPF 执行流程</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│                           eBPF Complete Execution Flow                      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║                        Compile Phase (Host)                         ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌────────────────┐    Rust/C      ┌────────────────────────────┐   ║    │
+│  ║  │  eBPF Source   │  ──────────►   │  eBPF Bytecode (.bpf ELF)  │   ║    │
+│  ║  │  (Rust + Aya)  │   Compiler     │  Platform-independent ISA  │   ║    │
+│  ║  └────────────────┘                └────────────────────────────┘   ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                    │                                        │
+│                                    ▼ Transfer to target system              │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║                        Load Phase (Kernel)                          ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌────────────────┐              ┌────────────────────────────┐     ║    │
+│  ║  │   ELF Parser   │  ──────────► │   Bytecode + Map Defs      │     ║    │
+│  ║  └────────────────┘              └─────────────┬──────────────┘     ║    │
+│  ║                                                │                    ║    │
+│  ║                                                ▼                    ║    │
+│  ║  ┌────────────────┐   Safety      ┌────────────────────────────┐    ║    │
+│  ║  │    Verifier    │  ◄──────────  │   Program Bytecode         │    ║    │
+│  ║  │                │               │                            │    ║    │
+│  ║  └───────┬────────┘               └────────────────────────────┘    ║    │
+│  ║          │                                                          ║    │
+│  ║          │ Verification passed                                      ║    │
+│  ║          ▼                                                          ║    │
+│  ║  ┌────────────────┐              ┌────────────────────────────┐     ║    │
+│  ║  │ JIT/Interpreter│  ──────────► │   Executable Program       │     ║    │
+│  ║  └────────────────┘              └─────────────┬──────────────┘     ║    │
+│  ║                                                │                    ║    │
+│  ║                                                ▼                    ║    │
+│  ║  ┌────────────────────────────────────────────────────────────┐     ║    │
+│  ║  │              Attach to Hook Point (Tracepoint/Kprobe)      │     ║    │
+│  ║  └────────────────────────────────────────────────────────────┘     ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                    │                                        │
+│                                    ▼ Event triggered                        │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║                        Execute Phase (Runtime)                      ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌──────────────┐          ┌──────────────┐          ┌──────────┐   ║    │
+│  ║  │ Hook Trigger │ ───────► │ eBPF Program │ ◄──────► │  Maps    │   ║    │
+│  ║  │ (VM Exit etc)│          │   Execute    │  R/W     │ (Data)   │   ║    │
+│  ║  └──────────────┘          └──────┬───────┘          └────┬─────┘   ║    │
+│  ║                                   │                       │         ║    │
+│  ║                                   │ Call                  │ Share   ║    │
+│  ║                                   ▼                       ▼         ║    │
+│  ║                           ┌──────────────┐          ┌──────────┐    ║    │
+│  ║                           │   Helpers    │          │ Userspace│    ║    │
+│  ║                           │(Kernel Svc)  │          │   Read   │    ║    │
+│  ║                           └──────────────┘          └──────────┘    ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="13-ebpf-核心组件详解"><a class="header" href="#13-ebpf-核心组件详解">1.3 eBPF 核心组件详解</a></h3>
+<h4 id="131-ebpf-字节码"><a class="header" href="#131-ebpf-字节码">1.3.1 eBPF 字节码</a></h4>
+<p>eBPF 使用精简的 RISC 风格指令集，运行在虚拟的 64 位寄存器机器上：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>规格</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>寄存器</td><td>R0-R10 (64-bit)</td><td>R0=返回值, R1-R5=参数, R10=帧指针</td></tr>
+<tr><td>栈空间</td><td>512 字节</td><td>固定大小，编译时确定使用量</td></tr>
+<tr><td>指令大小</td><td>8 字节/指令</td><td>固定宽度，便于解析</td></tr>
+<tr><td>程序大小限制</td><td>100万指令 (Linux 5.2+)</td><td>防止无限循环</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>指令格式</strong>：</p>
+<pre><code>┌──────────┬──────────┬──────────┬──────────┬──────────────────┐
+│  opcode  │ dst_reg  │ src_reg  │  offset  │    immediate     │
+│  8 bits  │  4 bits  │  4 bits  │ 16 bits  │     32 bits      │
+└──────────┴──────────┴──────────┴──────────┴──────────────────┘
+</code></pre>
+<h4 id="132-ebpf-maps"><a class="header" href="#132-ebpf-maps">1.3.2 eBPF Maps</a></h4>
+<p>Maps 是 eBPF 程序与用户态之间共享数据的核心机制：</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                        eBPF Maps Mechanism                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│     Userspace Tool                        Kernel eBPF Program   │
+│     (ax-trace)                          (tracepoint handler)    │
+│          │                                    │                 │
+│          │     ┌────────────────────────┐     │                 │
+│          │     │       eBPF Map         │     │                 │
+│          │     │  ┌─────────┬─────────┐ │     │                 │
+│   Read ──┼────►│  │   Key   │  Value  │ │◄────┼── Write         │
+│   Stats  │     │  ├─────────┼─────────┤ │     │   Stats         │
+│          │     │  │ exit=1  │  12345  │ │     │                 │
+│          │     │  │ exit=2  │   6789  │ │     │                 │
+│          │     │  │ exit=3  │    234  │ │     │                 │
+│          │     │  └─────────┴─────────┘ │     │                 │
+│          │     └────────────────────────┘     │                 │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>支持的 Map 类型</strong>（本项目使用）：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Map 类型</th><th>数据结构</th><th>时间复杂度</th><th>典型用途</th></tr>
+</thead>
+<tbody>
+<tr><td><code>HashMap</code></td><td>哈希表</td><td>O(1)</td><td>按 exit_reason 统计计数</td></tr>
+<tr><td><code>Array</code></td><td>固定数组</td><td>O(1)</td><td>延迟直方图桶</td></tr>
+<tr><td><code>PerCPU HashMap</code></td><td>每 CPU 哈希表</td><td>O(1)</td><td>避免锁竞争的统计</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="133-helper-函数"><a class="header" href="#133-helper-函数">1.3.3 Helper 函数</a></h4>
+<p>eBPF 程序通过 Helper 函数访问内核服务，这是沙箱的受控出口：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Helper ID</th><th>函数名</th><th>功能</th><th>安全性</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><code>bpf_map_lookup_elem</code></td><td>查找 Map 元素</td><td>返回指针需边界检查</td></tr>
+<tr><td>2</td><td><code>bpf_map_update_elem</code></td><td>更新 Map 元素</td><td>原子操作</td></tr>
+<tr><td>5</td><td><code>bpf_ktime_get_ns</code></td><td>获取时间戳</td><td>只读，无副作用</td></tr>
+<tr><td>6</td><td><code>bpf_trace_printk</code></td><td>调试输出</td><td>生产环境应禁用</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="134-验证器-verifier"><a class="header" href="#134-验证器-verifier">1.3.4 验证器 (Verifier)</a></h4>
+<p>验证器是 eBPF 安全性的核心保障，通过静态分析确保程序安全：</p>
+<p><strong>验证内容</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>检查项</th><th>目的</th><th>实现方式</th></tr>
+</thead>
+<tbody>
+<tr><td>程序终止性</td><td>防止无限循环</td><td>限制指令数 + 禁止向后跳转</td></tr>
+<tr><td>内存安全</td><td>防止越界访问</td><td>追踪寄存器类型和范围</td></tr>
+<tr><td>类型安全</td><td>防止类型混淆</td><td>抽象解释 + 类型推导</td></tr>
+<tr><td>栈边界</td><td>防止栈溢出</td><td>静态分析栈使用量</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code>          Verification Flow
+                │
+                ▼
+    ┌───────────────────────┐
+    │  Build CFG (Control   │
+    │     Flow Graph)       │
+    └───────────┬───────────┘
+                │
+                ▼
+    ┌───────────────────────┐
+    │  Simulate each path   │
+    │  Track register state │
+    └───────────┬───────────┘
+                │
+                ▼
+    ┌───────────────────────┐      ┌─────────────┐
+    │  Unsafe operation?    │─Yes─►│ Reject Load │
+    └───────────┬───────────┘      └─────────────┘
+                │ No
+                ▼
+    ┌───────────────────────┐
+    │    Allow program      │
+    └───────────────────────┘
+</code></pre>
+<h3 id="14-ebpf-程序类型"><a class="header" href="#14-ebpf-程序类型">1.4 eBPF 程序类型</a></h3>
+<p>与 Hypervisor 追踪相关的程序类型：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>程序类型</th><th>触发时机</th><th>上下文数据</th><th>适用场景</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Tracepoint</strong></td><td>预定义的静态插桩点</td><td>结构化事件参数</td><td>VM Exit 统计（核心）</td></tr>
+<tr><td><strong>Kprobe</strong></td><td>任意函数入口</td><td>寄存器状态</td><td>动态探测（扩展）</td></tr>
+<tr><td><strong>Kretprobe</strong></td><td>任意函数返回</td><td>返回值 + 寄存器</td><td>延迟测量（扩展）</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="2-vmm-层-ebpf-支持需求分析"><a class="header" href="#2-vmm-层-ebpf-支持需求分析">2. VMM 层 eBPF 支持需求分析</a></h2>
+<h3 id="21-与标准-linux-ebpf-的差异"><a class="header" href="#21-与标准-linux-ebpf-的差异">2.1 与标准 Linux eBPF 的差异</a></h3>
+<p>AxVisor 基于 ArceOS 自定义内核，需要从零实现 eBPF 支持：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>Linux 实现</th><th>AxVisor 需求</th></tr>
+</thead>
+<tbody>
+<tr><td>系统调用</td><td><code>bpf()</code> syscall</td><td><strong>不存在</strong> → 直接 API</td></tr>
+<tr><td>符号表</td><td><code>/proc/kallsyms</code></td><td><strong>不存在</strong> → 编译时生成</td></tr>
+<tr><td>Tracepoint</td><td>内核内置 <code>trace_*</code></td><td><strong>不存在</strong> → 移植 Starry-OS</td></tr>
+<tr><td>Kprobe</td><td>内核内置</td><td><strong>不存在</strong> → 移植 Starry-OS</td></tr>
+<tr><td>验证器</td><td>内核内置</td><td><strong>可选</strong> → 初期信任程序</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="22-hypervisor-特权级问题"><a class="header" href="#22-hypervisor-特权级问题">2.2 Hypervisor 特权级问题</a></h3>
+<p>AxVisor 运行在更高特权级，传统 eBPF 设计需要适配：</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                 Virtualization Privilege Levels                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Guest OS (EL1 / Ring 0)                                  │  │
+│  │    Traditional Linux eBPF runs here                       │  │
+│  │    Tracing targets: syscalls, kernel functions            │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                              ▲                                  │
+│                              │ VM Exit / VM Entry               │
+│                              ▼                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  AxVisor Hypervisor (EL2 / VMX Root) ◄── Our tracing layer│  │
+│  │                                                           │  │
+│  │    Tracing targets:                                       │  │
+│  │    ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐    │  │
+│  │    │  VM Exit    │ │  Hypercall  │ │ Interrupt Inject│    │  │
+│  │    │  Latency    │ │  Handling   │ │ Latency         │    │  │
+│  │    └─────────────┘ └─────────────┘ └─────────────────┘    │  │
+│  │    ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐    │  │
+│  │    │EPT Handling │ │MMIO Emulate │ │ vCPU Scheduling │    │  │
+│  │    └─────────────┘ └─────────────┘ └─────────────────┘    │  │
+│  │                                                           │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                              ▲                                  │
+│                              │                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Hardware                                                 │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="23-vmm-需要提供的支持"><a class="header" href="#23-vmm-需要提供的支持">2.3 VMM 需要提供的支持</a></h3>
+<p>为在 AxVisor 中实现 eBPF 追踪，需要 VMM 层提供以下支持：</p>
+<h4 id="231-追踪点插桩"><a class="header" href="#231-追踪点插桩">2.3.1 追踪点插桩</a></h4>
+<p>在 VMM 关键路径插入追踪点宏调用：</p>
+<p><strong>位置：<code>modules/axvcpu/src/vcpu.rs</code></strong></p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// AxVCpu::run() 方法中需要添加追踪点
+pub fn run(&amp;self) -&gt; AxResult&lt;AxVCpuExitReason&gt; {
+    self.transition_state(VCpuState::Ready, VCpuState::Running)?;
+
+    // ▼ 追踪点：VM Entry
+    trace_vmm_vcpu_run_enter!(self.vm_id(), self.id());
+
+    let result = self.manipulate_arch_vcpu(VCpuState::Running, VCpuState::Ready, |arch_vcpu| {
+        arch_vcpu.run()
+    });
+
+    // ▼ 追踪点：VM Exit
+    if let Ok(ref exit_reason) = result {
+        trace_vmm_vcpu_run_exit!(self.vm_id(), self.id(), exit_reason);
+    }
+
+    result
+}
+<span class="boring">}</span></code></pre>
+<h4 id="232-上下文信息获取"><a class="header" href="#232-上下文信息获取">2.3.2 上下文信息获取</a></h4>
+<p>eBPF 程序需要访问当前 VM/vCPU 上下文，VMM 需要提供：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>信息</th><th>来源</th><th>Helper 函数</th></tr>
+</thead>
+<tbody>
+<tr><td>当前 VM ID</td><td><code>AxVCpu::vm_id()</code></td><td><code>bpf_get_current_vm_id()</code></td></tr>
+<tr><td>当前 vCPU ID</td><td><code>AxVCpu::id()</code></td><td><code>bpf_get_current_vcpu_id()</code></td></tr>
+<tr><td>当前时间戳</td><td><code>axhal::time::monotonic_time_nanos()</code></td><td><code>bpf_ktime_get_ns()</code></td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="233-时间测量基础设施"><a class="header" href="#233-时间测量基础设施">2.3.3 时间测量基础设施</a></h4>
+<p>延迟统计需要高精度时间源，AxVisor 已有基础：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 已存在于 ArceOS
+pub fn monotonic_time_nanos() -&gt; u64;
+
+// 需要封装为 eBPF Helper
+fn bpf_ktime_get_ns() -&gt; u64 {
+    axhal::time::monotonic_time_nanos()
+}
+<span class="boring">}</span></code></pre>
+<h4 id="234-exit-reason-编码"><a class="header" href="#234-exit-reason-编码">2.3.4 Exit Reason 编码</a></h4>
+<p>为统计分析，需要将 <code>AxVCpuExitReason</code> 编码为数值：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 基于 modules/axvcpu/src/exit.rs
+impl AxVCpuExitReason {
+    pub fn to_trace_code(&amp;self) -&gt; u32 {
+        match self {
+            Self::Hypercall { .. } =&gt; 1,
+            Self::MmioRead { .. } =&gt; 2,
+            Self::MmioWrite { .. } =&gt; 3,
+            Self::SysRegRead { .. } =&gt; 4,
+            Self::SysRegWrite { .. } =&gt; 5,
+            Self::IoRead { .. } =&gt; 6,
+            Self::IoWrite { .. } =&gt; 7,
+            Self::ExternalInterrupt { .. } =&gt; 8,
+            Self::NestedPageFault { .. } =&gt; 9,
+            Self::Halt =&gt; 10,
+            Self::CpuUp { .. } =&gt; 11,
+            Self::CpuDown { .. } =&gt; 12,
+            Self::SystemDown =&gt; 13,
+            Self::Nothing =&gt; 14,
+            Self::FailEntry { .. } =&gt; 15,
+            Self::SendIPI { .. } =&gt; 16,
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<hr>
+<h2 id="3-技术选型"><a class="header" href="#3-技术选型">3. 技术选型</a></h2>
+<h3 id="31-选型原则"><a class="header" href="#31-选型原则">3.1 选型原则</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>原则</th><th>说明</th><th>权重</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>ArceOS 兼容</strong></td><td>必须支持 <code>#![no_std]</code> 环境</td><td>必须</td></tr>
+<tr><td><strong>Rust 优先</strong></td><td>与 AxVisor 技术栈保持一致</td><td>高</td></tr>
+<tr><td><strong>许可证兼容</strong></td><td>必须与 AxVisor 许可证兼容</td><td>必须</td></tr>
+<tr><td><strong>最小依赖</strong></td><td>优先选择轻量级组件</td><td>中</td></tr>
+<tr><td><strong>可复用性</strong></td><td>优先复用 Starry-OS 已验证组件</td><td>高</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="32-组件选型结果"><a class="header" href="#32-组件选型结果">3.2 组件选型结果</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>功能</th><th>选择</th><th>来源</th><th>复用方式</th><th>阶段</th></tr>
+</thead>
+<tbody>
+<tr><td>eBPF 虚拟机</td><td><strong>rbpf</strong></td><td>社区</td><td>适配 no_std</td><td>Phase 2</td></tr>
+<tr><td>eBPF Maps</td><td><strong>kbpf-basic</strong></td><td>Starry-OS</td><td>直接引用</td><td>Phase 2</td></tr>
+<tr><td>符号表生成</td><td><strong>ksym</strong></td><td>Starry-OS</td><td>直接引用</td><td>Phase 1</td></tr>
+<tr><td>追踪点框架</td><td><strong>tracepoint</strong></td><td>Starry-OS</td><td>适配后复用</td><td>Phase 1</td></tr>
+<tr><td>过滤表达式</td><td><strong>tp-lexer</strong></td><td>Starry-OS</td><td>直接引用</td><td>Phase 3</td></tr>
+<tr><td>动态探针</td><td><strong>kprobe</strong></td><td>Starry-OS</td><td>移植适配</td><td>Phase 4</td></tr>
+<tr><td>验证器</td><td><strong>PREVAIL</strong></td><td>社区</td><td>集成或轻量实现</td><td>Phase 5</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="33-各组件详解"><a class="header" href="#33-各组件详解">3.3 各组件详解</a></h3>
+<h4 id="331-rbpf---ebpf-虚拟机"><a class="header" href="#331-rbpf---ebpf-虚拟机">3.3.1 rbpf - eBPF 虚拟机</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/qmonnet/rbpf</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT</td></tr>
+<tr><td><strong>语言</strong></td><td>Rust</td></tr>
+<tr><td><strong>JIT 支持</strong></td><td>x86_64</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>选择理由</strong>：</p>
+<ul>
+<li>纯 Rust 实现，无 C 依赖</li>
+<li>支持 <code>#![no_std]</code>（需适配）</li>
+<li>提供解释器和 JIT 两种执行模式</li>
+<li>API 简洁，易于集成</li>
+</ul>
+<p><strong>VM 类型</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>类型</th><th>说明</th><th>适用场景</th></tr>
+</thead>
+<tbody>
+<tr><td><code>EbpfVmRaw</code></td><td>接收原始字节缓冲区</td><td>Tracepoint 事件（采用）</td></tr>
+<tr><td><code>EbpfVmNoData</code></td><td>无输入数据</td><td>简单计算</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="332-kbpf-basic---ebpf-maps"><a class="header" href="#332-kbpf-basic---ebpf-maps">3.3.2 kbpf-basic - eBPF Maps</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/Starry-OS/kbpf-basic</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT/Apache-2.0</td></tr>
+<tr><td><strong>no_std</strong></td><td>✅</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>支持的 Map 类型</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>类型</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>BPF_MAP_TYPE_ARRAY</code></td><td>固定大小数组</td></tr>
+<tr><td><code>BPF_MAP_TYPE_HASH</code></td><td>动态哈希表</td></tr>
+<tr><td><code>BPF_MAP_TYPE_LRU_HASH</code></td><td>LRU 淘汰哈希表</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="333-ksym---内核符号表"><a class="header" href="#333-ksym---内核符号表">3.3.3 ksym - 内核符号表</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/Starry-OS/ksym</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT/Apache-2.0</td></tr>
+<tr><td><strong>no_std</strong></td><td>✅</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>编译时从 ELF 生成压缩符号表</li>
+<li>运行时零拷贝查找</li>
+<li>支持 Rust 符号 demangle</li>
+</ul>
+<h4 id="334-tracepoint---追踪点框架"><a class="header" href="#334-tracepoint---追踪点框架">3.3.4 tracepoint - 追踪点框架</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/Starry-OS/tracepoint</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT/Apache-2.0</td></tr>
+<tr><td><strong>no_std</strong></td><td>✅</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>核心功能</strong>：</p>
+<ul>
+<li><code>define_event_trace!</code> 宏定义追踪点</li>
+<li>线程安全的事件管理器</li>
+<li>低开销的静态追踪点</li>
+</ul>
+<h4 id="335-kprobe---动态探针"><a class="header" href="#335-kprobe---动态探针">3.3.5 kprobe - 动态探针</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/Starry-OS/kprobe</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT/Apache-2.0</td></tr>
+<tr><td><strong>no_std</strong></td><td>✅</td></tr>
+<tr><td><strong>架构支持</strong></td><td>x86_64, aarch64, riscv64, loongarch64</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>核心功能</strong>：</p>
+<ul>
+<li>kprobe: 函数入口探针</li>
+<li>kretprobe: 函数返回探针</li>
+<li>断点机制适配多架构</li>
+<li>与 eBPF 程序集成</li>
+</ul>
+<h4 id="336-prevail---ebpf-验证器"><a class="header" href="#336-prevail---ebpf-验证器">3.3.6 PREVAIL - eBPF 验证器</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/vbpf/ebpf-verifier</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT</td></tr>
+<tr><td><strong>语言</strong></td><td>C++</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>核心功能</strong>：</p>
+<ul>
+<li>内存边界检查</li>
+<li>程序终止性验证</li>
+<li>类型安全检查</li>
+<li>独立于 Linux 内核</li>
+</ul>
+<p><strong>备选方案</strong>: 如 PREVAIL 集成困难，可实现轻量级验证器，仅检查关键安全属性。</p>
+<h3 id="34-许可证兼容性"><a class="header" href="#34-许可证兼容性">3.4 许可证兼容性</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>许可证</th><th>与 AxVisor 兼容</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf</td><td>MIT</td><td>✅</td></tr>
+<tr><td>kbpf-basic</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>ksym</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>tracepoint</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>tp-lexer</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>kprobe</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>PREVAIL</td><td>MIT</td><td>✅</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>AxVisor 许可证: GPL-3.0-or-later OR Apache-2.0 OR MulanPubL-2.0</p>
+</blockquote>
+<hr>
+<h2 id="4-架构设计"><a class="header" href="#4-架构设计">4. 架构设计</a></h2>
+<h3 id="41-模块层次结构"><a class="header" href="#41-模块层次结构">4.1 模块层次结构</a></h3>
+<blockquote>
+<p><strong>架构决策</strong>: 统一在 <code>modules/axebpf</code> 内实现所有功能，不创建独立的 axksym/axtracepoint 模块。</p>
+</blockquote>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│                     AxVisor eBPF Tracing Architecture                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │                        Shell Command Layer                            │  │
+│  │   kernel/src/shell/commands/trace.rs                                  │  │
+│  │   ┌─────────────────────────────────────────────────────────────┐     │  │
+│  │   │  trace list | enable | disable | stat | load | unload       │     │  │
+│  │   └─────────────────────────────────────────────────────────────┘     │  │
+│  └───────────────────────────────────┬───────────────────────────────────┘  │
+│                                      │                                      │
+│  ┌───────────────────────────────────▼───────────────────────────────────┐  │
+│  │                        axebpf Module (Unified)                        │  │
+│  │   modules/axebpf/                                                     │  │
+│  │   ┌──────────────────────────────────────────────────────────────┐    │  │
+│  │   │ symbols.rs    │ 符号表管理 (封装 ksym)                       │    │  │
+│  │   ├──────────────────────────────────────────────────────────────┤    │  │
+│  │   │ tracepoint.rs │ 追踪点框架 (封装 tracepoint/ktracepoint)     │    │  │
+│  │   ├──────────────────────────────────────────────────────────────┤    │  │
+│  │   │ runtime.rs    │ eBPF 运行时 (封装 rbpf VM)                   │    │  │
+│  │   ├──────────────────────────────────────────────────────────────┤    │  │
+│  │   │ helpers.rs    │ Helper 函数 (ktime, trace_printk, vm_id...)  │    │  │
+│  │   ├──────────────────────────────────────────────────────────────┤    │  │
+│  │   │ maps.rs       │ Map 数据结构 (封装 kbpf-basic)               │    │  │
+│  │   └──────────────────────────────────────────────────────────────┘    │  │
+│  └───────────────────────────────────┬───────────────────────────────────┘  │
+│                                      │ Tracepoint Trigger                   │
+│  ┌───────────────────────────────────▼───────────────────────────────────┐  │
+│  │                      VMM Tracepoint Calls                             │  │
+│  │   modules/axvcpu/, modules/axvm/, kernel/src/vmm/                     │  │
+│  │   ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐      │  │
+│  │   │vcpu_run_*  │  │ hypercall  │  │ mmio_*     │  │ ept_viol   │      │  │
+│  │   └────────────┘  └────────────┘  └────────────┘  └────────────┘      │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │                  xtask Symbol Generation (Compile-time)               │  │
+│  │   xtask/src/symbols.rs                                                │  │
+│  │   ┌─────────────────────────────────────────────────────────────┐     │  │
+│  │   │  cargo xtask symbols → 从 ELF 生成 kallsyms.bin             │     │  │
+│  │   └─────────────────────────────────────────────────────────────┘     │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │                  Starry-OS Dependencies (Direct Reference)            │  │
+│  │   ┌────────┐  ┌────────────┐  ┌──────────┐  ┌──────┐  ┌───────────┐   │  │
+│  │   │  ksym  │  │ tracepoint │  │ tp-lexer │  │ rbpf │  │kbpf-basic │   │  │
+│  │   └────────┘  └────────────┘  └──────────┘  └──────┘  └───────────┘   │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="42-数据流"><a class="header" href="#42-数据流">4.2 数据流</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│                           Tracing Data Flow                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   VMM Event                  eBPF Process                 User Query        │
+│                                                                             │
+│   ┌─────────┐               ┌─────────┐               ┌─────────┐           │
+│   │ VM Exit │               │ eBPF    │               │ trace   │           │
+│   │ Occurs  │ ─────────────►│ Program │               │ stat    │           │
+│   └─────────┘ Trigger TP    │ Execute │               └────┬────┘           │
+│                             └────┬────┘                    │                │
+│                                  │                         │                │
+│                                  ▼ Write                   │ Read           │
+│                             ┌─────────┐                    │                │
+│                             │  Maps   │ ◄──────────────────┘                │
+│                             │ (Stats) │                                     │
+│                             └─────────┘                                     │
+│                                                                             │
+│   Example: VM Exit Statistics                                               │
+│                                                                             │
+│   ┌──────────────────────────────────────────────────────────────────┐      │
+│   │  HashMap&lt;VmExitKey, VmExitStats&gt;                                 │      │
+│   │  ┌─────────────────────┬─────────────────────────────────┐       │      │
+│   │  │ Key                 │ Value                           │       │      │
+│   │  │ (vm=1, exit=Hyper)  │ {count=12345, avg=1.2μs, ...}   │       │      │
+│   │  │ (vm=1, exit=MMIO)   │ {count=6789, avg=2.3μs, ...}    │       │      │
+│   │  │ (vm=2, exit=Hyper)  │ {count=4567, avg=1.5μs, ...}    │       │      │
+│   │  └─────────────────────┴─────────────────────────────────┘       │      │
+│   └──────────────────────────────────────────────────────────────────┘      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="43-依赖关系"><a class="header" href="#43-依赖关系">4.3 依赖关系</a></h3>
+<blockquote>
+<p><strong>架构决策</strong>: 所有功能统一在 <code>modules/axebpf</code> 模块内实现，不创建独立的 axksym/axtracepoint 模块。
+这样更简洁，减少模块间耦合。</p>
+</blockquote>
+<pre><code>modules/axebpf/
+├── Cargo.toml
+├── src/
+│   ├── lib.rs           # 模块入口
+│   ├── symbols.rs       # 符号表管理 (封装 ksym)
+│   ├── tracepoint.rs    # 追踪点框架 (封装 tracepoint)
+│   ├── runtime.rs       # eBPF 运行时 (封装 rbpf)
+│   ├── helpers.rs       # Helper 函数
+│   └── maps.rs          # Map 数据结构 (封装 kbpf-basic)
+│
+└── 依赖:
+    ├── ksym (Starry-OS: 符号表生成与查找)
+    ├── tracepoint (Starry-OS: 追踪点核心，package = "ktracepoint")
+    ├── tp-lexer (Starry-OS: 过滤表达式)
+    ├── rbpf (社区: eBPF VM)
+    └── kbpf-basic (Starry-OS: Maps)
+
+xtask/
+└── src/symbols.rs       # 编译时符号表生成 (使用 ksym)
+
+kernel (使用 ebpf feature)
+└── axebpf              # 单一依赖入口
+</code></pre>
+<hr>
+<h2 id="5-风险识别与缓解"><a class="header" href="#5-风险识别与缓解">5. 风险识别与缓解</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>风险</th><th>可能性</th><th>影响</th><th>缓解策略</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf no_std 适配困难</td><td>中</td><td>高</td><td>优先评估，必要时 fork</td></tr>
+<tr><td>追踪点开销过高</td><td>低</td><td>中</td><td>设计时考虑禁用路径优化</td></tr>
+<tr><td>多架构支持复杂</td><td>中</td><td>中</td><td>先完成 x86_64，再扩展 AArch64</td></tr>
+<tr><td>Starry-OS 组件不兼容</td><td>低</td><td>中</td><td>组件独立性高，可单独适配</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="6-参考资源"><a class="header" href="#6-参考资源">6. 参考资源</a></h2>
+<h3 id="61-starry-os-组件"><a class="header" href="#61-starry-os-组件">6.1 Starry-OS 组件</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>链接</th></tr>
+</thead>
+<tbody>
+<tr><td>ksym</td><td>https://github.com/Starry-OS/ksym</td></tr>
+<tr><td>kbpf-basic</td><td>https://github.com/Starry-OS/kbpf-basic</td></tr>
+<tr><td>tp-lexer</td><td>https://github.com/Starry-OS/tp-lexer</td></tr>
+<tr><td>tracepoint</td><td>https://github.com/Starry-OS/tracepoint</td></tr>
+<tr><td>kprobe</td><td>https://github.com/Starry-OS/kprobe</td></tr>
+<tr><td>eBPF Discussion</td><td>https://github.com/orgs/Starry-OS/discussions/4</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="62-ebpf-参考"><a class="header" href="#62-ebpf-参考">6.2 eBPF 参考</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>资源</th><th>链接</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf</td><td>https://github.com/qmonnet/rbpf</td></tr>
+<tr><td>Aya (Rust eBPF)</td><td>https://aya-rs.dev/</td></tr>
+<tr><td>Linux eBPF 文档</td><td>https://docs.kernel.org/bpf/</td></tr>
+<tr><td>eBPF 指令集规范</td><td>https://www.ietf.org/archive/id/draft-thaler-bpf-isa-00.html</td></tr>
+<tr><td>PREVAIL 验证器</td><td>https://github.com/vbpf/ebpf-verifier</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="63-非-linux-ebpf-实现参考"><a class="header" href="#63-非-linux-ebpf-实现参考">6.3 非 Linux eBPF 实现参考</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>项目</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>eBPF for Windows</td><td>https://github.com/microsoft/ebpf-for-windows</td></tr>
+<tr><td>Femto-Containers</td><td>https://github.com/future-proof-iot/Femto-Container</td></tr>
+<tr><td>uBPF</td><td>https://github.com/iovisor/ubpf</td></tr>
+</tbody>
+</table>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../2026开源社区实习/实习目标.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../2026开源社区实习/开发计划.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../2026开源社区实习/实习目标.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../2026开源社区实习/开发计划.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

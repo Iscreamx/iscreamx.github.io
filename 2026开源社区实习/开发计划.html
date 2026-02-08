@@ -1,0 +1,620 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>开发计划 - 2026开源社区实习目标</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-a2c3ad6f.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5402f447.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">2026开源社区实习目标</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="axvisor-ebpf-开发计划"><a class="header" href="#axvisor-ebpf-开发计划">AxVisor eBPF 开发计划</a></h1>
+<blockquote>
+<p>基于移植 Starry-OS eBPF 工作的开发计划。</p>
+<p><strong>策略</strong>: Starry-OS 是基于 ArceOS 扩展的宏内核，AxVisor 是基于 ArceOS 扩展的 VMM，
+大部分组件可直接引用或稍作适配。</p>
+<p><strong>参考</strong>: https://github.com/orgs/Starry-OS/discussions/4</p>
+</blockquote>
+<hr>
+<h2 id="1-架构决策"><a class="header" href="#1-架构决策">1. 架构决策</a></h2>
+<h3 id="11-模块结构"><a class="header" href="#11-模块结构">1.1 模块结构</a></h3>
+<p><strong>所有功能统一在 <code>modules/axebpf</code> 模块内实现</strong>，不创建独立的 axksym/axtracepoint 模块：</p>
+<pre><code>modules/axebpf/
+├── Cargo.toml
+├── src/
+│   ├── lib.rs           # 模块入口，feature 控制
+│   ├── symbols.rs       # 符号表管理 (封装 ksym)
+│   ├── tracepoint.rs    # 追踪点框架 (封装 tracepoint)
+│   ├── kprobe.rs        # 动态探针 (封装 kprobe)
+│   ├── runtime.rs       # eBPF 运行时 (封装 rbpf)
+│   ├── verifier.rs      # 程序验证器
+│   ├── helpers.rs       # Helper 函数实现
+│   └── maps.rs          # Map 数据结构 (封装 kbpf-basic)
+</code></pre>
+<h3 id="12-依赖复用"><a class="header" href="#12-依赖复用">1.2 依赖复用</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>来源</th><th>复用方式</th><th>用途</th><th>阶段</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>ksym</strong></td><td>Starry-OS</td><td>直接引用</td><td>符号表生成与查找</td><td>Phase 1</td></tr>
+<tr><td><strong>tracepoint</strong></td><td>Starry-OS</td><td>直接引用</td><td>追踪点框架</td><td>Phase 1</td></tr>
+<tr><td><strong>tp-lexer</strong></td><td>Starry-OS</td><td>直接引用</td><td>过滤表达式解析</td><td>Phase 3</td></tr>
+<tr><td><strong>kbpf-basic</strong></td><td>Starry-OS</td><td>fork 引用</td><td>eBPF Map/ringbuf</td><td>Phase 2</td></tr>
+<tr><td><strong>rbpf</strong></td><td>社区</td><td>直接引用</td><td>eBPF VM</td><td>Phase 2</td></tr>
+<tr><td><strong>kprobe</strong></td><td>Starry-OS</td><td>移植适配</td><td>动态探针</td><td>Phase 4</td></tr>
+<tr><td><strong>PREVAIL</strong></td><td>社区</td><td>集成/实现</td><td>验证器</td><td>Phase 5</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="2-开发阶段"><a class="header" href="#2-开发阶段">2. 开发阶段</a></h2>
+<h3 id="21-时间线概览-12-周"><a class="header" href="#21-时间线概览-12-周">2.1 时间线概览 (12 周)</a></h3>
+<pre><code>Week 1-2        Week 3-4        Week 5-6        Week 7-8        Week 9-10       Week 11-12
+   │               │               │               │               │               │
+   ▼               ▼               ▼               ▼               ▼               ▼
+┌───────┐     ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
+│Phase 1│────►│Phase 2│─────►│Phase 3│─────►│Phase 4│─────►│Phase 5│─────►│Phase 6│
+│ 基础  │     │eBPF   │      │ VMM   │      │Kprobe │      │验证器 │      │测试   │
+│ 设施  │     │运行时 │      │追踪点 │      │支持   │      │Uprobe │      │文档   │
+└───────┘     └───────┘      └───────┘      └───────┘      └───────┘      └───────┘
+</code></pre>
+<hr>
+<h2 id="3-phase-1-基础设施-week-1-2"><a class="header" href="#3-phase-1-基础设施-week-1-2">3. Phase 1: 基础设施 (Week 1-2)</a></h2>
+<p><strong>目标</strong>: 集成 Starry-OS 组件，建立符号表和追踪点基础设施</p>
+<h3 id="31-week-1-依赖集成"><a class="header" href="#31-week-1-依赖集成">3.1 Week 1: 依赖集成</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>添加 Starry-OS 依赖</td><td>ksym, kbpf-basic, tp-lexer, tracepoint</td></tr>
+<tr><td>创建 <code>modules/axebpf</code></td><td>基础模块结构</td></tr>
+<tr><td>实现 <code>symbols.rs</code></td><td>封装 ksym，符号查找 API</td></tr>
+<tr><td><code>xtask symbols</code></td><td>编译时符号表生成</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="32-week-2-追踪点框架"><a class="header" href="#32-week-2-追踪点框架">3.2 Week 2: 追踪点框架</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>实现 <code>tracepoint.rs</code></td><td>封装 tracepoint 库</td></tr>
+<tr><td>TracepointManager</td><td>追踪点注册、enable/disable</td></tr>
+<tr><td>define_tracepoint! 宏</td><td>AxVisor 追踪点定义宏</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li><code>modules/axebpf</code> 模块</li>
+<li><code>xtask symbols</code> 命令</li>
+<li>追踪点定义宏可用</li>
+</ul>
+<hr>
+<h2 id="4-phase-2-ebpf-运行时-week-3-4"><a class="header" href="#4-phase-2-ebpf-运行时-week-3-4">4. Phase 2: eBPF 运行时 (Week 3-4)</a></h2>
+<p><strong>目标</strong>: 移植 rbpf VM，实现程序加载和执行</p>
+<h3 id="41-week-3-rbpf-集成"><a class="header" href="#41-week-3-rbpf-集成">4.1 Week 3: rbpf 集成</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf 集成</td><td>适配 no_std (default-features = false)</td></tr>
+<tr><td><code>runtime.rs</code></td><td>EbpfVm 结构体封装</td></tr>
+<tr><td>程序加载</td><td>execute(), execute_with_mem()</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="42-week-4-helper-与-map"><a class="header" href="#42-week-4-helper-与-map">4.2 Week 4: Helper 与 Map</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>helpers.rs</code></td><td>标准 Helper 函数实现</td></tr>
+<tr><td><code>maps.rs</code></td><td>封装 kbpf-basic</td></tr>
+<tr><td>Map 类型</td><td>HashMap, Array, RingBuf</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Helper 函数清单</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Helper ID</th><th>函数名</th><th>功能</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><code>bpf_map_lookup_elem</code></td><td>查找 Map 元素</td></tr>
+<tr><td>2</td><td><code>bpf_map_update_elem</code></td><td>更新 Map 元素</td></tr>
+<tr><td>3</td><td><code>bpf_map_delete_elem</code></td><td>删除 Map 元素</td></tr>
+<tr><td>5</td><td><code>bpf_ktime_get_ns</code></td><td>获取时间戳</td></tr>
+<tr><td>6</td><td><code>bpf_trace_printk</code></td><td>调试输出</td></tr>
+<tr><td>8</td><td><code>bpf_get_smp_processor_id</code></td><td>获取 CPU ID</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>eBPF 程序加载和执行</li>
+<li>标准 Helper 函数 (6 个)</li>
+<li>Map 数据结构支持</li>
+</ul>
+<hr>
+<h2 id="5-phase-3-vmm-追踪点与-shell-week-5-6"><a class="header" href="#5-phase-3-vmm-追踪点与-shell-week-5-6">5. Phase 3: VMM 追踪点与 Shell (Week 5-6)</a></h2>
+<p><strong>目标</strong>: 定义 Hypervisor 追踪点，实现 Shell 命令</p>
+<h3 id="51-week-5-vmm-追踪点"><a class="header" href="#51-week-5-vmm-追踪点">5.1 Week 5: VMM 追踪点</a></h3>
+<p><strong>追踪点列表</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>追踪点</th><th>触发位置</th><th>采集数据</th></tr>
+</thead>
+<tbody>
+<tr><td><code>vmm:vcpu_run_enter</code></td><td><code>AxVCpu::run()</code> 入口</td><td>vm_id, vcpu_id, timestamp</td></tr>
+<tr><td><code>vmm:vcpu_run_exit</code></td><td><code>AxVCpu::run()</code> 返回</td><td>vm_id, vcpu_id, exit_reason, duration_ns</td></tr>
+<tr><td><code>vmm:hypercall</code></td><td>Hypercall 处理</td><td>vm_id, vcpu_id, nr, args, duration_ns</td></tr>
+<tr><td><code>vmm:mmio_read</code></td><td>MmioRead 处理</td><td>vm_id, addr, width, duration_ns</td></tr>
+<tr><td><code>vmm:mmio_write</code></td><td>MmioWrite 处理</td><td>vm_id, addr, width, data, duration_ns</td></tr>
+<tr><td><code>vmm:interrupt_inject</code></td><td>中断注入</td><td>vm_id, vcpu_id, vector</td></tr>
+<tr><td><code>vmm:ept_violation</code></td><td>NestedPageFault</td><td>vm_id, gpa, access_flags, duration_ns</td></tr>
+</tbody>
+</table>
+</div>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>定义 VMM 追踪点</td><td>使用 define_tracepoint! 宏</td></tr>
+<tr><td>axvcpu 插桩</td><td><code>AxVCpu::run()</code> 方法</td></tr>
+<tr><td>Exit 处理插桩</td><td>Hypercall, MMIO, EPT violation</td></tr>
+<tr><td>Hypervisor Helper</td><td>vm_id, vcpu_id, exit_reason</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="52-week-6-shell-命令"><a class="header" href="#52-week-6-shell-命令">5.2 Week 6: Shell 命令</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>命令</th><th>功能</th></tr>
+</thead>
+<tbody>
+<tr><td><code>trace list</code></td><td>列出所有追踪点</td></tr>
+<tr><td><code>trace enable &lt;tp&gt;</code></td><td>启用追踪点</td></tr>
+<tr><td><code>trace disable &lt;tp&gt;</code></td><td>禁用追踪点</td></tr>
+<tr><td><code>trace stat</code></td><td>显示统计信息</td></tr>
+<tr><td><code>trace load &lt;path&gt;</code></td><td>加载 eBPF 程序</td></tr>
+<tr><td><code>trace latency &lt;type&gt;</code></td><td>延迟直方图</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Hypervisor Helper</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Helper ID</th><th>函数名</th><th>功能</th></tr>
+</thead>
+<tbody>
+<tr><td>100</td><td><code>bpf_get_current_vm_id</code></td><td>获取当前 VM ID</td></tr>
+<tr><td>101</td><td><code>bpf_get_current_vcpu_id</code></td><td>获取当前 vCPU ID</td></tr>
+<tr><td>102</td><td><code>bpf_get_exit_reason</code></td><td>获取 VM Exit 原因</td></tr>
+<tr><td>103</td><td><code>bpf_get_guest_regs</code></td><td>获取 Guest 寄存器</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>VMM 追踪点可用 (7+ 个)</li>
+<li>Shell <code>trace</code> 命令组</li>
+<li>Hypervisor Helper (4 个)</li>
+<li>端到端演示</li>
+</ul>
+<hr>
+<h2 id="6-phase-4-kprobekretprobe-支持-week-7-8"><a class="header" href="#6-phase-4-kprobekretprobe-支持-week-7-8">6. Phase 4: Kprobe/Kretprobe 支持 (Week 7-8)</a></h2>
+<p><strong>目标</strong>: 移植 Starry-OS kprobe 实现，支持动态探针</p>
+<h3 id="61-week-7-kprobe-移植"><a class="header" href="#61-week-7-kprobe-移植">6.1 Week 7: Kprobe 移植</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>kprobe 库移植</td><td>从 Starry-OS 移植</td></tr>
+<tr><td><code>kprobe.rs</code></td><td>封装 kprobe API</td></tr>
+<tr><td>断点机制</td><td>架构相关实现</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="62-week-8-kretprobe-与多架构"><a class="header" href="#62-week-8-kretprobe-与多架构">6.2 Week 8: Kretprobe 与多架构</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>kretprobe</td><td>函数返回探针</td></tr>
+<tr><td>aarch64 适配</td><td>ARM64 断点机制</td></tr>
+<tr><td>x86_64 适配</td><td>x86 断点机制</td></tr>
+<tr><td>Shell 集成</td><td><code>trace kprobe/kretprobe</code> 命令</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>Kprobe/Kretprobe 支持</li>
+<li>动态探针 Shell 命令</li>
+<li>多架构支持 (aarch64, x86_64)</li>
+</ul>
+<hr>
+<h2 id="7-phase-5-验证器与-uprobe-week-9-10"><a class="header" href="#7-phase-5-验证器与-uprobe-week-9-10">7. Phase 5: 验证器与 Uprobe (Week 9-10)</a></h2>
+<p><strong>目标</strong>: 实现 eBPF 验证器，探索 Uprobe 支持</p>
+<h3 id="71-week-9-验证器"><a class="header" href="#71-week-9-验证器">7.1 Week 9: 验证器</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>验证器研究</td><td>PREVAIL 或自实现</td></tr>
+<tr><td><code>verifier.rs</code></td><td>验证器模块</td></tr>
+<tr><td>安全检查</td><td>内存边界、程序终止性</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>验证项目</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>检查项</th><th>目的</th></tr>
+</thead>
+<tbody>
+<tr><td>程序终止性</td><td>防止无限循环</td></tr>
+<tr><td>内存边界</td><td>防止越界访问</td></tr>
+<tr><td>类型安全</td><td>防止类型混淆</td></tr>
+<tr><td>栈边界</td><td>防止栈溢出</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="72-week-10-uprobe-研究"><a class="header" href="#72-week-10-uprobe-研究">7.2 Week 10: Uprobe 研究</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>可行性研究</td><td>Guest 用户态追踪</td></tr>
+<tr><td>挑战分析</td><td>地址空间隔离、性能影响</td></tr>
+<tr><td>原型实现</td><td>如可行，实现基础 Uprobe</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Uprobe 挑战</strong>:</p>
+<ul>
+<li>Guest 用户态地址空间隔离</li>
+<li>跨 VM 的断点管理</li>
+<li>性能影响评估</li>
+</ul>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>eBPF 验证器</li>
+<li>安全加载不受信程序</li>
+<li>Uprobe 可行性报告/原型</li>
+</ul>
+<hr>
+<h2 id="8-phase-6-测试与文档-week-11-12"><a class="header" href="#8-phase-6-测试与文档-week-11-12">8. Phase 6: 测试与文档 (Week 11-12)</a></h2>
+<p><strong>目标</strong>: 全面测试，编写文档，性能优化</p>
+<h3 id="81-week-11-测试"><a class="header" href="#81-week-11-测试">8.1 Week 11: 测试</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>单元测试</td><td>symbols, runtime, helpers, maps</td></tr>
+<tr><td>集成测试</td><td>追踪点触发、eBPF 执行、kprobe</td></tr>
+<tr><td>性能测试</td><td>追踪点开销、eBPF 执行延迟</td></tr>
+<tr><td>多架构验证</td><td>aarch64, x86_64</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="82-week-12-文档与优化"><a class="header" href="#82-week-12-文档与优化">8.2 Week 12: 文档与优化</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>性能优化</td><td>基于测试结果优化</td></tr>
+<tr><td>用户文档</td><td>使用指南</td></tr>
+<tr><td>API 文档</td><td>开发者文档</td></tr>
+<tr><td>代码审查</td><td>代码质量检查</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>性能目标</strong>:</p>
+<ul>
+<li>追踪点禁用时：开销 &lt; 1%</li>
+<li>追踪点启用时：开销 &lt; 5%</li>
+<li>eBPF 程序执行：&lt; 1μs</li>
+</ul>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>完整测试套件</li>
+<li>性能基准测试报告</li>
+<li>用户文档和 API 文档</li>
+</ul>
+<hr>
+<h2 id="9-未来扩展"><a class="header" href="#9-未来扩展">9. 未来扩展</a></h2>
+<h3 id="91-rust-异步追踪-研究方向"><a class="header" href="#91-rust-异步追踪-研究方向">9.1 Rust 异步追踪 (研究方向)</a></h3>
+<p><strong>问题</strong>: 现有 eBPF 追踪方案基于同步执行模型，无法有效追踪 Rust async/await 异步代码：</p>
+<ul>
+<li><strong>执行碎片化</strong>: async 函数在 await 点被拆分为多个状态机片段</li>
+<li><strong>上下文丢失</strong>: Future 在不同执行器线程间迁移</li>
+<li><strong>状态机隐藏</strong>: 编译器生成的状态机代码与源码结构差异大</li>
+</ul>
+<p><strong>研究方向</strong>: 探索针对 Rust async runtime 的专用追踪方案。</p>
+<hr>
+<h2 id="10-参考资源"><a class="header" href="#10-参考资源">10. 参考资源</a></h2>
+<h3 id="101-starry-os-组件"><a class="header" href="#101-starry-os-组件">10.1 Starry-OS 组件</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>链接</th></tr>
+</thead>
+<tbody>
+<tr><td>ksym</td><td>https://github.com/Starry-OS/ksym</td></tr>
+<tr><td>kbpf-basic</td><td>https://github.com/Starry-OS/kbpf-basic</td></tr>
+<tr><td>tp-lexer</td><td>https://github.com/Starry-OS/tp-lexer</td></tr>
+<tr><td>tracepoint</td><td>https://github.com/Starry-OS/tracepoint</td></tr>
+<tr><td>kprobe</td><td>https://github.com/Starry-OS/kprobe</td></tr>
+<tr><td><strong>eBPF Discussion</strong></td><td>https://github.com/orgs/Starry-OS/discussions/4</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="102-社区组件"><a class="header" href="#102-社区组件">10.2 社区组件</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>链接</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf</td><td>https://github.com/qmonnet/rbpf</td></tr>
+<tr><td>PREVAIL</td><td>https://github.com/vbpf/ebpf-verifier</td></tr>
+<tr><td>Aya</td><td>https://aya-rs.dev/</td></tr>
+<tr><td>Linux eBPF 文档</td><td>https://docs.kernel.org/bpf/</td></tr>
+</tbody>
+</table>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../2026开源社区实习/技术选型.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../2026开源社区实习/周报1.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../2026开源社区实习/技术选型.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../2026开源社区实习/周报1.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

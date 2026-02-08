@@ -1,0 +1,440 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>第一周周报 - 2026开源社区实习目标</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-a2c3ad6f.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5402f447.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">2026开源社区实习目标</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="周报120---131"><a class="header" href="#周报120---131">周报（1.20 - 1.31）</a></h1>
+<h2 id="开发分支"><a class="header" href="#开发分支">开发分支</a></h2>
+<ul>
+<li>axvisor: https://github.com/Iscreamx/axvisor/tree/feature/ebpf</li>
+<li>axebpf: https://github.com/Iscreamx/axebpf</li>
+</ul>
+<hr>
+<h2 id="一已完成工作"><a class="header" href="#一已完成工作">一、已完成工作</a></h2>
+<ul>
+<li>
+<p><strong>axebpf 独立模块</strong>：集成 <a href="https://github.com/Starry-OS/ksym.git">ksym</a>、<a href="https://github.com/Starry-OS/tracepoint.git">tracepoint</a>、<a href="https://github.com/Starry-OS/tp-lexer.git">tp-lexer</a>、<a href="https://github.com/Iscreamx/kbpf-basic.git">kbpf-basic</a>、<a href="https://github.com/qmonnet/rbpf">rbpf</a> 实现 eBPF 运行时，支持程序加载执行，Array/HashMap/LruHash/Queue 四种 Map 类型，6 个标准 helper 函数和 3 个 Hypervisor 专用 helper（获取 vm_id/vcpu_id/exit_reason）。效果：可在 Hypervisor 内核中动态加载 eBPF 字节码进行追踪，无需重新编译内核。</p>
+</li>
+<li>
+<p><strong>Shell trace 命令</strong>：支持 trace list/enable/disable/stat/reset/load/unload/progs/latency/verbose 等命令。效果：可通过 shell 交互式启用追踪点，附加 eBPF 程序，查看统计数据和延迟直方图。</p>
+</li>
+<li>
+<p><strong>Tracepoint 定义</strong>：定义了 25+ 个 VMM 追踪点，其中 VM 生命周期（vm_create/boot/shutdown）、系统初始化（vmm_init/config_load）、Shell（shell_command/init）等追踪点已完成插桩并正常工作。</p>
+</li>
+<li>
+<p><strong>预编译 eBPF 程序</strong>：基于 aya-ebpf 框架提供 2 个预编译程序，支持 ELF 解析和 Map 重定位，可通过 <code>trace enable xxx --prog printk</code> 附加程序。</p>
+</li>
+<li>
+<p><strong>上游贡献</strong>：向 Starry-OS/kbpf-basic 提交 <a href="https://github.com/Starry-OS/kbpf-basic/pull/1">PR</a> 并已合并，修复了 printf-compat 和 VaList API 在 Rust nightly &gt;= 2025-12 上的兼容性问题。使 kbpf-basic 可在最新 nightly 工具链（2025-12-12）上正常编译。</p>
+</li>
+</ul>
+<hr>
+<h2 id="二待完善"><a class="header" href="#二待完善">二、待完善</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>问题</th><th>原因</th><th>解决方向</th></tr>
+</thead>
+<tbody>
+<tr><td>vCPU 运行时追踪点不可用</td><td>vCPU 运行循环位于 axvm crate 而非 kernel 侧</td><td>等待 axvm 重构后在其内部添加插桩</td></tr>
+<tr><td>bpf_trace_printk 简化实现</td><td>rbpf VM 执行时无法访问 ELF .rodata 段中的格式字符串</td><td>需要实现内存映射机制</td></tr>
+<tr><td>验证器功能有限</td><td>rbpf 内置验证器仅检查基础安全性</td><td>当前依赖预编译可信程序规避风险</td></tr>
+<tr><td>Kprobe/Kretprobe 未实现</td><td>下一阶段工作</td><td>Phase 4 计划</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="三遇到的问题与解决方案"><a class="header" href="#三遇到的问题与解决方案">三、遇到的问题与解决方案</a></h2>
+<h3 id="31-rust-nightly-valist-api-变更"><a class="header" href="#31-rust-nightly-valist-api-变更">3.1 Rust nightly VaList API 变更</a></h3>
+<p><strong>问题</strong>：kbpf-basic 依赖的 printf-compat 使用了 <code>VaList</code> 和 <code>VaListImpl</code> 类型，在 Rust nightly &gt;= 2025-12 上编译失败，错误信息为 <code>cannot find type VaListImpl in module core::ffi</code>。</p>
+<p><strong>原因</strong>：Rust 重构了 <code>core::ffi</code> 模块，<code>VaListImpl</code> 被移除，<code>VaList</code> 的 API 也有变化。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>Fork kbpf-basic 仓库</li>
+<li>更新 printf-compat 依赖到兼容新 API 的版本</li>
+<li>修改 VaList 相关代码适配新 API</li>
+<li>提交 PR 到上游并合并</li>
+</ol>
+<h3 id="32-rbpf-内存边界检查导致-map-访问失败"><a class="header" href="#32-rbpf-内存边界检查导致-map-访问失败">3.2 rbpf 内存边界检查导致 Map 访问失败</a></h3>
+<p><strong>问题</strong>：<code>bpf_map_lookup_elem</code> 返回静态 LOOKUP_BUFFER 指针后，eBPF 程序尝试解引用触发 <code>out of bounds memory load</code> 错误。</p>
+<p><strong>原因</strong>：rbpf VM 对所有内存访问进行边界检查，仅允许访问 mem（上下文）、stack（栈）和显式注册的 allowed_memory。</p>
+<p><strong>解决方案</strong>：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Register LOOKUP_BUFFER as accessible memory before program execution
+vm.register_allowed_memory(helpers::get_lookup_buffer_range());
+<span class="boring">}</span></code></pre>
+<h3 id="33-elf-map-重定位"><a class="header" href="#33-elf-map-重定位">3.3 ELF Map 重定位</a></h3>
+<p><strong>问题</strong>：aya-ebpf 编译的程序包含 <code>maps</code> section 和 <code>.reltracepoint</code> 重定位表，直接加载会因为 Map FD 未修补导致运行时错误。</p>
+<p><strong>解决方案</strong>：实现完整的 ELF 解析流程：</p>
+<ol>
+<li>解析 <code>maps</code> section 提取 Map 定义（每个 28 字节）</li>
+<li>解析符号表获取 Map 名称</li>
+<li>调用 <code>maps::create()</code> 创建 Map 并获取 FD</li>
+<li>解析 <code>.reltracepoint</code> 重定位表</li>
+<li>修补 <code>ld_imm64</code> 指令中的 Map FD</li>
+</ol>
+<hr>
+<h2 id="四工作量统计"><a class="header" href="#四工作量统计">四、工作量统计</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>指标</th><th>数量</th></tr>
+</thead>
+<tbody>
+<tr><td>新增代码行数</td><td>~3000 行</td></tr>
+<tr><td>主要模块数</td><td>12 个（symbols、tracepoint、runtime、maps、helpers、attach、context、programs、output、map_ops、platform、tracepoints）</td></tr>
+<tr><td>定义追踪点数</td><td>25+ 个</td></tr>
+<tr><td>实现 Helper 数</td><td>9 个（6 标准 + 3 Hypervisor 专用）</td></tr>
+<tr><td>支持 Map 类型</td><td>4 种</td></tr>
+<tr><td>上游 PR</td><td>1 个（已合并）</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="五下阶段计划"><a class="header" href="#五下阶段计划">五、下阶段计划</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>优先级</th><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>P0</td><td>完善文档</td><td>补充 API 文档、使用示例、架构说明</td></tr>
+<tr><td>P1</td><td>Kprobe 支持</td><td>移植 Starry-OS kprobe 库，实现动态探针</td></tr>
+<tr><td>P1</td><td>axvm 追踪点插桩</td><td>待 axvm 重构后添加 vCPU 运行时追踪点</td></tr>
+<tr><td>P2</td><td>完善 bpf_trace_printk</td><td>实现 .rodata 内存映射，支持格式字符串解析</td></tr>
+<tr><td>P2</td><td>性能测试</td><td>测量追踪点开销、eBPF 执行延迟</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="六风险与阻塞项"><a class="header" href="#六风险与阻塞项">六、风险与阻塞项</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>风险项</th><th>影响</th><th>缓解措施</th></tr>
+</thead>
+<tbody>
+<tr><td>axvm 重构时间不确定</td><td>vCPU 运行时追踪点无法上线</td><td>优先完成其他可用追踪点的功能验证</td></tr>
+<tr><td>Kprobe 架构适配复杂度</td><td>aarch64 断点机制与 x86 不同</td><td>参考 Starry-OS 实现，必要时只支持单架构</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="七个人日志"><a class="header" href="#七个人日志">七、个人日志</a></h2>
+<h3 id="71-五个关键依赖仓库的作用"><a class="header" href="#71-五个关键依赖仓库的作用">7.1 五个关键依赖仓库的作用</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>依赖</th><th>定位</th><th>在 eBPF 执行流程中的作用</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>ksym</strong></td><td>符号表管理</td><td>提供 <code>KallsymsMapped</code> 解析内核符号表，支持 <code>lookup_symbol(addr)</code> 地址→函数名和 <code>lookup_addr(name)</code> 函数名→地址双向查询。用于堆栈追踪符号化和 Kprobe 目标函数定位。</td></tr>
+<tr><td><strong>tracepoint (ktracepoint)</strong></td><td>静态追踪点框架</td><td>提供 <code>define_event_trace!</code> 宏定义追踪点，<code>TracepointManager</code> 管理追踪点生命周期。当追踪点触发时，调用已注册的回调函数（包括执行附加的 eBPF 程序）。</td></tr>
+<tr><td><strong>tp-lexer</strong></td><td>过滤表达式解析</td><td>解析追踪点过滤表达式语法，支持条件过滤（如 <code>vm_id == 1</code>）。当前为 tracepoint-support feature 的依赖，后续可用于实现追踪点过滤功能。</td></tr>
+<tr><td><strong>rbpf</strong></td><td>eBPF 虚拟机</td><td>核心执行引擎。<code>runtime.rs</code> 使用 <code>EbpfVmRaw</code> 执行带上下文的 eBPF 字节码，通过 <code>register_helper</code> 注册 helper 函数，<code>register_allowed_memory</code> 注册可访问内存区域（如 LOOKUP_BUFFER）。程序执行后返回 r0 寄存器值。</td></tr>
+<tr><td><strong>kbpf-basic</strong></td><td>eBPF Map 实现</td><td>提供 <code>bpf_map_create</code> 创建 Map，<code>UnifiedMap</code> 统一抽象层。<code>maps.rs</code> 通过实现 <code>KernelAuxiliaryOps</code> trait 适配 AxVisor 内核操作（cpu_id、time_ns、write_str 等），支持 Array/HashMap/LruHash/Queue 四种 Map 类型。</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>执行流程示意</strong>：</p>
+<pre><code>User Shell                     axebpf                      Dependencies
+    │                             │                           │
+    ├─ trace enable ─────────────►│                           │
+    │                             ├─ TracepointManager ──────►│ tracepoint
+    │                             │   .enable(name)           │
+    ├─ trace enable --prog ──────►│                           │
+    │                             ├─ parse_elf_with_maps() ──►│ (ELF parsing)
+    │                             ├─ bpf_map_create() ───────►│ kbpf-basic
+    │                             ├─ EbpfVmRaw::new() ───────►│ rbpf
+    │                             ├─ register_helper() ──────►│ rbpf
+    │                             │                           │
+[Tracepoint fires]                │                           │
+    │                             ├─ execute_with_context() ─►│ rbpf
+    │                             │   (eBPF execution)        │
+    │                             ├─ map_lookup/update ──────►│ kbpf-basic
+    │                             │                           │
+    ├─ trace stat ───────────────►│                           │
+    │                             ├─ iter_entries() ─────────►│ kbpf-basic
+    │                             ├─ lookup_symbol() ────────►│ ksym (optional)
+</code></pre>
+<h3 id="72-实现代码过程的权衡"><a class="header" href="#72-实现代码过程的权衡">7.2 实现代码过程的权衡</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>决策点</th><th>选项</th><th>最终选择</th><th>权衡理由</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>eBPF VM 实现</strong></td><td>自己实现 vs 复用 rbpf</td><td>rbpf</td><td>rbpf 是成熟的 Rust 实现，支持 no_std，指令集完整，减少开发时间。代价是依赖外部仓库。</td></tr>
+<tr><td><strong>Map 实现</strong></td><td>简化 Vec 实现 vs kbpf-basic</td><td>kbpf-basic</td><td>早期用 Vec 线性扫描（O(n)），后迁移到 kbpf-basic 获得真正的 O(1) HashMap 和 LRU 淘汰。代价是需要实现 <code>KernelAuxiliaryOps</code> 适配层。</td></tr>
+<tr><td><strong>KernelAuxiliaryOps 适配</strong></td><td>完整实现 vs 最小实现</td><td>最小实现（5/15 方法）</td><td>只实现 <code>get_unified_map_from_fd</code>、<code>current_cpu_id</code>、<code>ebpf_time_ns</code>、<code>ebpf_write_str</code> 等必需方法，其他返回 NotSupported。代价是不支持 RingBuf、PerCpu Map。</td></tr>
+<tr><td><strong>bpf_map_lookup_elem 返回值</strong></td><td>零拷贝指针 vs 静态缓冲区</td><td>静态缓冲区（256B）</td><td>rbpf 内存边界检查严格，需要 <code>register_allowed_memory</code> 注册返回指针。零拷贝需要 fork kbpf-basic 添加 <code>lookup_elem_ptr</code> API。当前用静态缓冲区 + Mutex 保护，有大小限制和拷贝开销。</td></tr>
+<tr><td><strong>bpf_trace_printk 实现</strong></td><td>完整格式字符串解析 vs 简化打印</td><td>简化打印</td><td>格式字符串在 ELF <code>.rodata</code> 段，rbpf VM 执行时无法访问。完整实现需要内存映射机制（复杂度高）。当前直接打印 r1/r2/r3 参数值。</td></tr>
+<tr><td><strong>程序验证</strong></td><td>完整验证器 vs 依赖可信程序</td><td>依赖可信预编译程序</td><td>rbpf 内置基础验证器仅检查内存越界和指令合法性。完整验证器（如 PREVAIL）集成复杂度高。当前通过只允许加载预编译可信程序规避风险。</td></tr>
+<tr><td><strong>追踪点插桩位置</strong></td><td>kernel 侧 vs axvm 侧</td><td>混合</td><td>vCPU 运行循环在 axvm crate 中，kernel 侧的 vcpus.rs 代码路径未执行。等待 axvm 重构后迁移插桩点。</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="73-收获"><a class="header" href="#73-收获">7.3 收获</a></h3>
+<p><strong>技术收获</strong>：</p>
+<ol>
+<li>
+<p><strong>eBPF 执行模型理解</strong>：深入理解了 eBPF 程序的加载→验证→执行→Map 交互流程，以及 helper 函数的调用约定（r1-r5 传参，r0 返回）。</p>
+</li>
+<li>
+<p><strong>ELF 解析实践</strong>：实现了最小化的 ELF64 解析器，支持 section 查找、符号表解析、重定位表处理。理解了 <code>ld_imm64</code> 指令的 Map FD 修补机制。</p>
+</li>
+<li>
+<p><strong>no_std 环境适配</strong>：在无标准库环境下集成多个依赖，处理了 alloc、spin lock、static-keys 等基础设施问题。</p>
+</li>
+<li>
+<p><strong>Rust nightly 兼容性</strong>：修复 kbpf-basic 的 VaList API 变更问题并贡献上游，理解了 Rust 不稳定特性的演进。</p>
+</li>
+</ol>
+<p><strong>工程收获</strong>：</p>
+<ol>
+<li>
+<p><strong>模块化设计</strong>：axebpf 通过 feature flags 控制功能启用（symbols/tracepoint-support/runtime），便于裁剪和测试。</p>
+</li>
+<li>
+<p><strong>抽象层设计</strong>：<code>platform.rs</code> 提供 mock/real 模式切换，<code>map_ops.rs</code> 实现 <code>KernelAuxiliaryOps</code> 适配层，解耦了依赖库与内核实现。</p>
+</li>
+<li>
+<p><strong>渐进式实现</strong>：先用简化方案验证端到端流程（如 Vec 实现 Map、简化 printk），再逐步替换为生产级实现。</p>
+</li>
+</ol>
+<p><strong>待深入方向</strong>：</p>
+<ul>
+<li>Kprobe 动态插桩机制（需要理解 aarch64 断点指令和异常处理）</li>
+<li>eBPF 验证器原理（控制流图分析、类型状态追踪）</li>
+<li>零拷贝 Map 访问优化</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../2026开源社区实习/开发计划.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../2026开源社区实习/周报2.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../2026开源社区实习/开发计划.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../2026开源社区实习/周报2.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>

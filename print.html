@@ -1,0 +1,2846 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>2026开源社区实习目标</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-a2c3ad6f.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-5402f447.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">2026开源社区实习目标</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="hello"><a class="header" href="#hello">Hello</a></h1>
+<p>欢迎来到我的博客！</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="2026开源社区实习"><a class="header" href="#2026开源社区实习">2026开源社区实习</a></h1>
+<p>这里是实习相关文档的索引：</p>
+<ul>
+<li><a href="#axvisor-ebpf-性能追踪---项目目标">实习目标</a> - 性能追踪技术方案与背景</li>
+<li><a href="#axvisor-ebpf-性能追踪---技术选型">技术选型</a> - 组件选择依据</li>
+<li><a href="#axvisor-ebpf-开发计划">开发计划</a> - 详细的任务分解与时间表</li>
+<li><a href="#周报120---131">第一周周报</a> - 2026/01/20 - 2026/01/31 周报</li>
+<li><a href="#周报21---27">第二周周报</a> - 2026/02/01 - 2026/02/07 周报</li>
+<li><a href="#bpf-iterator-支持方案">Iterator支持方案</a> - Iterator支持方案</li>
+<li><a href="#axvisor-统一探针调试系统设计">统一探针调试系统方案</a> - 统一探针调试系统方案</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="axvisor-ebpf-性能追踪---项目目标"><a class="header" href="#axvisor-ebpf-性能追踪---项目目标">AxVisor eBPF 性能追踪 - 项目目标</a></h1>
+<blockquote>
+<p>结合 eBPF 技术，跟踪 Hypervisor 和内核的性能</p>
+</blockquote>
+<hr>
+<h2 id="1-背景与研究基础"><a class="header" href="#1-背景与研究基础">1. 背景与研究基础</a></h2>
+<h3 id="11-已有技术基础"><a class="header" href="#11-已有技术基础">1.1 已有技术基础</a></h3>
+<p>基于个人 eBPF 项目经验，已具备以下技术栈能力：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>技术领域</th><th>已实现能力</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>eBPF 程序类型</strong></td><td>Kprobe/Kretprobe、Tracepoint、XDP、TC、sock_ops/sk_msg、Uprobe</td></tr>
+<tr><td><strong>eBPF Maps</strong></td><td>HashMap、SockHash、PerCPU Maps</td></tr>
+<tr><td><strong>用户态框架</strong></td><td>Aya (Rust eBPF 框架)</td></tr>
+<tr><td><strong>内核追踪</strong></td><td>syscall 追踪 (connect/read/write/open/sendto/recvfrom)</td></tr>
+<tr><td><strong>应用追踪</strong></td><td>Go runtime uprobe (goroutine 调度、channel 通信)</td></tr>
+<tr><td><strong>故障注入</strong></td><td>L3/L4/L7/Syscall/Resource 多层故障注入</td></tr>
+<tr><td><strong>TraceID 传播</strong></td><td>跨进程、跨网络的全链路追踪</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>已有项目核心架构：</strong></p>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│                 User Space (cli crate)                  │
+│  ┌─────────┐ ┌──────────┐ ┌────────────┐ ┌───────────┐  │
+│  │  Agent  │ │  Proxy   │ │ Controller │ │  Monitor  │  │
+│  └────┬────┘ └────┬─────┘ └─────┬──────┘ └─────┬─────┘  │
+└───────┼───────────┼─────────────┼──────────────┼────────┘
+        │           │             │              │
+┌───────┼───────────┼─────────────┼──────────────┼────────┐
+│       ▼           ▼             ▼              ▼        │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │            eBPF Maps (Shared Data)              │    │
+│  │  PID_GID_MAP | TRACE_FAULT_MAP | FAULT_STATS    │    │
+│  └─────────────────────────────────────────────────┘    │
+│                 Kernel Space (ebpf crate)               │
+│  ┌─────────┐ ┌──────────┐ ┌────────────┐ ┌───────────┐  │
+│  │ Kprobes │ │ Uprobes  │ │  XDP/TC    │ │ sock_ops  │  │
+│  └─────────┘ └──────────┘ └────────────┘ └───────────┘  │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="12-axvisor-现状分析"><a class="header" href="#12-axvisor-现状分析">1.2 AxVisor 现状分析</a></h3>
+<p>基于对 AxVisor 代码的分析，当前架构如下：</p>
+<pre><code>┌────────────────────────────────────────────────────────┐
+│                     AxVisor Hypervisor                 │
+│  ┌──────────────────────────────────────────────────┐  │
+│  │                    kernel/                       │  │
+│  │  ┌─────────┐  ┌─────────┐  ┌─────────┐           │  │
+│  │  │   vmm/  │  │   hal/  │  │  shell/ │           │  │
+│  │  │ config  │  │ arch/*  │  │ command │           │  │
+│  │  │ vcpus   │  │ cache   │  │         │           │  │
+│  │  │ timer   │  │         │  │         │           │  │
+│  │  └────┬────┘  └────┬────┘  └─────────┘           │  │
+│  └───────┼────────────┼─────────────────────────────┘  │
+│          │            │                                │
+│  ┌───────▼────────────▼─────────────────────────────┐  │
+│  │              modules/ (Hypervisor modules)       │  │
+│  │  axvm | axvcpu | axaddrspace | axdevice          │  │
+│  └──────────────────────────────────────────────────┘  │
+│                           │                            │
+│  ┌────────────────────────▼─────────────────────────┐  │
+│  │           ArceOS Kernel (axstd, axhal, axtask)   │  │
+│  └──────────────────────────────────────────────────┘  │
+└────────────────────────────────────────────────────────┘
+                           │
+              ┌────────────┼────────────┐
+              ▼            ▼            ▼
+         ┌────────┐  ┌────────┐  ┌────────┐
+         │  VM 1  │  │  VM 2  │  │  VM N  │
+         │ (Guest)│  │ (Guest)│  │ (Guest)│
+         └────────┘  └────────┘  └────────┘
+</code></pre>
+<p><strong>关键性能瓶颈点：</strong></p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>序号</th><th>瓶颈点</th><th>位置</th><th>性能敏感度</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td>VM Exit/Entry 处理</td><td><code>AxVCpu::run()</code> 循环</td><td>极高</td></tr>
+<tr><td>2</td><td>Hypercall 处理</td><td><code>AxVCpuExitReason::Hypercall</code> 分支</td><td>高</td></tr>
+<tr><td>3</td><td>中断注入</td><td><code>AxVCpu::inject_interrupt()</code></td><td>高</td></tr>
+<tr><td>4</td><td>MMIO/SysReg 模拟</td><td><code>AxVCpuExitReason::MmioRead/Write</code></td><td>中</td></tr>
+<tr><td>5</td><td>嵌套页表处理</td><td><code>AxVCpuExitReason::NestedPageFault</code></td><td>高</td></tr>
+<tr><td>6</td><td>vCPU 状态转换</td><td><code>VCpuState</code> 状态机</td><td>中</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="13-axvisor-现有可观测性基础"><a class="header" href="#13-axvisor-现有可观测性基础">1.3 AxVisor 现有可观测性基础</a></h3>
+<p>AxVisor 当前已具备一定的可观测性能力，但均为<strong>硬编码采集</strong>方式，缺乏灵活的动态追踪机制：</p>
+<h4 id="131-日志追踪-log-based-tracing"><a class="header" href="#131-日志追踪-log-based-tracing">1.3.1 日志追踪 (Log-based Tracing)</a></h4>
+<p>当前通过 <code>trace!</code>/<code>debug!</code>/<code>info!</code>/<code>warn!</code>/<code>error!</code> 宏在关键路径输出日志：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>模块</th><th>追踪点</th><th>日志级别</th><th>采集内容</th></tr>
+</thead>
+<tbody>
+<tr><td><code>axvcpu/vcpu.rs</code></td><td><code>run()</code> 方法</td><td>debug</td><td>vCPU 状态转换</td></tr>
+<tr><td><code>axvcpu/exit.rs</code></td><td>Exit 处理</td><td>debug</td><td>Exit reason、参数</td></tr>
+<tr><td><code>axvm/vm/mod.rs</code></td><td>VM 生命周期</td><td>info</td><td>创建、启动、停止</td></tr>
+<tr><td><code>kernel/vmm/mod.rs</code></td><td>VMM 初始化</td><td>info</td><td>虚拟化启用状态</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>现有日志追踪示例</strong>（基于 <code>AxVCpuExitReason</code>）：</p>
+<pre><code>When VM Exit occurs:
+  - Only records Exit type: Hypercall/MmioRead/ExternalInterrupt etc.
+  - Only records parameters: hypercall_nr, addr, vector etc.
+  - No latency stats, no frequency stats, no aggregation analysis
+</code></pre>
+<h4 id="132-shell-状态查询"><a class="header" href="#132-shell-状态查询">1.3.2 Shell 状态查询</a></h4>
+<p>通过 <code>vm show</code> 命令提供运行时状态查询：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>命令</th><th>功能</th><th>数据来源</th></tr>
+</thead>
+<tbody>
+<tr><td><code>vm list</code></td><td>列出所有 VM</td><td><code>vm_list</code> 模块</td></tr>
+<tr><td><code>vm show &lt;id&gt;</code></td><td>显示 VM 详情</td><td><code>Vm</code> 结构体</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>支持的统计项</strong>：</p>
+<ul>
+<li>VM 状态 (Running/Stopped)</li>
+<li>vCPU 数量</li>
+<li>内存大小</li>
+<li>VM 名称</li>
+</ul>
+<h4 id="133-现有方案的局限性"><a class="header" href="#133-现有方案的局限性">1.3.3 现有方案的局限性</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>局限性</th><th>描述</th><th>eBPF 解决方案</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>无延迟统计</strong></td><td>仅记录事件发生，无处理时长</td><td>Tracepoint + 时间戳采集</td></tr>
+<tr><td><strong>无频率统计</strong></td><td>无法统计 VM Exit/Hypercall 频率</td><td>eBPF Map 计数聚合</td></tr>
+<tr><td><strong>无直方图</strong></td><td>无法分析延迟分布</td><td>Histogram Map</td></tr>
+<tr><td><strong>静态插桩</strong></td><td>需重编译才能修改追踪点</td><td>Kprobe 动态附加</td></tr>
+<tr><td><strong>高开销</strong></td><td>日志 I/O 影响性能</td><td>Ring buffer 异步采集</td></tr>
+<tr><td><strong>无跨 VM 关联</strong></td><td>无法追踪 IVC 端到端延迟</td><td>TraceID 传播</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="134-时间采集基础设施"><a class="header" href="#134-时间采集基础设施">1.3.4 时间采集基础设施</a></h4>
+<p>AxVisor 已有时间获取 API，可复用于 eBPF 追踪：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>API</th><th>位置</th><th>用途</th></tr>
+</thead>
+<tbody>
+<tr><td><code>axhal::time::monotonic_time_nanos()</code></td><td>ArceOS HAL</td><td>高精度单调时钟</td></tr>
+<tr><td><code>axhal::time::wall_time()</code></td><td>ArceOS HAL</td><td>墙钟时间</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>可复用点</strong>: 在 eBPF tracepoint 中调用 <code>monotonic_time_nanos()</code> 计算事件延迟。</p>
+<hr>
+<h2 id="2-研究目标对比分析"><a class="header" href="#2-研究目标对比分析">2. 研究目标对比分析</a></h2>
+<h3 id="21-方向统一性"><a class="header" href="#21-方向统一性">2.1 方向统一性</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>维度</th><th>已有 eBPF 项目</th><th>AxVisor eBPF 目标</th><th>统一程度</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>技术栈</strong></td><td>Aya + Rust eBPF</td><td>Aya + Rust eBPF</td><td>✅ 完全统一</td></tr>
+<tr><td><strong>追踪粒度</strong></td><td>应用级 (Go runtime)</td><td>系统级 (Hypervisor)</td><td>✅ 互补</td></tr>
+<tr><td><strong>数据采集</strong></td><td>Uprobe + Kprobe</td><td>Tracepoint + Kprobe</td><td>✅ 技术共享</td></tr>
+<tr><td><strong>Map 设计</strong></td><td>TraceID 关联</td><td>VM/VCpu 关联</td><td>✅ 模式相同</td></tr>
+<tr><td><strong>用户态交互</strong></td><td>CLI + K8s CRD</td><td>CLI + Shell 集成</td><td>✅ 架构复用</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="22-方向差异性"><a class="header" href="#22-方向差异性">2.2 方向差异性</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>维度</th><th>已有 eBPF 项目</th><th>AxVisor eBPF</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>目标层级</strong></td><td>L7 应用层</td><td>L0 Hypervisor 层</td></tr>
+<tr><td><strong>追踪对象</strong></td><td>Go 协程、HTTP/gRPC 请求</td><td>VM Exit、Hypercall、中断</td></tr>
+<tr><td><strong>内核依赖</strong></td><td>标准 Linux 内核</td><td>ArceOS 自定义内核</td></tr>
+<tr><td><strong>eBPF 加载</strong></td><td>标准 bpf() syscall</td><td>需要 ArceOS eBPF 支持</td></tr>
+<tr><td><strong>符号解析</strong></td><td>/proc/kallsyms</td><td>需要 ArceOS ksym 支持</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="23-关键挑战"><a class="header" href="#23-关键挑战">2.3 关键挑战</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────┐
+│                       Challenges and Solutions                          │
+├─────────────────────────────────────────────────────────────────────────┤
+│                                                                         │
+│  Challenge 1: ArceOS lacks standard Linux eBPF subsystem                │
+│  ────────────────────────────────────────────────                       │
+│  → Solution: Port rbpf eBPF VM based on Starry-OS approach              │
+│  → Reuse: kbpf-basic (Maps), tracepoint (tracing framework)             │
+│                                                                         │
+│  Challenge 2: ArceOS lacks /proc/kallsyms                               │
+│  ────────────────────────────────────────────────                       │
+│  → Solution: Use Starry-OS ksym module, generate symbol table at build  │
+│  → Method: Modify build process, extract symbols from ELF into kernel   │
+│                                                                         │
+│  Challenge 3: ArceOS lacks tracepoint infrastructure                    │
+│  ────────────────────────────────────────────────                       │
+│  → Solution: Port Starry-OS tracepoint implementation                   │
+│  → Extend: Define Hypervisor-specific tracepoints (VM Exit, Hypercall)  │
+│                                                                         │
+│  Challenge 4: Hypervisor runs in EL2/VMX Root, traditional eBPF in EL1  │
+│  ────────────────────────────────────────────────                       │
+│  → Solution: Design Hypervisor-aware eBPF Helper functions              │
+│  → Add: bpf_get_current_vm_id(), bpf_get_current_vcpu_id(), etc.        │
+│                                                                         │
+│  Challenge 5: #![no_std] environment restrictions                       │
+│  ────────────────────────────────────────────────                       │
+│  → Solution: Choose no_std compatible components (rbpf, kbpf-basic)     │
+│  → Method: Fork and adapt if necessary, remove std library dependencies │
+│                                                                         │
+└─────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<hr>
+<h2 id="3-技术研究方案"><a class="header" href="#3-技术研究方案">3. 技术研究方案</a></h2>
+<h3 id="31-整体架构设计"><a class="header" href="#31-整体架构设计">3.1 整体架构设计</a></h3>
+<pre><code>┌──────────────────────────────────────────────────────────────────────────┐
+│                    AxVisor eBPF Tracing Architecture                     │
+├──────────────────────────────────────────────────────────────────────────┤
+│                                                                          │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │                    User Space / Shell Layer                        │  │
+│  │  ┌──────────┐  ┌──────────┐  ┌──────────┐  ┌────────────────────┐  │  │
+│  │  │  Loader  │  │ Analyzer │  │ Exporter │  │   Shell Commands   │  │  │
+│  │  │(BPF Load)│  │(Aggregate)│ │JSON/Table│  │  trace list/stat   │  │  │
+│  │  └────┬─────┘  └────┬─────┘  └────┬─────┘  └──────────┬─────────┘  │  │
+│  └───────┼─────────────┼─────────────┼───────────────────┼────────────┘  │
+│          │             │             │                   │               │
+│          ▼             ▼             ▼                   ▼               │
+│  ┌────────────────────────────────────────────────────────────────────┐  │
+│  │                         eBPF Maps Layer                            │  │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌────────────┐ │  │
+│  │  │VM_EXIT_STATS│  │HYPERCALL_LAT│  │  IRQ_STATS  │  │VCPU_RUNTIME│ │  │
+│  │  │  HashMap    │  │  Histogram  │  │  PerCPU Map │  │  HashMap   │ │  │
+│  │  └─────────────┘  └─────────────┘  └─────────────┘  └────────────┘ │  │
+│  └────────────────────────────────────────────────────────────────────┘  │
+│                                    ▲                                     │
+│                                    │ Write Stats                         │
+│  ┌───────────────────────────────────────────────────────────────────┐   │
+│  │                      eBPF Programs Layer                          │   │ 
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌───────────┐ │   │
+│  │  │ Tracepoint  │  │ Tracepoint  │  │ Tracepoint  │  │ Tracepoint│ │   │
+│  │  │ vcpu_run_*  │  │ hypercall   │  │ mmio_access │  │ ept_viol  │ │   │
+│  │  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └─────┬─────┘ │   │
+│  └─────────┼────────────────┼────────────────┼───────────────┼───────┘   │
+│            │                │                │               │           │
+│            ▼                ▼                ▼               ▼           │
+│  ┌───────────────────────────────────────────────────────────────────┐   │
+│  │                   axtracepoint Module                             │   │
+│  │             Tracepoint definition, registration, trigger          │   │
+│  └───────────────────────────────────────────────────────────────────┘   │
+│                                    ▲                                     │
+│                                    │ Tracepoint Trigger                  │
+│  ┌───────────────────────────────────────────────────────────────────┐   │
+│  │                    VMM Critical Path                              │   │
+│  │  ┌───────────┐  ┌───────────┐  ┌───────────┐  ┌─────────────────┐ │   │
+│  │  │AxVCpu::   │  │ Exit      │  │ MMIO/     │  │ NestedPageFault │ │   │
+│  │  │  run()    │  │ Handling  │  │ SysReg    │  │    Handling     │ │   │
+│  │  └───────────┘  └───────────┘  └───────────┘  └─────────────────┘ │   │
+│  └───────────────────────────────────────────────────────────────────┘   │
+│                                                                          │
+└──────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="32-追踪点设计"><a class="header" href="#32-追踪点设计">3.2 追踪点设计</a></h3>
+<p>基于 <code>AxVCpuExitReason</code> 枚举和 VMM 关键路径，定义以下追踪点：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>子系统</th><th>追踪点</th><th>触发位置</th><th>采集数据</th></tr>
+</thead>
+<tbody>
+<tr><td>vmm</td><td><code>vcpu_run_enter</code></td><td><code>AxVCpu::run()</code> 入口</td><td>vm_id, vcpu_id, timestamp</td></tr>
+<tr><td>vmm</td><td><code>vcpu_run_exit</code></td><td><code>AxVCpu::run()</code> 返回</td><td>vm_id, vcpu_id, exit_reason, duration_ns</td></tr>
+<tr><td>vmm</td><td><code>hypercall</code></td><td>Hypercall 处理完成</td><td>vm_id, vcpu_id, nr, args, duration_ns</td></tr>
+<tr><td>vmm</td><td><code>mmio_read</code></td><td>MmioRead 处理</td><td>vm_id, addr, width, duration_ns</td></tr>
+<tr><td>vmm</td><td><code>mmio_write</code></td><td>MmioWrite 处理</td><td>vm_id, addr, width, data, duration_ns</td></tr>
+<tr><td>vmm</td><td><code>sysreg_access</code></td><td>SysReg 读写</td><td>vm_id, addr, is_write, duration_ns</td></tr>
+<tr><td>vmm</td><td><code>interrupt_inject</code></td><td>中断注入</td><td>vm_id, vcpu_id, vector</td></tr>
+<tr><td>vmm</td><td><code>ept_violation</code></td><td>NestedPageFault 处理</td><td>vm_id, gpa, access_flags, duration_ns</td></tr>
+<tr><td>vmm</td><td><code>vcpu_state_change</code></td><td>VCpuState 转换</td><td>vm_id, vcpu_id, from_state, to_state</td></tr>
+<tr><td>vmm</td><td><code>vm_lifecycle</code></td><td>VM 创建/启动/停止</td><td>vm_id, event_type</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="33-性能指标定义"><a class="header" href="#33-性能指标定义">3.3 性能指标定义</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>指标类别</th><th>指标名称</th><th>单位</th><th>采集方式</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>频率</strong></td><td>VM Exit 频率</td><td>exits/sec</td><td>Map 计数 + 时间窗口</td></tr>
+<tr><td><strong>频率</strong></td><td>Hypercall 调用频率</td><td>calls/sec</td><td>Map 计数 + 时间窗口</td></tr>
+<tr><td><strong>延迟</strong></td><td>VM Exit 处理延迟</td><td>ns</td><td>时间戳差值</td></tr>
+<tr><td><strong>延迟</strong></td><td>Hypercall 处理延迟</td><td>ns</td><td>时间戳差值</td></tr>
+<tr><td><strong>延迟</strong></td><td>中断注入延迟</td><td>ns</td><td>时间戳差值</td></tr>
+<tr><td><strong>延迟</strong></td><td>MMIO 模拟延迟</td><td>ns</td><td>时间戳差值</td></tr>
+<tr><td><strong>延迟</strong></td><td>EPT Violation 处理延迟</td><td>ns</td><td>时间戳差值</td></tr>
+<tr><td><strong>分布</strong></td><td>Exit Reason 分布</td><td>%</td><td>Map 聚合统计</td></tr>
+<tr><td><strong>分布</strong></td><td>Hypercall 号分布</td><td>%</td><td>Map 聚合统计</td></tr>
+<tr><td><strong>分布</strong></td><td>延迟直方图</td><td>count/bucket</td><td>Histogram Map</td></tr>
+<tr><td><strong>利用率</strong></td><td>vCPU 运行时间占比</td><td>%</td><td>累计运行时间 / 墙钟时间</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="34-组件复用策略"><a class="header" href="#34-组件复用策略">3.4 组件复用策略</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>来源</th><th>组件</th><th>复用方式</th><th>工作量</th></tr>
+</thead>
+<tbody>
+<tr><td>Starry-OS</td><td>ksym</td><td>直接引用</td><td>低</td></tr>
+<tr><td>Starry-OS</td><td>kbpf-basic</td><td>直接引用</td><td>低</td></tr>
+<tr><td>Starry-OS</td><td>tp-lexer</td><td>直接引用</td><td>低</td></tr>
+<tr><td>Starry-OS</td><td>tracepoint</td><td>适配后复用</td><td>中</td></tr>
+<tr><td>Starry-OS</td><td>kprobe</td><td>后续扩展</td><td>高</td></tr>
+<tr><td>社区</td><td>rbpf</td><td>适配 no_std</td><td>低</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="4-预期成果"><a class="header" href="#4-预期成果">4. 预期成果</a></h2>
+<h3 id="41-技术产出"><a class="header" href="#41-技术产出">4.1 技术产出</a></h3>
+<ol>
+<li><strong>axebpf 模块</strong>: ArceOS 兼容的 eBPF 运行时</li>
+<li><strong>axksym 模块</strong>: 内核符号表生成与查找</li>
+<li><strong>axtracepoint 模块</strong>: Tracepoint 定义与注册框架</li>
+<li><strong>Shell trace 命令</strong>: 追踪点控制与统计数据展示</li>
+</ol>
+<h3 id="42-文档产出"><a class="header" href="#42-文档产出">4.2 文档产出</a></h3>
+<ol>
+<li>AxVisor eBPF 追踪使用指南</li>
+<li>ArceOS eBPF 子系统设计文档</li>
+<li>Hypervisor 性能分析最佳实践</li>
+</ol>
+<h3 id="43-对个人技术栈的扩展"><a class="header" href="#43-对个人技术栈的扩展">4.3 对个人技术栈的扩展</a></h3>
+<ol>
+<li><strong>技术深度扩展</strong>: 从应用层追踪扩展到 Hypervisor 层</li>
+<li><strong>跨层追踪能力</strong>: 可实现 Guest → Hypervisor → Host 全栈追踪</li>
+<li><strong>故障注入扩展</strong>: 可在 Hypervisor 层注入故障 (VM Exit 延迟、中断丢失等)</li>
+</ol>
+<h3 id="44-预期效果演示"><a class="header" href="#44-预期效果演示">4.4 预期效果演示</a></h3>
+<pre><code>axvisor:/$ trace list
+Tracepoints:
+  vmm:vcpu_run_enter     [disabled]
+  vmm:vcpu_run_exit      [disabled]
+  vmm:hypercall          [disabled]
+  vmm:mmio_read          [disabled]
+  vmm:mmio_write         [disabled]
+  vmm:interrupt_inject   [disabled]
+  vmm:ept_violation      [disabled]
+
+axvisor:/$ trace enable vmm:vcpu_run_exit
+Enabled: vmm:vcpu_run_exit
+
+axvisor:/$ trace stat
+┌──────────────────────────────────────────────────────────────┐
+│                    VM Exit Statistics                        │
+├────────┬─────────┬──────────────┬─────────┬─────────┬────────┤
+│ VM ID  │ vCPU ID │ Exit Reason  │  Count  │ Avg(μs) │ Max(μs)│
+├────────┼─────────┼──────────────┼─────────┼─────────┼────────┤
+│   1    │    0    │ Hypercall    │  12345  │   2.3   │  15.7  │
+│   1    │    0    │ ExtInterrupt │   8901  │   1.1   │   8.2  │
+│   1    │    0    │ Halt         │    567  │  45.2   │ 102.1  │
+│   1    │    0    │ MmioRead     │   3456  │   1.8   │  12.3  │
+│   2    │    0    │ Hypercall    │   4567  │   2.8   │  12.3  │
+└────────┴─────────┴──────────────┴─────────┴─────────┴────────┘
+
+axvisor:/$ trace latency hypercall
+Hypercall Latency Distribution:
+  0-1μs   : ████████████████████████████████ 45.2%
+  1-2μs   : ████████████████████ 28.1%
+  2-5μs   : ██████████ 14.3%
+  5-10μs  : ████ 6.8%
+  10-50μs : ██ 4.1%
+  50μs+   : █ 1.5%
+</code></pre>
+<hr>
+<h2 id="附录-a-时间线-12-周"><a class="header" href="#附录-a-时间线-12-周">附录 A: 时间线 (12 周)</a></h2>
+<blockquote>
+<p><strong>策略</strong>: 移植 Starry-OS 的 eBPF 工作到 AxVisor。由于 Starry-OS 是基于 ArceOS 扩展的宏内核，
+AxVisor 是基于 ArceOS 扩展的 VMM，大部分组件可直接引用或稍作适配。</p>
+</blockquote>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>阶段</th><th>时间</th><th>里程碑</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Phase 1</strong></td><td>Week 1-2</td><td>基础设施</td><td>依赖集成、符号表、追踪点框架</td></tr>
+<tr><td><strong>Phase 2</strong></td><td>Week 3-4</td><td>eBPF 运行时</td><td>rbpf VM、Helper 函数、Map 支持</td></tr>
+<tr><td><strong>Phase 3</strong></td><td>Week 5-6</td><td>VMM 追踪点与 Shell</td><td>Hypervisor 追踪点、VMM 插桩、Shell 命令</td></tr>
+<tr><td><strong>Phase 4</strong></td><td>Week 7-8</td><td>Kprobe/Kretprobe</td><td>动态探针、多架构适配</td></tr>
+<tr><td><strong>Phase 5</strong></td><td>Week 9-10</td><td>验证器与 Uprobe</td><td>eBPF 验证器、Uprobe 可行性研究</td></tr>
+<tr><td><strong>Phase 6</strong></td><td>Week 11-12</td><td>测试与文档</td><td>性能测试、多架构验证、文档</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="详细里程碑"><a class="header" href="#详细里程碑">详细里程碑</a></h3>
+<p><strong>Phase 1 - 基础设施 (Week 1-2)</strong></p>
+<ul>
+<li>依赖集成 (ksym, kbpf-basic, tp-lexer, tracepoint)</li>
+<li><code>modules/axebpf</code> 模块创建</li>
+<li><code>xtask symbols</code> 符号表生成</li>
+<li>追踪点框架基础</li>
+</ul>
+<p><strong>Phase 2 - eBPF 运行时 (Week 3-4)</strong></p>
+<ul>
+<li>rbpf VM 集成 (no_std 适配)</li>
+<li>标准 Helper 函数实现</li>
+<li>Map 数据结构支持 (HashMap, Array, RingBuf)</li>
+</ul>
+<p><strong>Phase 3 - VMM 追踪点与 Shell (Week 5-6)</strong></p>
+<ul>
+<li>定义 VMM 核心追踪点 (7+ 个)</li>
+<li>VMM 关键路径插桩</li>
+<li>Shell <code>trace</code> 命令组</li>
+<li>Hypervisor 专用 Helper</li>
+</ul>
+<p><strong>Phase 4 - Kprobe/Kretprobe (Week 7-8)</strong></p>
+<ul>
+<li>移植 Starry-OS kprobe 库</li>
+<li>aarch64/x86_64 断点机制适配</li>
+<li>kretprobe 函数返回探针</li>
+<li>Shell kprobe 命令集成</li>
+</ul>
+<p><strong>Phase 5 - 验证器与 Uprobe (Week 9-10)</strong></p>
+<ul>
+<li>eBPF 验证器 (PREVAIL 或轻量实现)</li>
+<li>安全检查 (内存边界、程序终止性)</li>
+<li>Uprobe 可行性研究</li>
+<li>Uprobe 原型 (如可行)</li>
+</ul>
+<p><strong>Phase 6 - 测试与文档 (Week 11-12)</strong></p>
+<ul>
+<li>单元测试、集成测试</li>
+<li>性能测试与优化</li>
+<li>多架构验证</li>
+<li>用户文档和 API 文档</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="axvisor-ebpf-性能追踪---技术选型"><a class="header" href="#axvisor-ebpf-性能追踪---技术选型">AxVisor eBPF 性能追踪 - 技术选型</a></h1>
+<blockquote>
+<p>本文档详细介绍 eBPF 工作原理、VMM 层支持需求，以及技术选型依据。</p>
+</blockquote>
+<hr>
+<h2 id="1-ebpf-技术原理"><a class="header" href="#1-ebpf-技术原理">1. eBPF 技术原理</a></h2>
+<h3 id="11-什么是-ebpf"><a class="header" href="#11-什么是-ebpf">1.1 什么是 eBPF</a></h3>
+<p>eBPF (extended Berkeley Packet Filter) 是一种革命性的内核沙箱技术，允许在内核中安全地运行用户定义的程序，而无需修改内核源码或加载内核模块。</p>
+<p><strong>核心价值</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>特性</th><th>传统方案</th><th>eBPF 方案</th></tr>
+</thead>
+<tbody>
+<tr><td>添加追踪</td><td>修改源码 → 重编译 → 重启</td><td>运行时动态加载</td></tr>
+<tr><td>安全性</td><td>可能导致内核崩溃</td><td>验证器保证安全</td></tr>
+<tr><td>性能</td><td>日志 I/O 开销大</td><td>内核空间聚合，极低开销</td></tr>
+<tr><td>灵活性</td><td>固定采集逻辑</td><td>可编程采集策略</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="12-ebpf-执行流程"><a class="header" href="#12-ebpf-执行流程">1.2 eBPF 执行流程</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│                           eBPF Complete Execution Flow                      │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║                        Compile Phase (Host)                         ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌────────────────┐    Rust/C      ┌────────────────────────────┐   ║    │
+│  ║  │  eBPF Source   │  ──────────►   │  eBPF Bytecode (.bpf ELF)  │   ║    │
+│  ║  │  (Rust + Aya)  │   Compiler     │  Platform-independent ISA  │   ║    │
+│  ║  └────────────────┘                └────────────────────────────┘   ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                    │                                        │
+│                                    ▼ Transfer to target system              │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║                        Load Phase (Kernel)                          ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌────────────────┐              ┌────────────────────────────┐     ║    │
+│  ║  │   ELF Parser   │  ──────────► │   Bytecode + Map Defs      │     ║    │
+│  ║  └────────────────┘              └─────────────┬──────────────┘     ║    │
+│  ║                                                │                    ║    │
+│  ║                                                ▼                    ║    │
+│  ║  ┌────────────────┐   Safety      ┌────────────────────────────┐    ║    │
+│  ║  │    Verifier    │  ◄──────────  │   Program Bytecode         │    ║    │
+│  ║  │                │               │                            │    ║    │
+│  ║  └───────┬────────┘               └────────────────────────────┘    ║    │
+│  ║          │                                                          ║    │
+│  ║          │ Verification passed                                      ║    │
+│  ║          ▼                                                          ║    │
+│  ║  ┌────────────────┐              ┌────────────────────────────┐     ║    │
+│  ║  │ JIT/Interpreter│  ──────────► │   Executable Program       │     ║    │
+│  ║  └────────────────┘              └─────────────┬──────────────┘     ║    │
+│  ║                                                │                    ║    │
+│  ║                                                ▼                    ║    │
+│  ║  ┌────────────────────────────────────────────────────────────┐     ║    │
+│  ║  │              Attach to Hook Point (Tracepoint/Kprobe)      │     ║    │
+│  ║  └────────────────────────────────────────────────────────────┘     ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                    │                                        │
+│                                    ▼ Event triggered                        │
+│  ╔═════════════════════════════════════════════════════════════════════╗    │
+│  ║                        Execute Phase (Runtime)                      ║    │
+│  ╠═════════════════════════════════════════════════════════════════════╣    │
+│  ║                                                                     ║    │
+│  ║  ┌──────────────┐          ┌──────────────┐          ┌──────────┐   ║    │
+│  ║  │ Hook Trigger │ ───────► │ eBPF Program │ ◄──────► │  Maps    │   ║    │
+│  ║  │ (VM Exit etc)│          │   Execute    │  R/W     │ (Data)   │   ║    │
+│  ║  └──────────────┘          └──────┬───────┘          └────┬─────┘   ║    │
+│  ║                                   │                       │         ║    │
+│  ║                                   │ Call                  │ Share   ║    │
+│  ║                                   ▼                       ▼         ║    │
+│  ║                           ┌──────────────┐          ┌──────────┐    ║    │
+│  ║                           │   Helpers    │          │ Userspace│    ║    │
+│  ║                           │(Kernel Svc)  │          │   Read   │    ║    │
+│  ║                           └──────────────┘          └──────────┘    ║    │
+│  ║                                                                     ║    │
+│  ╚═════════════════════════════════════════════════════════════════════╝    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="13-ebpf-核心组件详解"><a class="header" href="#13-ebpf-核心组件详解">1.3 eBPF 核心组件详解</a></h3>
+<h4 id="131-ebpf-字节码"><a class="header" href="#131-ebpf-字节码">1.3.1 eBPF 字节码</a></h4>
+<p>eBPF 使用精简的 RISC 风格指令集，运行在虚拟的 64 位寄存器机器上：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>规格</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>寄存器</td><td>R0-R10 (64-bit)</td><td>R0=返回值, R1-R5=参数, R10=帧指针</td></tr>
+<tr><td>栈空间</td><td>512 字节</td><td>固定大小，编译时确定使用量</td></tr>
+<tr><td>指令大小</td><td>8 字节/指令</td><td>固定宽度，便于解析</td></tr>
+<tr><td>程序大小限制</td><td>100万指令 (Linux 5.2+)</td><td>防止无限循环</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>指令格式</strong>：</p>
+<pre><code>┌──────────┬──────────┬──────────┬──────────┬──────────────────┐
+│  opcode  │ dst_reg  │ src_reg  │  offset  │    immediate     │
+│  8 bits  │  4 bits  │  4 bits  │ 16 bits  │     32 bits      │
+└──────────┴──────────┴──────────┴──────────┴──────────────────┘
+</code></pre>
+<h4 id="132-ebpf-maps"><a class="header" href="#132-ebpf-maps">1.3.2 eBPF Maps</a></h4>
+<p>Maps 是 eBPF 程序与用户态之间共享数据的核心机制：</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                        eBPF Maps Mechanism                      │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│     Userspace Tool                        Kernel eBPF Program   │
+│     (ax-trace)                          (tracepoint handler)    │
+│          │                                    │                 │
+│          │     ┌────────────────────────┐     │                 │
+│          │     │       eBPF Map         │     │                 │
+│          │     │  ┌─────────┬─────────┐ │     │                 │
+│   Read ──┼────►│  │   Key   │  Value  │ │◄────┼── Write         │
+│   Stats  │     │  ├─────────┼─────────┤ │     │   Stats         │
+│          │     │  │ exit=1  │  12345  │ │     │                 │
+│          │     │  │ exit=2  │   6789  │ │     │                 │
+│          │     │  │ exit=3  │    234  │ │     │                 │
+│          │     │  └─────────┴─────────┘ │     │                 │
+│          │     └────────────────────────┘     │                 │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<p><strong>支持的 Map 类型</strong>（本项目使用）：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Map 类型</th><th>数据结构</th><th>时间复杂度</th><th>典型用途</th></tr>
+</thead>
+<tbody>
+<tr><td><code>HashMap</code></td><td>哈希表</td><td>O(1)</td><td>按 exit_reason 统计计数</td></tr>
+<tr><td><code>Array</code></td><td>固定数组</td><td>O(1)</td><td>延迟直方图桶</td></tr>
+<tr><td><code>PerCPU HashMap</code></td><td>每 CPU 哈希表</td><td>O(1)</td><td>避免锁竞争的统计</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="133-helper-函数"><a class="header" href="#133-helper-函数">1.3.3 Helper 函数</a></h4>
+<p>eBPF 程序通过 Helper 函数访问内核服务，这是沙箱的受控出口：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Helper ID</th><th>函数名</th><th>功能</th><th>安全性</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><code>bpf_map_lookup_elem</code></td><td>查找 Map 元素</td><td>返回指针需边界检查</td></tr>
+<tr><td>2</td><td><code>bpf_map_update_elem</code></td><td>更新 Map 元素</td><td>原子操作</td></tr>
+<tr><td>5</td><td><code>bpf_ktime_get_ns</code></td><td>获取时间戳</td><td>只读，无副作用</td></tr>
+<tr><td>6</td><td><code>bpf_trace_printk</code></td><td>调试输出</td><td>生产环境应禁用</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="134-验证器-verifier"><a class="header" href="#134-验证器-verifier">1.3.4 验证器 (Verifier)</a></h4>
+<p>验证器是 eBPF 安全性的核心保障，通过静态分析确保程序安全：</p>
+<p><strong>验证内容</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>检查项</th><th>目的</th><th>实现方式</th></tr>
+</thead>
+<tbody>
+<tr><td>程序终止性</td><td>防止无限循环</td><td>限制指令数 + 禁止向后跳转</td></tr>
+<tr><td>内存安全</td><td>防止越界访问</td><td>追踪寄存器类型和范围</td></tr>
+<tr><td>类型安全</td><td>防止类型混淆</td><td>抽象解释 + 类型推导</td></tr>
+<tr><td>栈边界</td><td>防止栈溢出</td><td>静态分析栈使用量</td></tr>
+</tbody>
+</table>
+</div>
+<pre><code>          Verification Flow
+                │
+                ▼
+    ┌───────────────────────┐
+    │  Build CFG (Control   │
+    │     Flow Graph)       │
+    └───────────┬───────────┘
+                │
+                ▼
+    ┌───────────────────────┐
+    │  Simulate each path   │
+    │  Track register state │
+    └───────────┬───────────┘
+                │
+                ▼
+    ┌───────────────────────┐      ┌─────────────┐
+    │  Unsafe operation?    │─Yes─►│ Reject Load │
+    └───────────┬───────────┘      └─────────────┘
+                │ No
+                ▼
+    ┌───────────────────────┐
+    │    Allow program      │
+    └───────────────────────┘
+</code></pre>
+<h3 id="14-ebpf-程序类型"><a class="header" href="#14-ebpf-程序类型">1.4 eBPF 程序类型</a></h3>
+<p>与 Hypervisor 追踪相关的程序类型：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>程序类型</th><th>触发时机</th><th>上下文数据</th><th>适用场景</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Tracepoint</strong></td><td>预定义的静态插桩点</td><td>结构化事件参数</td><td>VM Exit 统计（核心）</td></tr>
+<tr><td><strong>Kprobe</strong></td><td>任意函数入口</td><td>寄存器状态</td><td>动态探测（扩展）</td></tr>
+<tr><td><strong>Kretprobe</strong></td><td>任意函数返回</td><td>返回值 + 寄存器</td><td>延迟测量（扩展）</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="2-vmm-层-ebpf-支持需求分析"><a class="header" href="#2-vmm-层-ebpf-支持需求分析">2. VMM 层 eBPF 支持需求分析</a></h2>
+<h3 id="21-与标准-linux-ebpf-的差异"><a class="header" href="#21-与标准-linux-ebpf-的差异">2.1 与标准 Linux eBPF 的差异</a></h3>
+<p>AxVisor 基于 ArceOS 自定义内核，需要从零实现 eBPF 支持：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>Linux 实现</th><th>AxVisor 需求</th></tr>
+</thead>
+<tbody>
+<tr><td>系统调用</td><td><code>bpf()</code> syscall</td><td><strong>不存在</strong> → 直接 API</td></tr>
+<tr><td>符号表</td><td><code>/proc/kallsyms</code></td><td><strong>不存在</strong> → 编译时生成</td></tr>
+<tr><td>Tracepoint</td><td>内核内置 <code>trace_*</code></td><td><strong>不存在</strong> → 移植 Starry-OS</td></tr>
+<tr><td>Kprobe</td><td>内核内置</td><td><strong>不存在</strong> → 移植 Starry-OS</td></tr>
+<tr><td>验证器</td><td>内核内置</td><td><strong>可选</strong> → 初期信任程序</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="22-hypervisor-特权级问题"><a class="header" href="#22-hypervisor-特权级问题">2.2 Hypervisor 特权级问题</a></h3>
+<p>AxVisor 运行在更高特权级，传统 eBPF 设计需要适配：</p>
+<pre><code>┌─────────────────────────────────────────────────────────────────┐
+│                 Virtualization Privilege Levels                 │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                 │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Guest OS (EL1 / Ring 0)                                  │  │
+│  │    Traditional Linux eBPF runs here                       │  │
+│  │    Tracing targets: syscalls, kernel functions            │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                              ▲                                  │
+│                              │ VM Exit / VM Entry               │
+│                              ▼                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  AxVisor Hypervisor (EL2 / VMX Root) ◄── Our tracing layer│  │
+│  │                                                           │  │
+│  │    Tracing targets:                                       │  │
+│  │    ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐    │  │
+│  │    │  VM Exit    │ │  Hypercall  │ │ Interrupt Inject│    │  │
+│  │    │  Latency    │ │  Handling   │ │ Latency         │    │  │
+│  │    └─────────────┘ └─────────────┘ └─────────────────┘    │  │
+│  │    ┌─────────────┐ ┌─────────────┐ ┌─────────────────┐    │  │
+│  │    │EPT Handling │ │MMIO Emulate │ │ vCPU Scheduling │    │  │
+│  │    └─────────────┘ └─────────────┘ └─────────────────┘    │  │
+│  │                                                           │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                              ▲                                  │
+│                              │                                  │
+│  ┌───────────────────────────────────────────────────────────┐  │
+│  │  Hardware                                                 │  │
+│  └───────────────────────────────────────────────────────────┘  │
+│                                                                 │
+└─────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="23-vmm-需要提供的支持"><a class="header" href="#23-vmm-需要提供的支持">2.3 VMM 需要提供的支持</a></h3>
+<p>为在 AxVisor 中实现 eBPF 追踪，需要 VMM 层提供以下支持：</p>
+<h4 id="231-追踪点插桩"><a class="header" href="#231-追踪点插桩">2.3.1 追踪点插桩</a></h4>
+<p>在 VMM 关键路径插入追踪点宏调用：</p>
+<p><strong>位置：<code>modules/axvcpu/src/vcpu.rs</code></strong></p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// AxVCpu::run() 方法中需要添加追踪点
+pub fn run(&amp;self) -&gt; AxResult&lt;AxVCpuExitReason&gt; {
+    self.transition_state(VCpuState::Ready, VCpuState::Running)?;
+
+    // ▼ 追踪点：VM Entry
+    trace_vmm_vcpu_run_enter!(self.vm_id(), self.id());
+
+    let result = self.manipulate_arch_vcpu(VCpuState::Running, VCpuState::Ready, |arch_vcpu| {
+        arch_vcpu.run()
+    });
+
+    // ▼ 追踪点：VM Exit
+    if let Ok(ref exit_reason) = result {
+        trace_vmm_vcpu_run_exit!(self.vm_id(), self.id(), exit_reason);
+    }
+
+    result
+}
+<span class="boring">}</span></code></pre>
+<h4 id="232-上下文信息获取"><a class="header" href="#232-上下文信息获取">2.3.2 上下文信息获取</a></h4>
+<p>eBPF 程序需要访问当前 VM/vCPU 上下文，VMM 需要提供：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>信息</th><th>来源</th><th>Helper 函数</th></tr>
+</thead>
+<tbody>
+<tr><td>当前 VM ID</td><td><code>AxVCpu::vm_id()</code></td><td><code>bpf_get_current_vm_id()</code></td></tr>
+<tr><td>当前 vCPU ID</td><td><code>AxVCpu::id()</code></td><td><code>bpf_get_current_vcpu_id()</code></td></tr>
+<tr><td>当前时间戳</td><td><code>axhal::time::monotonic_time_nanos()</code></td><td><code>bpf_ktime_get_ns()</code></td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="233-时间测量基础设施"><a class="header" href="#233-时间测量基础设施">2.3.3 时间测量基础设施</a></h4>
+<p>延迟统计需要高精度时间源，AxVisor 已有基础：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 已存在于 ArceOS
+pub fn monotonic_time_nanos() -&gt; u64;
+
+// 需要封装为 eBPF Helper
+fn bpf_ktime_get_ns() -&gt; u64 {
+    axhal::time::monotonic_time_nanos()
+}
+<span class="boring">}</span></code></pre>
+<h4 id="234-exit-reason-编码"><a class="header" href="#234-exit-reason-编码">2.3.4 Exit Reason 编码</a></h4>
+<p>为统计分析，需要将 <code>AxVCpuExitReason</code> 编码为数值：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 基于 modules/axvcpu/src/exit.rs
+impl AxVCpuExitReason {
+    pub fn to_trace_code(&amp;self) -&gt; u32 {
+        match self {
+            Self::Hypercall { .. } =&gt; 1,
+            Self::MmioRead { .. } =&gt; 2,
+            Self::MmioWrite { .. } =&gt; 3,
+            Self::SysRegRead { .. } =&gt; 4,
+            Self::SysRegWrite { .. } =&gt; 5,
+            Self::IoRead { .. } =&gt; 6,
+            Self::IoWrite { .. } =&gt; 7,
+            Self::ExternalInterrupt { .. } =&gt; 8,
+            Self::NestedPageFault { .. } =&gt; 9,
+            Self::Halt =&gt; 10,
+            Self::CpuUp { .. } =&gt; 11,
+            Self::CpuDown { .. } =&gt; 12,
+            Self::SystemDown =&gt; 13,
+            Self::Nothing =&gt; 14,
+            Self::FailEntry { .. } =&gt; 15,
+            Self::SendIPI { .. } =&gt; 16,
+        }
+    }
+}
+<span class="boring">}</span></code></pre>
+<hr>
+<h2 id="3-技术选型"><a class="header" href="#3-技术选型">3. 技术选型</a></h2>
+<h3 id="31-选型原则"><a class="header" href="#31-选型原则">3.1 选型原则</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>原则</th><th>说明</th><th>权重</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>ArceOS 兼容</strong></td><td>必须支持 <code>#![no_std]</code> 环境</td><td>必须</td></tr>
+<tr><td><strong>Rust 优先</strong></td><td>与 AxVisor 技术栈保持一致</td><td>高</td></tr>
+<tr><td><strong>许可证兼容</strong></td><td>必须与 AxVisor 许可证兼容</td><td>必须</td></tr>
+<tr><td><strong>最小依赖</strong></td><td>优先选择轻量级组件</td><td>中</td></tr>
+<tr><td><strong>可复用性</strong></td><td>优先复用 Starry-OS 已验证组件</td><td>高</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="32-组件选型结果"><a class="header" href="#32-组件选型结果">3.2 组件选型结果</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>功能</th><th>选择</th><th>来源</th><th>复用方式</th><th>阶段</th></tr>
+</thead>
+<tbody>
+<tr><td>eBPF 虚拟机</td><td><strong>rbpf</strong></td><td>社区</td><td>适配 no_std</td><td>Phase 2</td></tr>
+<tr><td>eBPF Maps</td><td><strong>kbpf-basic</strong></td><td>Starry-OS</td><td>直接引用</td><td>Phase 2</td></tr>
+<tr><td>符号表生成</td><td><strong>ksym</strong></td><td>Starry-OS</td><td>直接引用</td><td>Phase 1</td></tr>
+<tr><td>追踪点框架</td><td><strong>tracepoint</strong></td><td>Starry-OS</td><td>适配后复用</td><td>Phase 1</td></tr>
+<tr><td>过滤表达式</td><td><strong>tp-lexer</strong></td><td>Starry-OS</td><td>直接引用</td><td>Phase 3</td></tr>
+<tr><td>动态探针</td><td><strong>kprobe</strong></td><td>Starry-OS</td><td>移植适配</td><td>Phase 4</td></tr>
+<tr><td>验证器</td><td><strong>PREVAIL</strong></td><td>社区</td><td>集成或轻量实现</td><td>Phase 5</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="33-各组件详解"><a class="header" href="#33-各组件详解">3.3 各组件详解</a></h3>
+<h4 id="331-rbpf---ebpf-虚拟机"><a class="header" href="#331-rbpf---ebpf-虚拟机">3.3.1 rbpf - eBPF 虚拟机</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/qmonnet/rbpf</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT</td></tr>
+<tr><td><strong>语言</strong></td><td>Rust</td></tr>
+<tr><td><strong>JIT 支持</strong></td><td>x86_64</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>选择理由</strong>：</p>
+<ul>
+<li>纯 Rust 实现，无 C 依赖</li>
+<li>支持 <code>#![no_std]</code>（需适配）</li>
+<li>提供解释器和 JIT 两种执行模式</li>
+<li>API 简洁，易于集成</li>
+</ul>
+<p><strong>VM 类型</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>类型</th><th>说明</th><th>适用场景</th></tr>
+</thead>
+<tbody>
+<tr><td><code>EbpfVmRaw</code></td><td>接收原始字节缓冲区</td><td>Tracepoint 事件（采用）</td></tr>
+<tr><td><code>EbpfVmNoData</code></td><td>无输入数据</td><td>简单计算</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="332-kbpf-basic---ebpf-maps"><a class="header" href="#332-kbpf-basic---ebpf-maps">3.3.2 kbpf-basic - eBPF Maps</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/Starry-OS/kbpf-basic</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT/Apache-2.0</td></tr>
+<tr><td><strong>no_std</strong></td><td>✅</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>支持的 Map 类型</strong>：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>类型</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>BPF_MAP_TYPE_ARRAY</code></td><td>固定大小数组</td></tr>
+<tr><td><code>BPF_MAP_TYPE_HASH</code></td><td>动态哈希表</td></tr>
+<tr><td><code>BPF_MAP_TYPE_LRU_HASH</code></td><td>LRU 淘汰哈希表</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="333-ksym---内核符号表"><a class="header" href="#333-ksym---内核符号表">3.3.3 ksym - 内核符号表</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/Starry-OS/ksym</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT/Apache-2.0</td></tr>
+<tr><td><strong>no_std</strong></td><td>✅</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>功能</strong>：</p>
+<ul>
+<li>编译时从 ELF 生成压缩符号表</li>
+<li>运行时零拷贝查找</li>
+<li>支持 Rust 符号 demangle</li>
+</ul>
+<h4 id="334-tracepoint---追踪点框架"><a class="header" href="#334-tracepoint---追踪点框架">3.3.4 tracepoint - 追踪点框架</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/Starry-OS/tracepoint</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT/Apache-2.0</td></tr>
+<tr><td><strong>no_std</strong></td><td>✅</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>核心功能</strong>：</p>
+<ul>
+<li><code>define_event_trace!</code> 宏定义追踪点</li>
+<li>线程安全的事件管理器</li>
+<li>低开销的静态追踪点</li>
+</ul>
+<h4 id="335-kprobe---动态探针"><a class="header" href="#335-kprobe---动态探针">3.3.5 kprobe - 动态探针</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/Starry-OS/kprobe</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT/Apache-2.0</td></tr>
+<tr><td><strong>no_std</strong></td><td>✅</td></tr>
+<tr><td><strong>架构支持</strong></td><td>x86_64, aarch64, riscv64, loongarch64</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>核心功能</strong>：</p>
+<ul>
+<li>kprobe: 函数入口探针</li>
+<li>kretprobe: 函数返回探针</li>
+<li>断点机制适配多架构</li>
+<li>与 eBPF 程序集成</li>
+</ul>
+<h4 id="336-prevail---ebpf-验证器"><a class="header" href="#336-prevail---ebpf-验证器">3.3.6 PREVAIL - eBPF 验证器</a></h4>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>属性</th><th>值</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>仓库</strong></td><td>https://github.com/vbpf/ebpf-verifier</td></tr>
+<tr><td><strong>许可证</strong></td><td>MIT</td></tr>
+<tr><td><strong>语言</strong></td><td>C++</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>核心功能</strong>：</p>
+<ul>
+<li>内存边界检查</li>
+<li>程序终止性验证</li>
+<li>类型安全检查</li>
+<li>独立于 Linux 内核</li>
+</ul>
+<p><strong>备选方案</strong>: 如 PREVAIL 集成困难，可实现轻量级验证器，仅检查关键安全属性。</p>
+<h3 id="34-许可证兼容性"><a class="header" href="#34-许可证兼容性">3.4 许可证兼容性</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>许可证</th><th>与 AxVisor 兼容</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf</td><td>MIT</td><td>✅</td></tr>
+<tr><td>kbpf-basic</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>ksym</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>tracepoint</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>tp-lexer</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>kprobe</td><td>MIT/Apache-2.0</td><td>✅</td></tr>
+<tr><td>PREVAIL</td><td>MIT</td><td>✅</td></tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>AxVisor 许可证: GPL-3.0-or-later OR Apache-2.0 OR MulanPubL-2.0</p>
+</blockquote>
+<hr>
+<h2 id="4-架构设计"><a class="header" href="#4-架构设计">4. 架构设计</a></h2>
+<h3 id="41-模块层次结构"><a class="header" href="#41-模块层次结构">4.1 模块层次结构</a></h3>
+<blockquote>
+<p><strong>架构决策</strong>: 统一在 <code>modules/axebpf</code> 内实现所有功能，不创建独立的 axksym/axtracepoint 模块。</p>
+</blockquote>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│                     AxVisor eBPF Tracing Architecture                       │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │                        Shell Command Layer                            │  │
+│  │   kernel/src/shell/commands/trace.rs                                  │  │
+│  │   ┌─────────────────────────────────────────────────────────────┐     │  │
+│  │   │  trace list | enable | disable | stat | load | unload       │     │  │
+│  │   └─────────────────────────────────────────────────────────────┘     │  │
+│  └───────────────────────────────────┬───────────────────────────────────┘  │
+│                                      │                                      │
+│  ┌───────────────────────────────────▼───────────────────────────────────┐  │
+│  │                        axebpf Module (Unified)                        │  │
+│  │   modules/axebpf/                                                     │  │
+│  │   ┌──────────────────────────────────────────────────────────────┐    │  │
+│  │   │ symbols.rs    │ 符号表管理 (封装 ksym)                       │    │  │
+│  │   ├──────────────────────────────────────────────────────────────┤    │  │
+│  │   │ tracepoint.rs │ 追踪点框架 (封装 tracepoint/ktracepoint)     │    │  │
+│  │   ├──────────────────────────────────────────────────────────────┤    │  │
+│  │   │ runtime.rs    │ eBPF 运行时 (封装 rbpf VM)                   │    │  │
+│  │   ├──────────────────────────────────────────────────────────────┤    │  │
+│  │   │ helpers.rs    │ Helper 函数 (ktime, trace_printk, vm_id...)  │    │  │
+│  │   ├──────────────────────────────────────────────────────────────┤    │  │
+│  │   │ maps.rs       │ Map 数据结构 (封装 kbpf-basic)               │    │  │
+│  │   └──────────────────────────────────────────────────────────────┘    │  │
+│  └───────────────────────────────────┬───────────────────────────────────┘  │
+│                                      │ Tracepoint Trigger                   │
+│  ┌───────────────────────────────────▼───────────────────────────────────┐  │
+│  │                      VMM Tracepoint Calls                             │  │
+│  │   modules/axvcpu/, modules/axvm/, kernel/src/vmm/                     │  │
+│  │   ┌────────────┐  ┌────────────┐  ┌────────────┐  ┌────────────┐      │  │
+│  │   │vcpu_run_*  │  │ hypercall  │  │ mmio_*     │  │ ept_viol   │      │  │
+│  │   └────────────┘  └────────────┘  └────────────┘  └────────────┘      │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │                  xtask Symbol Generation (Compile-time)               │  │
+│  │   xtask/src/symbols.rs                                                │  │
+│  │   ┌─────────────────────────────────────────────────────────────┐     │  │
+│  │   │  cargo xtask symbols → 从 ELF 生成 kallsyms.bin             │     │  │
+│  │   └─────────────────────────────────────────────────────────────┘     │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+│  ┌───────────────────────────────────────────────────────────────────────┐  │
+│  │                  Starry-OS Dependencies (Direct Reference)            │  │
+│  │   ┌────────┐  ┌────────────┐  ┌──────────┐  ┌──────┐  ┌───────────┐   │  │
+│  │   │  ksym  │  │ tracepoint │  │ tp-lexer │  │ rbpf │  │kbpf-basic │   │  │
+│  │   └────────┘  └────────────┘  └──────────┘  └──────┘  └───────────┘   │  │
+│  └───────────────────────────────────────────────────────────────────────┘  │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="42-数据流"><a class="header" href="#42-数据流">4.2 数据流</a></h3>
+<pre><code>┌─────────────────────────────────────────────────────────────────────────────┐
+│                           Tracing Data Flow                                 │
+├─────────────────────────────────────────────────────────────────────────────┤
+│                                                                             │
+│   VMM Event                  eBPF Process                 User Query        │
+│                                                                             │
+│   ┌─────────┐               ┌─────────┐               ┌─────────┐           │
+│   │ VM Exit │               │ eBPF    │               │ trace   │           │
+│   │ Occurs  │ ─────────────►│ Program │               │ stat    │           │
+│   └─────────┘ Trigger TP    │ Execute │               └────┬────┘           │
+│                             └────┬────┘                    │                │
+│                                  │                         │                │
+│                                  ▼ Write                   │ Read           │
+│                             ┌─────────┐                    │                │
+│                             │  Maps   │ ◄──────────────────┘                │
+│                             │ (Stats) │                                     │
+│                             └─────────┘                                     │
+│                                                                             │
+│   Example: VM Exit Statistics                                               │
+│                                                                             │
+│   ┌──────────────────────────────────────────────────────────────────┐      │
+│   │  HashMap&lt;VmExitKey, VmExitStats&gt;                                 │      │
+│   │  ┌─────────────────────┬─────────────────────────────────┐       │      │
+│   │  │ Key                 │ Value                           │       │      │
+│   │  │ (vm=1, exit=Hyper)  │ {count=12345, avg=1.2μs, ...}   │       │      │
+│   │  │ (vm=1, exit=MMIO)   │ {count=6789, avg=2.3μs, ...}    │       │      │
+│   │  │ (vm=2, exit=Hyper)  │ {count=4567, avg=1.5μs, ...}    │       │      │
+│   │  └─────────────────────┴─────────────────────────────────┘       │      │
+│   └──────────────────────────────────────────────────────────────────┘      │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="43-依赖关系"><a class="header" href="#43-依赖关系">4.3 依赖关系</a></h3>
+<blockquote>
+<p><strong>架构决策</strong>: 所有功能统一在 <code>modules/axebpf</code> 模块内实现，不创建独立的 axksym/axtracepoint 模块。
+这样更简洁，减少模块间耦合。</p>
+</blockquote>
+<pre><code>modules/axebpf/
+├── Cargo.toml
+├── src/
+│   ├── lib.rs           # 模块入口
+│   ├── symbols.rs       # 符号表管理 (封装 ksym)
+│   ├── tracepoint.rs    # 追踪点框架 (封装 tracepoint)
+│   ├── runtime.rs       # eBPF 运行时 (封装 rbpf)
+│   ├── helpers.rs       # Helper 函数
+│   └── maps.rs          # Map 数据结构 (封装 kbpf-basic)
+│
+└── 依赖:
+    ├── ksym (Starry-OS: 符号表生成与查找)
+    ├── tracepoint (Starry-OS: 追踪点核心，package = "ktracepoint")
+    ├── tp-lexer (Starry-OS: 过滤表达式)
+    ├── rbpf (社区: eBPF VM)
+    └── kbpf-basic (Starry-OS: Maps)
+
+xtask/
+└── src/symbols.rs       # 编译时符号表生成 (使用 ksym)
+
+kernel (使用 ebpf feature)
+└── axebpf              # 单一依赖入口
+</code></pre>
+<hr>
+<h2 id="5-风险识别与缓解"><a class="header" href="#5-风险识别与缓解">5. 风险识别与缓解</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>风险</th><th>可能性</th><th>影响</th><th>缓解策略</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf no_std 适配困难</td><td>中</td><td>高</td><td>优先评估，必要时 fork</td></tr>
+<tr><td>追踪点开销过高</td><td>低</td><td>中</td><td>设计时考虑禁用路径优化</td></tr>
+<tr><td>多架构支持复杂</td><td>中</td><td>中</td><td>先完成 x86_64，再扩展 AArch64</td></tr>
+<tr><td>Starry-OS 组件不兼容</td><td>低</td><td>中</td><td>组件独立性高，可单独适配</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="6-参考资源"><a class="header" href="#6-参考资源">6. 参考资源</a></h2>
+<h3 id="61-starry-os-组件"><a class="header" href="#61-starry-os-组件">6.1 Starry-OS 组件</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>链接</th></tr>
+</thead>
+<tbody>
+<tr><td>ksym</td><td>https://github.com/Starry-OS/ksym</td></tr>
+<tr><td>kbpf-basic</td><td>https://github.com/Starry-OS/kbpf-basic</td></tr>
+<tr><td>tp-lexer</td><td>https://github.com/Starry-OS/tp-lexer</td></tr>
+<tr><td>tracepoint</td><td>https://github.com/Starry-OS/tracepoint</td></tr>
+<tr><td>kprobe</td><td>https://github.com/Starry-OS/kprobe</td></tr>
+<tr><td>eBPF Discussion</td><td>https://github.com/orgs/Starry-OS/discussions/4</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="62-ebpf-参考"><a class="header" href="#62-ebpf-参考">6.2 eBPF 参考</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>资源</th><th>链接</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf</td><td>https://github.com/qmonnet/rbpf</td></tr>
+<tr><td>Aya (Rust eBPF)</td><td>https://aya-rs.dev/</td></tr>
+<tr><td>Linux eBPF 文档</td><td>https://docs.kernel.org/bpf/</td></tr>
+<tr><td>eBPF 指令集规范</td><td>https://www.ietf.org/archive/id/draft-thaler-bpf-isa-00.html</td></tr>
+<tr><td>PREVAIL 验证器</td><td>https://github.com/vbpf/ebpf-verifier</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="63-非-linux-ebpf-实现参考"><a class="header" href="#63-非-linux-ebpf-实现参考">6.3 非 Linux eBPF 实现参考</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>项目</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>eBPF for Windows</td><td>https://github.com/microsoft/ebpf-for-windows</td></tr>
+<tr><td>Femto-Containers</td><td>https://github.com/future-proof-iot/Femto-Container</td></tr>
+<tr><td>uBPF</td><td>https://github.com/iovisor/ubpf</td></tr>
+</tbody>
+</table>
+</div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="axvisor-ebpf-开发计划"><a class="header" href="#axvisor-ebpf-开发计划">AxVisor eBPF 开发计划</a></h1>
+<blockquote>
+<p>基于移植 Starry-OS eBPF 工作的开发计划。</p>
+<p><strong>策略</strong>: Starry-OS 是基于 ArceOS 扩展的宏内核，AxVisor 是基于 ArceOS 扩展的 VMM，
+大部分组件可直接引用或稍作适配。</p>
+<p><strong>参考</strong>: https://github.com/orgs/Starry-OS/discussions/4</p>
+</blockquote>
+<hr>
+<h2 id="1-架构决策"><a class="header" href="#1-架构决策">1. 架构决策</a></h2>
+<h3 id="11-模块结构"><a class="header" href="#11-模块结构">1.1 模块结构</a></h3>
+<p><strong>所有功能统一在 <code>modules/axebpf</code> 模块内实现</strong>，不创建独立的 axksym/axtracepoint 模块：</p>
+<pre><code>modules/axebpf/
+├── Cargo.toml
+├── src/
+│   ├── lib.rs           # 模块入口，feature 控制
+│   ├── symbols.rs       # 符号表管理 (封装 ksym)
+│   ├── tracepoint.rs    # 追踪点框架 (封装 tracepoint)
+│   ├── kprobe.rs        # 动态探针 (封装 kprobe)
+│   ├── runtime.rs       # eBPF 运行时 (封装 rbpf)
+│   ├── verifier.rs      # 程序验证器
+│   ├── helpers.rs       # Helper 函数实现
+│   └── maps.rs          # Map 数据结构 (封装 kbpf-basic)
+</code></pre>
+<h3 id="12-依赖复用"><a class="header" href="#12-依赖复用">1.2 依赖复用</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>来源</th><th>复用方式</th><th>用途</th><th>阶段</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>ksym</strong></td><td>Starry-OS</td><td>直接引用</td><td>符号表生成与查找</td><td>Phase 1</td></tr>
+<tr><td><strong>tracepoint</strong></td><td>Starry-OS</td><td>直接引用</td><td>追踪点框架</td><td>Phase 1</td></tr>
+<tr><td><strong>tp-lexer</strong></td><td>Starry-OS</td><td>直接引用</td><td>过滤表达式解析</td><td>Phase 3</td></tr>
+<tr><td><strong>kbpf-basic</strong></td><td>Starry-OS</td><td>fork 引用</td><td>eBPF Map/ringbuf</td><td>Phase 2</td></tr>
+<tr><td><strong>rbpf</strong></td><td>社区</td><td>直接引用</td><td>eBPF VM</td><td>Phase 2</td></tr>
+<tr><td><strong>kprobe</strong></td><td>Starry-OS</td><td>移植适配</td><td>动态探针</td><td>Phase 4</td></tr>
+<tr><td><strong>PREVAIL</strong></td><td>社区</td><td>集成/实现</td><td>验证器</td><td>Phase 5</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="2-开发阶段"><a class="header" href="#2-开发阶段">2. 开发阶段</a></h2>
+<h3 id="21-时间线概览-12-周"><a class="header" href="#21-时间线概览-12-周">2.1 时间线概览 (12 周)</a></h3>
+<pre><code>Week 1-2        Week 3-4        Week 5-6        Week 7-8        Week 9-10       Week 11-12
+   │               │               │               │               │               │
+   ▼               ▼               ▼               ▼               ▼               ▼
+┌───────┐     ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐      ┌───────┐
+│Phase 1│────►│Phase 2│─────►│Phase 3│─────►│Phase 4│─────►│Phase 5│─────►│Phase 6│
+│ 基础  │     │eBPF   │      │ VMM   │      │Kprobe │      │验证器 │      │测试   │
+│ 设施  │     │运行时 │      │追踪点 │      │支持   │      │Uprobe │      │文档   │
+└───────┘     └───────┘      └───────┘      └───────┘      └───────┘      └───────┘
+</code></pre>
+<hr>
+<h2 id="3-phase-1-基础设施-week-1-2"><a class="header" href="#3-phase-1-基础设施-week-1-2">3. Phase 1: 基础设施 (Week 1-2)</a></h2>
+<p><strong>目标</strong>: 集成 Starry-OS 组件，建立符号表和追踪点基础设施</p>
+<h3 id="31-week-1-依赖集成"><a class="header" href="#31-week-1-依赖集成">3.1 Week 1: 依赖集成</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>添加 Starry-OS 依赖</td><td>ksym, kbpf-basic, tp-lexer, tracepoint</td></tr>
+<tr><td>创建 <code>modules/axebpf</code></td><td>基础模块结构</td></tr>
+<tr><td>实现 <code>symbols.rs</code></td><td>封装 ksym，符号查找 API</td></tr>
+<tr><td><code>xtask symbols</code></td><td>编译时符号表生成</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="32-week-2-追踪点框架"><a class="header" href="#32-week-2-追踪点框架">3.2 Week 2: 追踪点框架</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>实现 <code>tracepoint.rs</code></td><td>封装 tracepoint 库</td></tr>
+<tr><td>TracepointManager</td><td>追踪点注册、enable/disable</td></tr>
+<tr><td>define_tracepoint! 宏</td><td>AxVisor 追踪点定义宏</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li><code>modules/axebpf</code> 模块</li>
+<li><code>xtask symbols</code> 命令</li>
+<li>追踪点定义宏可用</li>
+</ul>
+<hr>
+<h2 id="4-phase-2-ebpf-运行时-week-3-4"><a class="header" href="#4-phase-2-ebpf-运行时-week-3-4">4. Phase 2: eBPF 运行时 (Week 3-4)</a></h2>
+<p><strong>目标</strong>: 移植 rbpf VM，实现程序加载和执行</p>
+<h3 id="41-week-3-rbpf-集成"><a class="header" href="#41-week-3-rbpf-集成">4.1 Week 3: rbpf 集成</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf 集成</td><td>适配 no_std (default-features = false)</td></tr>
+<tr><td><code>runtime.rs</code></td><td>EbpfVm 结构体封装</td></tr>
+<tr><td>程序加载</td><td>execute(), execute_with_mem()</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="42-week-4-helper-与-map"><a class="header" href="#42-week-4-helper-与-map">4.2 Week 4: Helper 与 Map</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td><code>helpers.rs</code></td><td>标准 Helper 函数实现</td></tr>
+<tr><td><code>maps.rs</code></td><td>封装 kbpf-basic</td></tr>
+<tr><td>Map 类型</td><td>HashMap, Array, RingBuf</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Helper 函数清单</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Helper ID</th><th>函数名</th><th>功能</th></tr>
+</thead>
+<tbody>
+<tr><td>1</td><td><code>bpf_map_lookup_elem</code></td><td>查找 Map 元素</td></tr>
+<tr><td>2</td><td><code>bpf_map_update_elem</code></td><td>更新 Map 元素</td></tr>
+<tr><td>3</td><td><code>bpf_map_delete_elem</code></td><td>删除 Map 元素</td></tr>
+<tr><td>5</td><td><code>bpf_ktime_get_ns</code></td><td>获取时间戳</td></tr>
+<tr><td>6</td><td><code>bpf_trace_printk</code></td><td>调试输出</td></tr>
+<tr><td>8</td><td><code>bpf_get_smp_processor_id</code></td><td>获取 CPU ID</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>eBPF 程序加载和执行</li>
+<li>标准 Helper 函数 (6 个)</li>
+<li>Map 数据结构支持</li>
+</ul>
+<hr>
+<h2 id="5-phase-3-vmm-追踪点与-shell-week-5-6"><a class="header" href="#5-phase-3-vmm-追踪点与-shell-week-5-6">5. Phase 3: VMM 追踪点与 Shell (Week 5-6)</a></h2>
+<p><strong>目标</strong>: 定义 Hypervisor 追踪点，实现 Shell 命令</p>
+<h3 id="51-week-5-vmm-追踪点"><a class="header" href="#51-week-5-vmm-追踪点">5.1 Week 5: VMM 追踪点</a></h3>
+<p><strong>追踪点列表</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>追踪点</th><th>触发位置</th><th>采集数据</th></tr>
+</thead>
+<tbody>
+<tr><td><code>vmm:vcpu_run_enter</code></td><td><code>AxVCpu::run()</code> 入口</td><td>vm_id, vcpu_id, timestamp</td></tr>
+<tr><td><code>vmm:vcpu_run_exit</code></td><td><code>AxVCpu::run()</code> 返回</td><td>vm_id, vcpu_id, exit_reason, duration_ns</td></tr>
+<tr><td><code>vmm:hypercall</code></td><td>Hypercall 处理</td><td>vm_id, vcpu_id, nr, args, duration_ns</td></tr>
+<tr><td><code>vmm:mmio_read</code></td><td>MmioRead 处理</td><td>vm_id, addr, width, duration_ns</td></tr>
+<tr><td><code>vmm:mmio_write</code></td><td>MmioWrite 处理</td><td>vm_id, addr, width, data, duration_ns</td></tr>
+<tr><td><code>vmm:interrupt_inject</code></td><td>中断注入</td><td>vm_id, vcpu_id, vector</td></tr>
+<tr><td><code>vmm:ept_violation</code></td><td>NestedPageFault</td><td>vm_id, gpa, access_flags, duration_ns</td></tr>
+</tbody>
+</table>
+</div>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>定义 VMM 追踪点</td><td>使用 define_tracepoint! 宏</td></tr>
+<tr><td>axvcpu 插桩</td><td><code>AxVCpu::run()</code> 方法</td></tr>
+<tr><td>Exit 处理插桩</td><td>Hypercall, MMIO, EPT violation</td></tr>
+<tr><td>Hypervisor Helper</td><td>vm_id, vcpu_id, exit_reason</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="52-week-6-shell-命令"><a class="header" href="#52-week-6-shell-命令">5.2 Week 6: Shell 命令</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>命令</th><th>功能</th></tr>
+</thead>
+<tbody>
+<tr><td><code>trace list</code></td><td>列出所有追踪点</td></tr>
+<tr><td><code>trace enable &lt;tp&gt;</code></td><td>启用追踪点</td></tr>
+<tr><td><code>trace disable &lt;tp&gt;</code></td><td>禁用追踪点</td></tr>
+<tr><td><code>trace stat</code></td><td>显示统计信息</td></tr>
+<tr><td><code>trace load &lt;path&gt;</code></td><td>加载 eBPF 程序</td></tr>
+<tr><td><code>trace latency &lt;type&gt;</code></td><td>延迟直方图</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Hypervisor Helper</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Helper ID</th><th>函数名</th><th>功能</th></tr>
+</thead>
+<tbody>
+<tr><td>100</td><td><code>bpf_get_current_vm_id</code></td><td>获取当前 VM ID</td></tr>
+<tr><td>101</td><td><code>bpf_get_current_vcpu_id</code></td><td>获取当前 vCPU ID</td></tr>
+<tr><td>102</td><td><code>bpf_get_exit_reason</code></td><td>获取 VM Exit 原因</td></tr>
+<tr><td>103</td><td><code>bpf_get_guest_regs</code></td><td>获取 Guest 寄存器</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>VMM 追踪点可用 (7+ 个)</li>
+<li>Shell <code>trace</code> 命令组</li>
+<li>Hypervisor Helper (4 个)</li>
+<li>端到端演示</li>
+</ul>
+<hr>
+<h2 id="6-phase-4-kprobekretprobe-支持-week-7-8"><a class="header" href="#6-phase-4-kprobekretprobe-支持-week-7-8">6. Phase 4: Kprobe/Kretprobe 支持 (Week 7-8)</a></h2>
+<p><strong>目标</strong>: 移植 Starry-OS kprobe 实现，支持动态探针</p>
+<h3 id="61-week-7-kprobe-移植"><a class="header" href="#61-week-7-kprobe-移植">6.1 Week 7: Kprobe 移植</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>kprobe 库移植</td><td>从 Starry-OS 移植</td></tr>
+<tr><td><code>kprobe.rs</code></td><td>封装 kprobe API</td></tr>
+<tr><td>断点机制</td><td>架构相关实现</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="62-week-8-kretprobe-与多架构"><a class="header" href="#62-week-8-kretprobe-与多架构">6.2 Week 8: Kretprobe 与多架构</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>kretprobe</td><td>函数返回探针</td></tr>
+<tr><td>aarch64 适配</td><td>ARM64 断点机制</td></tr>
+<tr><td>x86_64 适配</td><td>x86 断点机制</td></tr>
+<tr><td>Shell 集成</td><td><code>trace kprobe/kretprobe</code> 命令</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>Kprobe/Kretprobe 支持</li>
+<li>动态探针 Shell 命令</li>
+<li>多架构支持 (aarch64, x86_64)</li>
+</ul>
+<hr>
+<h2 id="7-phase-5-验证器与-uprobe-week-9-10"><a class="header" href="#7-phase-5-验证器与-uprobe-week-9-10">7. Phase 5: 验证器与 Uprobe (Week 9-10)</a></h2>
+<p><strong>目标</strong>: 实现 eBPF 验证器，探索 Uprobe 支持</p>
+<h3 id="71-week-9-验证器"><a class="header" href="#71-week-9-验证器">7.1 Week 9: 验证器</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>验证器研究</td><td>PREVAIL 或自实现</td></tr>
+<tr><td><code>verifier.rs</code></td><td>验证器模块</td></tr>
+<tr><td>安全检查</td><td>内存边界、程序终止性</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>验证项目</strong>:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>检查项</th><th>目的</th></tr>
+</thead>
+<tbody>
+<tr><td>程序终止性</td><td>防止无限循环</td></tr>
+<tr><td>内存边界</td><td>防止越界访问</td></tr>
+<tr><td>类型安全</td><td>防止类型混淆</td></tr>
+<tr><td>栈边界</td><td>防止栈溢出</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="72-week-10-uprobe-研究"><a class="header" href="#72-week-10-uprobe-研究">7.2 Week 10: Uprobe 研究</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>可行性研究</td><td>Guest 用户态追踪</td></tr>
+<tr><td>挑战分析</td><td>地址空间隔离、性能影响</td></tr>
+<tr><td>原型实现</td><td>如可行，实现基础 Uprobe</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>Uprobe 挑战</strong>:</p>
+<ul>
+<li>Guest 用户态地址空间隔离</li>
+<li>跨 VM 的断点管理</li>
+<li>性能影响评估</li>
+</ul>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>eBPF 验证器</li>
+<li>安全加载不受信程序</li>
+<li>Uprobe 可行性报告/原型</li>
+</ul>
+<hr>
+<h2 id="8-phase-6-测试与文档-week-11-12"><a class="header" href="#8-phase-6-测试与文档-week-11-12">8. Phase 6: 测试与文档 (Week 11-12)</a></h2>
+<p><strong>目标</strong>: 全面测试，编写文档，性能优化</p>
+<h3 id="81-week-11-测试"><a class="header" href="#81-week-11-测试">8.1 Week 11: 测试</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>单元测试</td><td>symbols, runtime, helpers, maps</td></tr>
+<tr><td>集成测试</td><td>追踪点触发、eBPF 执行、kprobe</td></tr>
+<tr><td>性能测试</td><td>追踪点开销、eBPF 执行延迟</td></tr>
+<tr><td>多架构验证</td><td>aarch64, x86_64</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="82-week-12-文档与优化"><a class="header" href="#82-week-12-文档与优化">8.2 Week 12: 文档与优化</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>性能优化</td><td>基于测试结果优化</td></tr>
+<tr><td>用户文档</td><td>使用指南</td></tr>
+<tr><td>API 文档</td><td>开发者文档</td></tr>
+<tr><td>代码审查</td><td>代码质量检查</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>性能目标</strong>:</p>
+<ul>
+<li>追踪点禁用时：开销 &lt; 1%</li>
+<li>追踪点启用时：开销 &lt; 5%</li>
+<li>eBPF 程序执行：&lt; 1μs</li>
+</ul>
+<p><strong>交付物</strong>:</p>
+<ul>
+<li>完整测试套件</li>
+<li>性能基准测试报告</li>
+<li>用户文档和 API 文档</li>
+</ul>
+<hr>
+<h2 id="9-未来扩展"><a class="header" href="#9-未来扩展">9. 未来扩展</a></h2>
+<h3 id="91-rust-异步追踪-研究方向"><a class="header" href="#91-rust-异步追踪-研究方向">9.1 Rust 异步追踪 (研究方向)</a></h3>
+<p><strong>问题</strong>: 现有 eBPF 追踪方案基于同步执行模型，无法有效追踪 Rust async/await 异步代码：</p>
+<ul>
+<li><strong>执行碎片化</strong>: async 函数在 await 点被拆分为多个状态机片段</li>
+<li><strong>上下文丢失</strong>: Future 在不同执行器线程间迁移</li>
+<li><strong>状态机隐藏</strong>: 编译器生成的状态机代码与源码结构差异大</li>
+</ul>
+<p><strong>研究方向</strong>: 探索针对 Rust async runtime 的专用追踪方案。</p>
+<hr>
+<h2 id="10-参考资源"><a class="header" href="#10-参考资源">10. 参考资源</a></h2>
+<h3 id="101-starry-os-组件"><a class="header" href="#101-starry-os-组件">10.1 Starry-OS 组件</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>链接</th></tr>
+</thead>
+<tbody>
+<tr><td>ksym</td><td>https://github.com/Starry-OS/ksym</td></tr>
+<tr><td>kbpf-basic</td><td>https://github.com/Starry-OS/kbpf-basic</td></tr>
+<tr><td>tp-lexer</td><td>https://github.com/Starry-OS/tp-lexer</td></tr>
+<tr><td>tracepoint</td><td>https://github.com/Starry-OS/tracepoint</td></tr>
+<tr><td>kprobe</td><td>https://github.com/Starry-OS/kprobe</td></tr>
+<tr><td><strong>eBPF Discussion</strong></td><td>https://github.com/orgs/Starry-OS/discussions/4</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="102-社区组件"><a class="header" href="#102-社区组件">10.2 社区组件</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>组件</th><th>链接</th></tr>
+</thead>
+<tbody>
+<tr><td>rbpf</td><td>https://github.com/qmonnet/rbpf</td></tr>
+<tr><td>PREVAIL</td><td>https://github.com/vbpf/ebpf-verifier</td></tr>
+<tr><td>Aya</td><td>https://aya-rs.dev/</td></tr>
+<tr><td>Linux eBPF 文档</td><td>https://docs.kernel.org/bpf/</td></tr>
+</tbody>
+</table>
+</div>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="周报120---131"><a class="header" href="#周报120---131">周报（1.20 - 1.31）</a></h1>
+<h2 id="开发分支"><a class="header" href="#开发分支">开发分支</a></h2>
+<ul>
+<li>axvisor: https://github.com/Iscreamx/axvisor/tree/feature/ebpf</li>
+<li>axebpf: https://github.com/Iscreamx/axebpf</li>
+</ul>
+<hr>
+<h2 id="一已完成工作"><a class="header" href="#一已完成工作">一、已完成工作</a></h2>
+<ul>
+<li>
+<p><strong>axebpf 独立模块</strong>：集成 <a href="https://github.com/Starry-OS/ksym.git">ksym</a>、<a href="https://github.com/Starry-OS/tracepoint.git">tracepoint</a>、<a href="https://github.com/Starry-OS/tp-lexer.git">tp-lexer</a>、<a href="https://github.com/Iscreamx/kbpf-basic.git">kbpf-basic</a>、<a href="https://github.com/qmonnet/rbpf">rbpf</a> 实现 eBPF 运行时，支持程序加载执行，Array/HashMap/LruHash/Queue 四种 Map 类型，6 个标准 helper 函数和 3 个 Hypervisor 专用 helper（获取 vm_id/vcpu_id/exit_reason）。效果：可在 Hypervisor 内核中动态加载 eBPF 字节码进行追踪，无需重新编译内核。</p>
+</li>
+<li>
+<p><strong>Shell trace 命令</strong>：支持 trace list/enable/disable/stat/reset/load/unload/progs/latency/verbose 等命令。效果：可通过 shell 交互式启用追踪点，附加 eBPF 程序，查看统计数据和延迟直方图。</p>
+</li>
+<li>
+<p><strong>Tracepoint 定义</strong>：定义了 25+ 个 VMM 追踪点，其中 VM 生命周期（vm_create/boot/shutdown）、系统初始化（vmm_init/config_load）、Shell（shell_command/init）等追踪点已完成插桩并正常工作。</p>
+</li>
+<li>
+<p><strong>预编译 eBPF 程序</strong>：基于 aya-ebpf 框架提供 2 个预编译程序，支持 ELF 解析和 Map 重定位，可通过 <code>trace enable xxx --prog printk</code> 附加程序。</p>
+</li>
+<li>
+<p><strong>上游贡献</strong>：向 Starry-OS/kbpf-basic 提交 <a href="https://github.com/Starry-OS/kbpf-basic/pull/1">PR</a> 并已合并，修复了 printf-compat 和 VaList API 在 Rust nightly &gt;= 2025-12 上的兼容性问题。使 kbpf-basic 可在最新 nightly 工具链（2025-12-12）上正常编译。</p>
+</li>
+</ul>
+<hr>
+<h2 id="二待完善"><a class="header" href="#二待完善">二、待完善</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>问题</th><th>原因</th><th>解决方向</th></tr>
+</thead>
+<tbody>
+<tr><td>vCPU 运行时追踪点不可用</td><td>vCPU 运行循环位于 axvm crate 而非 kernel 侧</td><td>等待 axvm 重构后在其内部添加插桩</td></tr>
+<tr><td>bpf_trace_printk 简化实现</td><td>rbpf VM 执行时无法访问 ELF .rodata 段中的格式字符串</td><td>需要实现内存映射机制</td></tr>
+<tr><td>验证器功能有限</td><td>rbpf 内置验证器仅检查基础安全性</td><td>当前依赖预编译可信程序规避风险</td></tr>
+<tr><td>Kprobe/Kretprobe 未实现</td><td>下一阶段工作</td><td>Phase 4 计划</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="三遇到的问题与解决方案"><a class="header" href="#三遇到的问题与解决方案">三、遇到的问题与解决方案</a></h2>
+<h3 id="31-rust-nightly-valist-api-变更"><a class="header" href="#31-rust-nightly-valist-api-变更">3.1 Rust nightly VaList API 变更</a></h3>
+<p><strong>问题</strong>：kbpf-basic 依赖的 printf-compat 使用了 <code>VaList</code> 和 <code>VaListImpl</code> 类型，在 Rust nightly &gt;= 2025-12 上编译失败，错误信息为 <code>cannot find type VaListImpl in module core::ffi</code>。</p>
+<p><strong>原因</strong>：Rust 重构了 <code>core::ffi</code> 模块，<code>VaListImpl</code> 被移除，<code>VaList</code> 的 API 也有变化。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>Fork kbpf-basic 仓库</li>
+<li>更新 printf-compat 依赖到兼容新 API 的版本</li>
+<li>修改 VaList 相关代码适配新 API</li>
+<li>提交 PR 到上游并合并</li>
+</ol>
+<h3 id="32-rbpf-内存边界检查导致-map-访问失败"><a class="header" href="#32-rbpf-内存边界检查导致-map-访问失败">3.2 rbpf 内存边界检查导致 Map 访问失败</a></h3>
+<p><strong>问题</strong>：<code>bpf_map_lookup_elem</code> 返回静态 LOOKUP_BUFFER 指针后，eBPF 程序尝试解引用触发 <code>out of bounds memory load</code> 错误。</p>
+<p><strong>原因</strong>：rbpf VM 对所有内存访问进行边界检查，仅允许访问 mem（上下文）、stack（栈）和显式注册的 allowed_memory。</p>
+<p><strong>解决方案</strong>：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// Register LOOKUP_BUFFER as accessible memory before program execution
+vm.register_allowed_memory(helpers::get_lookup_buffer_range());
+<span class="boring">}</span></code></pre>
+<h3 id="33-elf-map-重定位"><a class="header" href="#33-elf-map-重定位">3.3 ELF Map 重定位</a></h3>
+<p><strong>问题</strong>：aya-ebpf 编译的程序包含 <code>maps</code> section 和 <code>.reltracepoint</code> 重定位表，直接加载会因为 Map FD 未修补导致运行时错误。</p>
+<p><strong>解决方案</strong>：实现完整的 ELF 解析流程：</p>
+<ol>
+<li>解析 <code>maps</code> section 提取 Map 定义（每个 28 字节）</li>
+<li>解析符号表获取 Map 名称</li>
+<li>调用 <code>maps::create()</code> 创建 Map 并获取 FD</li>
+<li>解析 <code>.reltracepoint</code> 重定位表</li>
+<li>修补 <code>ld_imm64</code> 指令中的 Map FD</li>
+</ol>
+<hr>
+<h2 id="四工作量统计"><a class="header" href="#四工作量统计">四、工作量统计</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>指标</th><th>数量</th></tr>
+</thead>
+<tbody>
+<tr><td>新增代码行数</td><td>~3000 行</td></tr>
+<tr><td>主要模块数</td><td>12 个（symbols、tracepoint、runtime、maps、helpers、attach、context、programs、output、map_ops、platform、tracepoints）</td></tr>
+<tr><td>定义追踪点数</td><td>25+ 个</td></tr>
+<tr><td>实现 Helper 数</td><td>9 个（6 标准 + 3 Hypervisor 专用）</td></tr>
+<tr><td>支持 Map 类型</td><td>4 种</td></tr>
+<tr><td>上游 PR</td><td>1 个（已合并）</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="五下阶段计划"><a class="header" href="#五下阶段计划">五、下阶段计划</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>优先级</th><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>P0</td><td>完善文档</td><td>补充 API 文档、使用示例、架构说明</td></tr>
+<tr><td>P1</td><td>Kprobe 支持</td><td>移植 Starry-OS kprobe 库，实现动态探针</td></tr>
+<tr><td>P1</td><td>axvm 追踪点插桩</td><td>待 axvm 重构后添加 vCPU 运行时追踪点</td></tr>
+<tr><td>P2</td><td>完善 bpf_trace_printk</td><td>实现 .rodata 内存映射，支持格式字符串解析</td></tr>
+<tr><td>P2</td><td>性能测试</td><td>测量追踪点开销、eBPF 执行延迟</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="六风险与阻塞项"><a class="header" href="#六风险与阻塞项">六、风险与阻塞项</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>风险项</th><th>影响</th><th>缓解措施</th></tr>
+</thead>
+<tbody>
+<tr><td>axvm 重构时间不确定</td><td>vCPU 运行时追踪点无法上线</td><td>优先完成其他可用追踪点的功能验证</td></tr>
+<tr><td>Kprobe 架构适配复杂度</td><td>aarch64 断点机制与 x86 不同</td><td>参考 Starry-OS 实现，必要时只支持单架构</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="七个人日志"><a class="header" href="#七个人日志">七、个人日志</a></h2>
+<h3 id="71-五个关键依赖仓库的作用"><a class="header" href="#71-五个关键依赖仓库的作用">7.1 五个关键依赖仓库的作用</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>依赖</th><th>定位</th><th>在 eBPF 执行流程中的作用</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>ksym</strong></td><td>符号表管理</td><td>提供 <code>KallsymsMapped</code> 解析内核符号表，支持 <code>lookup_symbol(addr)</code> 地址→函数名和 <code>lookup_addr(name)</code> 函数名→地址双向查询。用于堆栈追踪符号化和 Kprobe 目标函数定位。</td></tr>
+<tr><td><strong>tracepoint (ktracepoint)</strong></td><td>静态追踪点框架</td><td>提供 <code>define_event_trace!</code> 宏定义追踪点，<code>TracepointManager</code> 管理追踪点生命周期。当追踪点触发时，调用已注册的回调函数（包括执行附加的 eBPF 程序）。</td></tr>
+<tr><td><strong>tp-lexer</strong></td><td>过滤表达式解析</td><td>解析追踪点过滤表达式语法，支持条件过滤（如 <code>vm_id == 1</code>）。当前为 tracepoint-support feature 的依赖，后续可用于实现追踪点过滤功能。</td></tr>
+<tr><td><strong>rbpf</strong></td><td>eBPF 虚拟机</td><td>核心执行引擎。<code>runtime.rs</code> 使用 <code>EbpfVmRaw</code> 执行带上下文的 eBPF 字节码，通过 <code>register_helper</code> 注册 helper 函数，<code>register_allowed_memory</code> 注册可访问内存区域（如 LOOKUP_BUFFER）。程序执行后返回 r0 寄存器值。</td></tr>
+<tr><td><strong>kbpf-basic</strong></td><td>eBPF Map 实现</td><td>提供 <code>bpf_map_create</code> 创建 Map，<code>UnifiedMap</code> 统一抽象层。<code>maps.rs</code> 通过实现 <code>KernelAuxiliaryOps</code> trait 适配 AxVisor 内核操作（cpu_id、time_ns、write_str 等），支持 Array/HashMap/LruHash/Queue 四种 Map 类型。</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>执行流程示意</strong>：</p>
+<pre><code>User Shell                     axebpf                      Dependencies
+    │                             │                           │
+    ├─ trace enable ─────────────►│                           │
+    │                             ├─ TracepointManager ──────►│ tracepoint
+    │                             │   .enable(name)           │
+    ├─ trace enable --prog ──────►│                           │
+    │                             ├─ parse_elf_with_maps() ──►│ (ELF parsing)
+    │                             ├─ bpf_map_create() ───────►│ kbpf-basic
+    │                             ├─ EbpfVmRaw::new() ───────►│ rbpf
+    │                             ├─ register_helper() ──────►│ rbpf
+    │                             │                           │
+[Tracepoint fires]                │                           │
+    │                             ├─ execute_with_context() ─►│ rbpf
+    │                             │   (eBPF execution)        │
+    │                             ├─ map_lookup/update ──────►│ kbpf-basic
+    │                             │                           │
+    ├─ trace stat ───────────────►│                           │
+    │                             ├─ iter_entries() ─────────►│ kbpf-basic
+    │                             ├─ lookup_symbol() ────────►│ ksym (optional)
+</code></pre>
+<h3 id="72-实现代码过程的权衡"><a class="header" href="#72-实现代码过程的权衡">7.2 实现代码过程的权衡</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>决策点</th><th>选项</th><th>最终选择</th><th>权衡理由</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>eBPF VM 实现</strong></td><td>自己实现 vs 复用 rbpf</td><td>rbpf</td><td>rbpf 是成熟的 Rust 实现，支持 no_std，指令集完整，减少开发时间。代价是依赖外部仓库。</td></tr>
+<tr><td><strong>Map 实现</strong></td><td>简化 Vec 实现 vs kbpf-basic</td><td>kbpf-basic</td><td>早期用 Vec 线性扫描（O(n)），后迁移到 kbpf-basic 获得真正的 O(1) HashMap 和 LRU 淘汰。代价是需要实现 <code>KernelAuxiliaryOps</code> 适配层。</td></tr>
+<tr><td><strong>KernelAuxiliaryOps 适配</strong></td><td>完整实现 vs 最小实现</td><td>最小实现（5/15 方法）</td><td>只实现 <code>get_unified_map_from_fd</code>、<code>current_cpu_id</code>、<code>ebpf_time_ns</code>、<code>ebpf_write_str</code> 等必需方法，其他返回 NotSupported。代价是不支持 RingBuf、PerCpu Map。</td></tr>
+<tr><td><strong>bpf_map_lookup_elem 返回值</strong></td><td>零拷贝指针 vs 静态缓冲区</td><td>静态缓冲区（256B）</td><td>rbpf 内存边界检查严格，需要 <code>register_allowed_memory</code> 注册返回指针。零拷贝需要 fork kbpf-basic 添加 <code>lookup_elem_ptr</code> API。当前用静态缓冲区 + Mutex 保护，有大小限制和拷贝开销。</td></tr>
+<tr><td><strong>bpf_trace_printk 实现</strong></td><td>完整格式字符串解析 vs 简化打印</td><td>简化打印</td><td>格式字符串在 ELF <code>.rodata</code> 段，rbpf VM 执行时无法访问。完整实现需要内存映射机制（复杂度高）。当前直接打印 r1/r2/r3 参数值。</td></tr>
+<tr><td><strong>程序验证</strong></td><td>完整验证器 vs 依赖可信程序</td><td>依赖可信预编译程序</td><td>rbpf 内置基础验证器仅检查内存越界和指令合法性。完整验证器（如 PREVAIL）集成复杂度高。当前通过只允许加载预编译可信程序规避风险。</td></tr>
+<tr><td><strong>追踪点插桩位置</strong></td><td>kernel 侧 vs axvm 侧</td><td>混合</td><td>vCPU 运行循环在 axvm crate 中，kernel 侧的 vcpus.rs 代码路径未执行。等待 axvm 重构后迁移插桩点。</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="73-收获"><a class="header" href="#73-收获">7.3 收获</a></h3>
+<p><strong>技术收获</strong>：</p>
+<ol>
+<li>
+<p><strong>eBPF 执行模型理解</strong>：深入理解了 eBPF 程序的加载→验证→执行→Map 交互流程，以及 helper 函数的调用约定（r1-r5 传参，r0 返回）。</p>
+</li>
+<li>
+<p><strong>ELF 解析实践</strong>：实现了最小化的 ELF64 解析器，支持 section 查找、符号表解析、重定位表处理。理解了 <code>ld_imm64</code> 指令的 Map FD 修补机制。</p>
+</li>
+<li>
+<p><strong>no_std 环境适配</strong>：在无标准库环境下集成多个依赖，处理了 alloc、spin lock、static-keys 等基础设施问题。</p>
+</li>
+<li>
+<p><strong>Rust nightly 兼容性</strong>：修复 kbpf-basic 的 VaList API 变更问题并贡献上游，理解了 Rust 不稳定特性的演进。</p>
+</li>
+</ol>
+<p><strong>工程收获</strong>：</p>
+<ol>
+<li>
+<p><strong>模块化设计</strong>：axebpf 通过 feature flags 控制功能启用（symbols/tracepoint-support/runtime），便于裁剪和测试。</p>
+</li>
+<li>
+<p><strong>抽象层设计</strong>：<code>platform.rs</code> 提供 mock/real 模式切换，<code>map_ops.rs</code> 实现 <code>KernelAuxiliaryOps</code> 适配层，解耦了依赖库与内核实现。</p>
+</li>
+<li>
+<p><strong>渐进式实现</strong>：先用简化方案验证端到端流程（如 Vec 实现 Map、简化 printk），再逐步替换为生产级实现。</p>
+</li>
+</ol>
+<p><strong>待深入方向</strong>：</p>
+<ul>
+<li>Kprobe 动态插桩机制（需要理解 aarch64 断点指令和异常处理）</li>
+<li>eBPF 验证器原理（控制流图分析、类型状态追踪）</li>
+<li>零拷贝 Map 访问优化</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="周报21---27"><a class="header" href="#周报21---27">周报（2.1 - 2.7）</a></h1>
+<h2 id="开发分支-1"><a class="header" href="#开发分支-1">开发分支</a></h2>
+<ul>
+<li>axvisor: https://github.com/Iscreamx/axvisor/tree/feature/ebpf</li>
+<li>axebpf: https://github.com/Iscreamx/axebpf</li>
+</ul>
+<hr>
+<h2 id="一已完成工作-1"><a class="header" href="#一已完成工作-1">一、已完成工作</a></h2>
+<ul>
+<li>
+<p><strong>Kprobe 基础设施</strong>：Starry-OS 的 <a href="https://github.com/Starry-OS/kprobe">kprobe</a> 库设计用于 EL1 宏内核环境，而 AxVisor 作为 Type-1 Hypervisor 运行在 EL2，异常处理入口和寄存器上下文完全不同，无法直接复用。本周实现了 EL2 环境下的 kprobe 断点捕获机制：在 arm_vcpu 的 EL2 同步异常处理中识别 BRK 指令 (EC=0x3C)，将 Hypervisor 的 TrapFrame 转换为 eBPF 程序可访问的寄存器上下文，执行完成后恢复正常执行流。效果：可在任意 Hypervisor 内核函数入口处动态执行 eBPF 程序。</p>
+</li>
+<li>
+<p><strong>符号表集成</strong>：实现内核符号表加载机制，使用页对齐结构嵌入 kallsyms 二进制数据满足 ksym 库要求，获取内核代码段边界用于地址校验。效果：kprobe 可通过符号名自动解析函数地址，无需手动查找。</p>
+</li>
+<li>
+<p><strong>Shell ksym 命令</strong>：新增内核符号查找命令，支持地址到符号名的双向解析，以及模糊搜索功能。便于定位 kprobe 挂载点。</p>
+</li>
+<li>
+<p><strong>Shell trace kprobe 命令</strong>：扩展 trace 命令组，新增 kprobe/kretprobe/unkprobe 子命令，支持按程序名自动加载预编译 eBPF 程序，trace list 扩展显示已注册 kprobe 的符号名、地址、命中次数、程序 ID。效果：可通过 shell 交互式管理动态探针。</p>
+</li>
+<li>
+<p><strong>axebpf 子模块化</strong>：将 axebpf 改为 git submodule 引入。效果：axebpf 可独立版本管理。</p>
+</li>
+<li>
+<p><strong>axvm kprobe feature 传递</strong>：arm_vcpu 是 axvm 的依赖，需要通过 feature flag 控制 kprobe 功能是否编译，因此在 axvm 中添加 kprobe feature 并向下传递到 arm_vcpu。</p>
+</li>
+<li>
+<p><strong>链接器脚本更新</strong>：tracepoint 库使用特殊的 linker section 在链接时收集所有静态追踪点定义，需要在 axplat-aarch64-dyn 的链接器脚本中添加 tracepoint 和 __static_keys 段的起止符号定义。效果：支持 tracepoint 静态插桩点的自动收集，__static_keys 为后续静态分支优化做准备。</p>
+</li>
+</ul>
+<hr>
+<h2 id="二待完善-1"><a class="header" href="#二待完善-1">二、待完善</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>问题</th><th>原因</th><th>解决方向</th></tr>
+</thead>
+<tbody>
+<tr><td>递归调用异常</td><td>执行稍复杂的 eBPF 程序时出现 <code>Error: too many nested calls (max: 8)</code></td><td>可能是递归 kprobe 触发，待调试</td></tr>
+<tr><td>Kretprobe 未完整验证</td><td>函数返回探针需要栈帧管理机制</td><td>当前仅完成命令接口框架</td></tr>
+<tr><td>x86_64 架构支持待实现</td><td>当前仅完成 aarch64 EL2 环境的适配</td><td>x86_64 需要适配 VMX root mode 的异常处理</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="三遇到的问题与解决方案-1"><a class="header" href="#三遇到的问题与解决方案-1">三、遇到的问题与解决方案</a></h2>
+<h3 id="31-el2-与-el1-异常处理差异"><a class="header" href="#31-el2-与-el1-异常处理差异">3.1 EL2 与 EL1 异常处理差异</a></h3>
+<p><strong>问题</strong>：Starry-OS kprobe 库基于 EL1 异常处理设计，直接移植到 AxVisor 后无法正常工作。</p>
+<p><strong>原因</strong>：AxVisor 运行在 EL2，使用 ESR_EL2/FAR_EL2 等寄存器，异常向量表入口和 TrapFrame 结构与 EL1 完全不同。</p>
+<p><strong>解决方案</strong>：</p>
+<ol>
+<li>在 arm_vcpu 的 <code>current_el_sync_handler</code> 中添加 BRK 指令识别逻辑</li>
+<li>检查 ESR_EL2.EC == 0x3C（BRK from AArch64）</li>
+<li>将 TrapFrame 指针和大小传递给 axebpf 的 kprobe handler</li>
+<li>通过回调函数更新 PC 实现单步执行</li>
+</ol>
+<h3 id="32-符号表页对齐要求"><a class="header" href="#32-符号表页对齐要求">3.2 符号表页对齐要求</a></h3>
+<p><strong>问题</strong>：ksym 库要求 kallsyms 二进制数据必须页对齐，直接使用 <code>include_bytes!</code> 嵌入会导致初始化失败。</p>
+<p><strong>解决方案</strong>：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>#[repr(C, align(4096))]
+struct AlignedKallsyms&lt;const N: usize&gt; {
+    data: [u8; N],
+}
+static KALLSYMS_ALIGNED: AlignedKallsyms&lt;{ include_bytes!("../../kallsyms.bin").len() }&gt; = ...;
+<span class="boring">}</span></code></pre>
+<h3 id="33-feature-flag-跨-crate-传递"><a class="header" href="#33-feature-flag-跨-crate-传递">3.3 Feature Flag 跨 crate 传递</a></h3>
+<p><strong>问题</strong>：kprobe 功能需要同时在 kernel、axvm、arm_vcpu 三个 crate 中启用，feature 依赖链复杂。</p>
+<p><strong>解决方案</strong>：在 axvm 的 Cargo.toml 中声明 <code>kprobe = ["arm_vcpu/kprobe"]</code>，实现 feature 自动向下传递。</p>
+<hr>
+<h2 id="四工作量统计-1"><a class="header" href="#四工作量统计-1">四、工作量统计</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>指标</th><th>数量</th></tr>
+</thead>
+<tbody>
+<tr><td>新增代码行数</td><td>~500 行</td></tr>
+<tr><td>修改子模块数</td><td>3 个（arm_vcpu、axvm、axplat-aarch64-dyn）</td></tr>
+<tr><td>新增 Shell 命令</td><td>4 个（ksym、kprobe、kretprobe、unkprobe）</td></tr>
+<tr><td>新增 eBPF 程序</td><td>3 个（kprobe_args、kprobe_simple、kprobe_noop）</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="五下阶段计划-1"><a class="header" href="#五下阶段计划-1">五、下阶段计划</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>优先级</th><th>任务</th><th>说明</th></tr>
+</thead>
+<tbody>
+<tr><td>P0</td><td>调试递归调用问题</td><td>分析 nested calls 错误原因，可能需要过滤 kprobe 自身调用</td></tr>
+<tr><td>P1</td><td>完善 Kretprobe</td><td>实现函数返回探针的栈帧管理</td></tr>
+<tr><td>P1</td><td>axvm 追踪点插桩</td><td>待 axvm 重构后添加 vCPU 运行时追踪点</td></tr>
+<tr><td>P2</td><td>x86_64 架构支持</td><td>适配 VMX root mode 的异常处理机制</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="六风险与阻塞项-1"><a class="header" href="#六风险与阻塞项-1">六、风险与阻塞项</a></h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>风险项</th><th>影响</th><th>缓解措施</th></tr>
+</thead>
+<tbody>
+<tr><td>递归 kprobe 触发</td><td>复杂 eBPF 程序无法执行</td><td>分析调用链，添加重入保护</td></tr>
+<tr><td>axvm 重构时间不确定</td><td>vCPU 运行时追踪点无法上线</td><td>优先完成其他可用追踪点的功能验证</td></tr>
+</tbody>
+</table>
+</div>
+<hr>
+<h2 id="七个人日志-1"><a class="header" href="#七个人日志-1">七、个人日志</a></h2>
+<h3 id="71-kprobe-库架构深度分析"><a class="header" href="#71-kprobe-库架构深度分析">7.1 Kprobe 库架构深度分析</a></h3>
+<p>本周深入学习了 Starry-OS 的 <a href="https://github.com/Starry-OS/kprobe">kprobe</a> 库实现，理解了其核心架构：</p>
+<h4 id="711-软件单步执行机制"><a class="header" href="#711-软件单步执行机制">7.1.1 软件单步执行机制</a></h4>
+<p>kprobe 使用基于 BRK 指令的软件单步机制，而非硬件单步（避免 SPSR.SS 的复杂性）：</p>
+<pre><code>Original Code:                   After Instrumentation:
+┌─────────────────┐              ┌─────────────────┐
+│ func:           │              │ func:           │
+│   original_insn │  ────────►   │   BRK #4        │  ← Main Breakpoint
+│   next_insn     │              │   next_insn     │
+└─────────────────┘              └─────────────────┘
+
+Instruction Slot (.text.kprobe_slots):
+┌─────────────────┐
+│ original_insn   │  ← Original instruction copied here
+│ BRK #6          │  ← Single-step completion marker
+└─────────────────┘
+</code></pre>
+<p><strong>执行流程</strong>：</p>
+<ol>
+<li>CPU 执行到 <code>BRK #4</code>，触发同步异常（EC=0x3C, ISS=0x4）</li>
+<li>异常处理器执行 eBPF 程序，然后将 PC 设置为指令槽地址</li>
+<li>异常返回后执行指令槽中的原始指令</li>
+<li>执行到 <code>BRK #6</code>，再次触发异常（EC=0x3C, ISS=0x6）</li>
+<li>异常处理器将 PC 设置为原始函数的下一条指令（original_pc + 4）</li>
+<li>异常返回，继续正常执行</li>
+</ol>
+<h4 id="712-kprobeauxiliaryops-trait"><a class="header" href="#712-kprobeauxiliaryops-trait">7.1.2 KprobeAuxiliaryOps Trait</a></h4>
+<p>kprobe 库通过 <code>KprobeAuxiliaryOps</code> trait 抽象平台相关操作，需要实现以下方法：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>方法</th><th>作用</th><th>AxVisor 实现</th></tr>
+</thead>
+<tbody>
+<tr><td><code>copy_memory</code></td><td>复制内存（用于保存/恢复原始指令）</td><td>检测目标是否在指令槽区域，若是则先修改页表权限</td></tr>
+<tr><td><code>set_writeable_for_address</code></td><td>临时使 .text 段可写</td><td>调用 <code>page_table::set_kernel_text_writable</code>，执行后恢复并刷新 I-cache</td></tr>
+<tr><td><code>alloc_kernel_exec_memory</code></td><td>分配可执行内存（指令槽）</td><td>从预分配的 <code>.text.kprobe_slots</code> 段分配 8 字节槽位</td></tr>
+<tr><td><code>free_kernel_exec_memory</code></td><td>释放指令槽</td><td>恢复只读权限并归还槽位</td></tr>
+<tr><td><code>insert_kretprobe_instance_to_task</code></td><td>保存 kretprobe 返回地址</td><td>使用 per-CPU 栈存储（Hypervisor 无传统任务概念）</td></tr>
+<tr><td><code>pop_kretprobe_instance_from_task</code></td><td>恢复 kretprobe 返回地址</td><td>从 per-CPU 栈弹出</td></tr>
+</tbody>
+</table>
+</div>
+<h4 id="713-指令槽管理"><a class="header" href="#713-指令槽管理">7.1.3 指令槽管理</a></h4>
+<p>指令槽是一段预分配的可执行内存区域，用于存放被替换的原始指令：</p>
+<pre><code>.text.kprobe_slots (在链接器脚本中定义):
+┌────────────────────────────────────────────────────────┐
+│ Slot 0: [4B original_insn][4B BRK #6] = 8 bytes        │
+│ Slot 1: [4B original_insn][4B BRK #6] = 8 bytes        │
+│ ...                                                    │
+│ Slot N: [4B original_insn][4B BRK #6] = 8 bytes        │
+└────────────────────────────────────────────────────────┘
+</code></pre>
+<p>关键实现细节：</p>
+<ul>
+<li>槽位大小固定为 8 字节（原始指令 4B + BRK #6 4B）</li>
+<li>使用位图管理槽位分配状态</li>
+<li>写入前需修改页表使其可写，写入后恢复只读并刷新 I-cache</li>
+</ul>
+<h4 id="714-页表权限修改"><a class="header" href="#714-页表权限修改">7.1.4 页表权限修改</a></h4>
+<p>在 AArch64 中，.text 段默认是只读可执行的。插入 BRK 指令需要临时修改页表：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 修改页表项的 AP (Access Permission) 位
+// AP[2:1] = 00: EL1 RW, EL0 无访问
+// AP[2:1] = 10: EL1 RO, EL0 无访问
+fn set_kernel_text_writable(addr: usize, len: usize, writable: bool) -&gt; bool {
+    // 1. 遍历页表找到对应 PTE
+    // 2. 修改 AP 位
+    // 3. 刷新 TLB (TLBI)
+    // 4. 如果是写入后，还需刷新 I-cache (IC IVAU)
+}
+<span class="boring">}</span></code></pre>
+<h3 id="72-kprobe-在-hypervisor-中的特殊性"><a class="header" href="#72-kprobe-在-hypervisor-中的特殊性">7.2 Kprobe 在 Hypervisor 中的特殊性</a></h3>
+<p>与传统 OS 内核的 kprobe 实现相比，Hypervisor 环境下存在以下差异：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>方面</th><th>传统 OS (EL1)</th><th>Hypervisor (EL2)</th></tr>
+</thead>
+<tbody>
+<tr><td>异常寄存器</td><td>ESR_EL1, FAR_EL1</td><td>ESR_EL2, FAR_EL2</td></tr>
+<tr><td>异常向量表</td><td>VBAR_EL1</td><td>VBAR_EL2</td></tr>
+<tr><td>上下文结构</td><td>内核 pt_regs</td><td>Hypervisor TrapFrame</td></tr>
+<tr><td>页表基址寄存器</td><td>TTBR0_EL1/TTBR1_EL1</td><td>TTBR0_EL2</td></tr>
+<tr><td>任务上下文</td><td>current_task</td><td>per-CPU 状态</td></tr>
+<tr><td>追踪目标</td><td>内核函数</td><td>VMM 代码路径</td></tr>
+</tbody>
+</table>
+</div>
+<p><strong>适配要点</strong>：</p>
+<ol>
+<li>异常处理入口不同，需要在 arm_vcpu 的 <code>current_el_sync_handler</code> 中添加 BRK 识别逻辑</li>
+<li>TrapFrame 结构不同，需要正确提取 PC 和传递寄存器上下文给 eBPF 程序</li>
+<li>Hypervisor 无传统任务概念，kretprobe 实例需使用 per-CPU 存储</li>
+</ol>
+<h3 id="73-per-cpu-状态管理"><a class="header" href="#73-per-cpu-状态管理">7.3 Per-CPU 状态管理</a></h3>
+<p>Hypervisor 没有传统 OS 的任务/线程概念，kprobe 执行过程中的状态需要按 CPU 核心存储：</p>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// 每个 CPU 核心独立的状态存储
+const MAX_CPUS: usize = 8;
+static ORIGINAL_PC: [AtomicUsize; MAX_CPUS] = [...];
+static RETPROBE_STACKS: [Mutex&lt;Vec&lt;RetprobeInstance&gt;&gt;; MAX_CPUS] = [...];
+
+fn save_original_pc(pc: usize) {
+    let cpu = platform::cpu_id();
+    ORIGINAL_PC[cpu].store(pc, Ordering::SeqCst);
+}
+<span class="boring">}</span></code></pre>
+<p>这确保了多核环境下 kprobe 的正确性：每个 CPU 独立追踪自己的执行状态。</p>
+<h3 id="74-收获"><a class="header" href="#74-收获">7.4 收获</a></h3>
+<p><strong>技术收获</strong>：</p>
+<ol>
+<li>
+<p><strong>软件单步机制</strong>：深入理解了 kprobe 使用双 BRK 指令实现软件单步的原理，比硬件单步更简单可控。</p>
+</li>
+<li>
+<p><strong>Trait 抽象设计</strong>：学习了 <code>KprobeAuxiliaryOps</code> trait 如何将平台相关操作抽象出来，使 kprobe 库可以跨平台复用。</p>
+</li>
+<li>
+<p><strong>页表动态修改</strong>：掌握了运行时修改 .text 段权限的方法，包括页表项修改、TLB 刷新、I-cache 刷新的完整流程。</p>
+</li>
+<li>
+<p><strong>AArch64 异常模型</strong>：深入理解了 EL2 异常处理流程，ESR_EL2.EC/ISS 字段编码，以及异常返回机制。</p>
+</li>
+<li>
+<p><strong>Per-CPU 编程模式</strong>：理解了在无任务抽象的 Hypervisor 环境中如何管理执行状态。</p>
+</li>
+</ol>
+<p><strong>工程收获</strong>：</p>
+<ol>
+<li>
+<p><strong>跨 crate feature 管理</strong>：学习了 Cargo feature 的依赖传递机制，理解了 <code>feature = ["dep/feature"]</code> 语法的作用。</p>
+</li>
+<li>
+<p><strong>链接器脚本定制</strong>：掌握了 linker section 的定义方法，理解了如何为指令槽预留可执行内存区域。</p>
+</li>
+</ol>
+<p><strong>待深入方向</strong>：</p>
+<ul>
+<li>Kretprobe trampoline 机制：如何劫持函数返回地址并在返回时执行 eBPF 程序</li>
+<li>递归 kprobe 的重入保护：当 eBPF 程序或 helper 函数本身触发 kprobe 时如何避免死循环</li>
+<li>x86_64 适配：INT3 单字节指令的处理、VMX root mode 异常处理差异</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="bpf-iterator-支持方案"><a class="header" href="#bpf-iterator-支持方案">BPF Iterator 支持方案</a></h1>
+<h2 id="1-概述"><a class="header" href="#1-概述">1. 概述</a></h2>
+<p>本文档说明为什么 AxVisor 需要支持 BPF Iterator 程序类型，以及如何实现。</p>
+<h3 id="11-灵感来源"><a class="header" href="#11-灵感来源">1.1 灵感来源</a></h3>
+<p>这个想法来自 FI (Fault Injection) 项目，一个基于 eBPF 的故障注入系统，用于 Go 微服务的全链路追踪和故障注入。</p>
+<p>FI 的流量拦截流程是这样的：<code>sock_ops</code> 程序捕获 TCP 连接事件，将连接添加到 <code>INTERCEPT_MAP</code>，然后 <code>sk_msg</code> 程序对这些连接注入追踪信息。但 <code>sock_ops</code> 只能捕获程序附加后新建的连接，Agent 启动前已存在的长连接（Keep-Alive、gRPC 连接池、数据库连接等）抓不到。</p>
+<p>我们写了 <code>iter_tcp.bpf.c</code> 来解决这个问题：用 BPF Iterator 在 Agent 启动时扫描系统中所有已建立的 TCP 连接，做到“启动即全量覆盖“。不过 aya-rs 目前不支持 Iterator 程序类型，只能用 C 写。</p>
+<p>这就引出了本文的主题：如何在 ArceOS eBPF 生态中支持 Iterator。</p>
+<h2 id="2-bpf-iterator-工作原理"><a class="header" href="#2-bpf-iterator-工作原理">2. BPF Iterator 工作原理</a></h2>
+<h3 id="21-什么是-bpf-iterator"><a class="header" href="#21-什么是-bpf-iterator">2.1 什么是 BPF Iterator</a></h3>
+<p>BPF Iterator（<code>iter/*</code>）是 Linux 5.8 引入的一种 eBPF 程序类型。和事件驱动型程序不同，Iterator 是主动遍历机制，允许 eBPF 程序在内核态安全地遍历内核数据结构。</p>
+<h3 id="22-执行流程"><a class="header" href="#22-执行流程">2.2 执行流程</a></h3>
+<pre><code>用户态                              内核态
+  │                                   │
+  │ 1. bpf_link_create()              │
+  ├──────────────────────────────────&gt;│ 创建 iterator link
+  │                                   │
+  │ 2. open("/sys/fs/bpf/iter_xxx")   │
+  ├──────────────────────────────────&gt;│ 获取 iterator fd
+  │                                   │
+  │ 3. read(fd, buf, size)            │
+  ├──────────────────────────────────&gt;│ 触发遍历
+  │                                   │
+  │                                   │ ┌─────────────────────────┐
+  │                                   │ │ 内核 Iterator 框架      │
+  │                                   │ │                         │
+  │                                   │ │ for each object:        │
+  │                                   │ │   call bpf_prog(ctx)    │
+  │                                   │ │   seq_write(output)     │
+  │                                   │ └─────────────────────────┘
+  │                                   │
+  │&lt;──────────────────────────────────│ 返回遍历结果
+  │                                   │
+</code></pre>
+<h3 id="23-支持的遍历目标"><a class="header" href="#23-支持的遍历目标">2.3 支持的遍历目标</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Iterator 类型</th><th>遍历对象</th><th>典型用途</th></tr>
+</thead>
+<tbody>
+<tr><td><code>iter/task</code></td><td>进程/线程</td><td>进程列表快照</td></tr>
+<tr><td><code>iter/task_file</code></td><td>进程打开的文件</td><td>fd 审计</td></tr>
+<tr><td><code>iter/tcp</code></td><td>TCP socket</td><td>连接状态导出</td></tr>
+<tr><td><code>iter/udp</code></td><td>UDP socket</td><td>UDP 端点枚举</td></tr>
+<tr><td><code>iter/bpf_map_elem</code></td><td>BPF Map 条目</td><td>Map 批量操作</td></tr>
+<tr><td><code>iter/netlink</code></td><td>Netlink socket</td><td>网络诊断</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="24-与-kprobekretprobeuprobe-的区别"><a class="header" href="#24-与-kprobekretprobeuprobe-的区别">2.4 与 kprobe/kretprobe/uprobe 的区别</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>维度</th><th>kprobe/kretprobe/uprobe</th><th>BPF Iterator</th></tr>
+</thead>
+<tbody>
+<tr><td>触发机制</td><td>被动：等待事件发生</td><td>主动：用户态驱动遍历</td></tr>
+<tr><td>执行时机</td><td>函数入口/出口被调用时</td><td>用户态 read() 时</td></tr>
+<tr><td>数据来源</td><td>当前执行上下文（寄存器、栈）</td><td>内核全局数据结构</td></tr>
+<tr><td>观测范围</td><td>单次函数调用</td><td>整个数据结构集合</td></tr>
+<tr><td>状态感知</td><td>只能捕获“变化“</td><td>可获取“当前全貌“</td></tr>
+<tr><td>实现方式</td><td>断点指令 + 异常处理</td><td>seq_file + 内核遍历框架</td></tr>
+</tbody>
+</table>
+</div>
+<p>简单来说：</p>
+<ul>
+<li>kprobe 在函数入口插入断点（如 <code>BRK #4</code>），函数被调用时触发，只能观测到“正在发生的调用“。</li>
+<li>kretprobe 在函数返回时触发，捕获返回值，同样是事件驱动。</li>
+<li>uprobe 和 kprobe 类似，但作用于用户态程序。</li>
+<li>Iterator 不依赖任何事件，直接遍历内核维护的数据结构。比如可以获取“此刻系统中所有 TCP 连接“这样的全局快照。</li>
+</ul>
+<h3 id="25-内核数据结构依赖"><a class="header" href="#25-内核数据结构依赖">2.5 内核数据结构依赖</a></h3>
+<p>Iterator 程序直接访问内核内部数据结构。以 <code>iter/tcp</code> 为例，程序需要访问 <code>struct sock_common</code>、<code>struct sock</code> 等结构体，而这些结构体的布局在不同内核版本间可能不同，字段顺序、大小甚至字段本身都可能变。</p>
+<p>Linux 通过 BTF（BPF Type Format）和 CO-RE（Compile Once, Run Everywhere）来处理这个问题：</p>
+<ul>
+<li>BTF：内核编译时生成的类型信息，描述所有数据结构的布局</li>
+<li>vmlinux.h：从 BTF 导出的头文件，包含当前内核的完整类型定义</li>
+<li>CO-RE：编译时记录字段访问意图，运行时根据目标内核的 BTF 重定位</li>
+</ul>
+<p>所以 Iterator 程序和内核版本紧密耦合，需要专门的构建和加载流程来处理跨版本兼容性。</p>
+<h2 id="3-应用场景"><a class="header" href="#3-应用场景">3. 应用场景</a></h2>
+<h3 id="31-宿主侧热接入已有连接"><a class="header" href="#31-宿主侧热接入已有连接">3.1 宿主侧：热接入已有连接</a></h3>
+<p>这是最直接的应用场景，来源于前面提到的 FI 项目。</p>
+<p>AxVisor 作为 Type-1 Hypervisor 运行在宿主 Linux 上。eBPF agent 拦截网络流量时，<code>sock_ops</code> 只能捕获新建连接。agent 启动前已存在的长连接（管理面的 gRPC 连接、监控系统的 Keep-Alive 连接等）需要用 <code>iter/tcp</code> 遍历并加入拦截 Map。</p>
+<h3 id="32-axvisor-内部现有诊断能力的不足"><a class="header" href="#32-axvisor-内部现有诊断能力的不足">3.2 AxVisor 内部：现有诊断能力的不足</a></h3>
+<p>AxVisor 的 shell 命令系统提供了基本的 VM 管理能力，但在诊断信息获取方面有不少缺口。</p>
+<p>已有的命令：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>命令</th><th>提供的信息</th></tr>
+</thead>
+<tbody>
+<tr><td><code>vm list</code></td><td>VM ID、名称、状态、vCPU 数、内存大小</td></tr>
+<tr><td><code>vm show &lt;id&gt;</code></td><td>同上（<code>--full</code>/<code>--config</code>/<code>--stats</code> flag ）</td></tr>
+<tr><td><code>trace list</code></td><td>已注册的 tracepoint 和 kprobe</td></tr>
+<tr><td><code>trace stat</code></td><td>eBPF 程序收集的事件统计</td></tr>
+</tbody>
+</table>
+</div>
+<p>缺失的信息：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>维度</th><th>缺失内容</th><th>诊断价值</th></tr>
+</thead>
+<tbody>
+<tr><td>vCPU 状态</td><td>寄存器值、运行模式、异常状态</td><td>调试 Guest 卡死、分析 VM Exit</td></tr>
+<tr><td>内存映射</td><td>GPA→HPA 映射、Stage-2 页表条目</td><td>诊断内存访问异常、审计内存分配</td></tr>
+<tr><td>设备列表</td><td>virtio 设备配置、passthrough 设备</td><td>排查设备模拟问题</td></tr>
+<tr><td>设备统计</td><td>I/O 请求数、中断次数</td><td>性能分析、瓶颈定位</td></tr>
+<tr><td>VM Exit 分布</td><td>HVC/SMC/MMIO/中断等原因统计</td><td>优化 VMM 性能</td></tr>
+<tr><td>中断状态</td><td>GIC 配置、pending 中断队列</td><td>调试中断注入问题</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="33-iterator-能做什么"><a class="header" href="#33-iterator-能做什么">3.3 Iterator 能做什么</a></h3>
+<p>现有的 tracepoint/kprobe 是事件驱动的，只能在事件发生时采集数据。Iterator 提供了主动遍历的方式：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>场景</th><th>事件驱动的局限</th><th>Iterator 怎么解决</th></tr>
+</thead>
+<tbody>
+<tr><td>诊断 vCPU 卡死</td><td>没有事件触发，无法采集</td><td>主动遍历所有 vCPU，导出当前状态</td></tr>
+<tr><td>审计内存分配</td><td>需要 hook 每次分配，开销大</td><td>按需遍历页表，获取当前全貌</td></tr>
+<tr><td>排查设备问题</td><td>需要预先埋点</td><td>遍历设备注册表，不用改代码</td></tr>
+<tr><td>生成诊断快照</td><td>需要多个 tracepoint 配合</td><td>单次遍历，原子性获取一致状态</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="34-潜在的-axvisor-iterator-类型"><a class="header" href="#34-潜在的-axvisor-iterator-类型">3.4 潜在的 AxVisor Iterator 类型</a></h3>
+<p>如果在 AxVisor 内部实现 Iterator 框架，可以定义这些遍历目标：</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Iterator 类型</th><th>遍历对象</th><th>用途</th></tr>
+</thead>
+<tbody>
+<tr><td><code>iter/vm</code></td><td>所有 VM</td><td>导出 VM 列表和详细配置</td></tr>
+<tr><td><code>iter/vcpu</code></td><td>所有 vCPU</td><td>导出寄存器状态、运行模式</td></tr>
+<tr><td><code>iter/gpa_region</code></td><td>Guest 物理地址区域</td><td>审计内存映射</td></tr>
+<tr><td><code>iter/device</code></td><td>模拟和透传设备</td><td>设备配置和统计</td></tr>
+<tr><td><code>iter/irq</code></td><td>中断描述符</td><td>中断路由和状态</td></tr>
+</tbody>
+</table>
+</div>
+<p>这需要在 AxVisor 内部实现类似 Linux <code>seq_file</code> 的遍历框架。</p>
+<h2 id="4-axvisor-环境下的实现挑战"><a class="header" href="#4-axvisor-环境下的实现挑战">4. AxVisor 环境下的实现挑战</a></h2>
+<h3 id="41-运行环境分析"><a class="header" href="#41-运行环境分析">4.1 运行环境分析</a></h3>
+<p>Iterator 程序依赖 Linux 内核的 <code>seq_file</code> 遍历框架。在 AxVisor 场景下，需要搞清楚程序在哪里运行：</p>
+<pre><code>┌─────────────────────────────────────────────────────────┐
+│                        Host Linux                       │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────────┐  │
+│  │  iter_tcp   │  │  iter_task  │  │ Other Iterators │  │
+│  │ (Traverses  │  │ (Traverses  │  │                 │  │
+│  │  Host TCP)  │  │  Host Task) │  │                 │  │
+│  └──────┬──────┘  └──────┬──────┘  └────────┬────────┘  │
+│         │                │                  │           │
+│         v                v                  v           │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │           Linux Kernel Iterator Framework       │    │
+│  │              (seq_file + bpf_iter_reg)          │    │
+│  └─────────────────────────────────────────────────┘    │
+│                          │                              │
+│                          v                              │
+│  ┌─────────────────────────────────────────────────┐    │
+│  │                    AxVisor                      │    │
+│  │  ┌───────────┐  ┌───────────┐  ┌───────────┐    │    │
+│  │  │   VM 1    │  │   VM 2    │  │   VM N    │    │    │
+│  │  └───────────┘  └───────────┘  └───────────┘    │    │
+│  └─────────────────────────────────────────────────┘    │
+└─────────────────────────────────────────────────────────┘
+</code></pre>
+<h3 id="42-两种实现路径"><a class="header" href="#42-两种实现路径">4.2 两种实现路径</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>路径</th><th>说明</th><th>复杂度</th><th>适用场景</th></tr>
+</thead>
+<tbody>
+<tr><td>宿主侧 Iterator</td><td>在宿主 Linux 上运行，遍历宿主内核数据结构</td><td>低</td><td>TCP/UDP 连接、进程列表等标准对象</td></tr>
+<tr><td>AxVisor 侧 Iterator</td><td>在 AxVisor 内部实现遍历框架，遍历 VMM 对象</td><td>高</td><td>VM、vCPU、虚拟设备等 Hypervisor 对象</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="43-宿主侧-iterator"><a class="header" href="#43-宿主侧-iterator">4.3 宿主侧 Iterator</a></h3>
+<p>直接复用 Linux 内核的 Iterator 框架：</p>
+<ul>
+<li>优点：不用改 AxVisor，标准 eBPF 工具链直接可用</li>
+<li>缺点：只能遍历宿主内核对象，访问不了 VMM 内部状态</li>
+<li>适用于网络流量拦截、进程审计等宿主侧需求</li>
+</ul>
+<h3 id="44-axvisor-侧-iterator"><a class="header" href="#44-axvisor-侧-iterator">4.4 AxVisor 侧 Iterator</a></h3>
+<p>如果需要遍历 VMM 内部对象（比如所有 VM 的 vCPU 状态），需要做这几件事：</p>
+<ol>
+<li>实现遍历框架：类似 <code>seq_file</code> 的迭代器基础设施</li>
+<li>注册遍历目标：为 VM、vCPU、设备等对象提供遍历回调</li>
+<li>定义上下文结构：如 <code>bpf_iter__vm</code>、<code>bpf_iter__vcpu</code></li>
+<li>暴露触发接口：通过 shell 命令或特殊文件触发遍历</li>
+</ol>
+<h2 id="5-替代方案对比"><a class="header" href="#5-替代方案对比">5. 替代方案对比</a></h2>
+<p>为什么选 Iterator 而不是别的方案？</p>
+<h3 id="51-方案对比"><a class="header" href="#51-方案对比">5.1 方案对比</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>方案</th><th>原理</th><th>优点</th><th>缺点</th></tr>
+</thead>
+<tbody>
+<tr><td>BPF Iterator</td><td>内核态遍历，BPF 程序处理每个对象</td><td>高效、安全、可编程</td><td>需要特定程序类型支持</td></tr>
+<tr><td>读取 /proc</td><td>解析 <code>/proc/net/tcp</code> 等文件</td><td>简单、通用</td><td>用户态解析开销大，格式不稳定</td></tr>
+<tr><td>Netlink 查询</td><td>通过 <code>NETLINK_SOCK_DIAG</code> 获取 socket 信息</td><td>结构化数据</td><td>需要多次系统调用，无法直接操作 Map</td></tr>
+<tr><td>定时 kprobe 快照</td><td>周期性触发 kprobe 记录状态</td><td>复用现有机制</td><td>不完整，依赖事件触发</td></tr>
+<tr><td>遍历 BPF Map</td><td>用户态 <code>bpf_map_get_next_key</code></td><td>不需要额外程序类型</td><td>只能遍历 Map，不能遍历内核对象</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="52-详细分析"><a class="header" href="#52-详细分析">5.2 详细分析</a></h3>
+<p>读取 /proc/net/tcp：</p>
+<pre><code>User Space                           Kernel Space
+   │                                     │
+   │ open("/proc/net/tcp")               │
+   ├────────────────────────────────────&gt;│
+   │                                     │
+   │ read() × N times                    │
+   ├────────────────────────────────────&gt;│ Every read triggers formatting
+   │                                     │
+   │ Parse text in user space            │
+   │ Construct data structures           │
+   │ Update BPF Map                      │
+   ├────────────────────────────────────&gt;│ bpf() syscall
+   │                                     │
+</code></pre>
+<p>问题在于：文本解析有开销，需要多次系统调用，而且遍历期间连接状态可能变化，数据一致性没有保证。</p>
+<p>BPF Iterator：</p>
+<pre><code>User Space                           Kernel Space
+   │                                     │
+   │ read(iter_fd)                       │
+   ├────────────────────────────────────&gt;│
+   │                                     │ Kernel-side traversal
+   │                                     │ Direct BPF Map manipulation
+   │                                     │ Single atomic operation
+   │&lt;────────────────────────────────────│
+   │                                     │
+</code></pre>
+<p>只需要一次系统调用，内核态直接操作 Map，遍历期间持有 RCU 锁保证数据一致。</p>
+<h3 id="53-性能对比理论"><a class="header" href="#53-性能对比理论">5.3 性能对比（理论）</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>指标</th><th>/proc 解析</th><th>Netlink</th><th>BPF Iterator</th></tr>
+</thead>
+<tbody>
+<tr><td>系统调用次数</td><td>O(n)</td><td>O(n)</td><td>O(1)</td></tr>
+<tr><td>数据拷贝</td><td>内核→用户→内核</td><td>内核→用户→内核</td><td>内核内部</td></tr>
+<tr><td>一致性</td><td>弱</td><td>弱</td><td>强（RCU 保护）</td></tr>
+<tr><td>可编程性</td><td>无</td><td>无</td><td>完全可编程</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="54-结论"><a class="header" href="#54-结论">5.4 结论</a></h3>
+<p>对于“热接入已有 TCP 连接“这个需求：</p>
+<ul>
+<li>/proc 解析：可行但低效，适合一次性脚本</li>
+<li>Netlink：数据结构化但仍需用户态处理</li>
+<li>BPF Iterator：最合适的方案，内核态完成全部工作</li>
+</ul>
+<p>Iterator 是唯一能在内核态直接将连接信息写入 SOCKHASH Map 的方案。</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="axvisor-统一探针调试系统设计"><a class="header" href="#axvisor-统一探针调试系统设计">AxVisor 统一探针调试系统设计</a></h1>
+<h2 id="1-背景与动机"><a class="header" href="#1-背景与动机">1. 背景与动机</a></h2>
+<p>当前 axebpf 模块提供了基本的 eBPF 追踪能力：rbpf 虚拟机、25+ 个 VMM 静态 tracepoint、EL2 kprobe/kretprobe，以及 shell 命令接口。但有几个问题：</p>
+<ul>
+<li>命名混淆：现有 kprobe 实际探测的是 EL2 hypervisor 代码，而非 guest 内核</li>
+<li>无法观测 guest：无法对 guest VM 内核函数设置探针</li>
+<li>无法联调：缺乏跨 VMM/Guest 的统一调试视角</li>
+</ul>
+<p>目标是构建一个统一的探针调试系统，支持 hprobe（VMM 探针）、kprobe（guest 探针）、tracepoint（静态探针）的联调，所有探针共享 VMM 侧的单一 eBPF 虚拟机。</p>
+<h2 id="2-探针体系"><a class="header" href="#2-探针体系">2. 探针体系</a></h2>
+<p>按特权级和观察方向划分为三类：</p>
+<h3 id="21-hprobehypervisor-probe-自省探针"><a class="header" href="#21-hprobehypervisor-probe-自省探针">2.1 hprobe（Hypervisor Probe）— 自省探针</a></h3>
+<ul>
+<li>探测 VMM 自身代码（EL2），即当前 kprobe/kretprobe 的重命名</li>
+<li>实现机制不变：BRK 注入 + 指令槽单步执行</li>
+<li>包含 hprobe（入口）和 hretprobe（返回）</li>
+</ul>
+<h3 id="22-kprobekernel-probe-跨特权级探针"><a class="header" href="#22-kprobekernel-probe-跨特权级探针">2.2 kprobe（Kernel Probe）— 跨特权级探针</a></h3>
+<ul>
+<li>探测 guest VM 内核代码（EL1），VMM 作为外部观察者</li>
+<li>本质上类比 Linux uprobe：高特权级透过地址空间边界探测低特权级代码</li>
+<li>两种实现模式：Stage-2 fault（非侵入，默认）和 BRK 注入（低延迟）</li>
+<li>包含 kprobe（入口）和 kretprobe（返回）</li>
+<li>全局注册，可选限定到特定 VM ID</li>
+<li>符号解析分阶段：先支持手动地址，后支持加载 guest 符号表</li>
+</ul>
+<h3 id="23-tracepoint--静态探针仅-vmm-侧"><a class="header" href="#23-tracepoint--静态探针仅-vmm-侧">2.3 tracepoint — 静态探针（仅 VMM 侧）</a></h3>
+<ul>
+<li>保持现有 25+ 个 VMM tracepoint 不变</li>
+<li>Guest 侧不加 tracepoint，guest 观测完全通过 kprobe 和uprobe</li>
+</ul>
+<h3 id="24-uprobe--预留接口"><a class="header" href="#24-uprobe--预留接口">2.4 uprobe — 预留接口</a></h3>
+<h3 id="25-与-linux-的类比"><a class="header" href="#25-与-linux-的类比">2.5 与 Linux 的类比</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Linux</th><th>AxVisor</th><th>特权级关系</th></tr>
+</thead>
+<tbody>
+<tr><td>内核 (EL1)</td><td>VMM/Hypervisor (EL2)</td><td>观察者</td></tr>
+<tr><td>用户态进程 (EL0)</td><td>Guest VM (EL1/EL0)</td><td>被观察者</td></tr>
+<tr><td>kprobe (内核探测自己)</td><td>hprobe (VMM 探测自己)</td><td>自省</td></tr>
+<tr><td>uprobe (内核探测用户态)</td><td>kprobe (VMM 探测 guest 内核)</td><td>跨特权级向下探测</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="3-核心架构--单一-ebpf-vm--多源事件汇聚"><a class="header" href="#3-核心架构--单一-ebpf-vm--多源事件汇聚">3. 核心架构 — 单一 eBPF VM + 多源事件汇聚</a></h2>
+<p>所有探针类型最终汇聚到 VMM 侧的同一个执行路径：</p>
+<pre><code>┌──────────────────────────────────────────────────┐
+│                    VMM (EL2)                     │
+│                                                  │
+│  ┌──────────┐  ┌──────────┐  ┌───────────────┐   │
+│  │  hprobe  │  │tracepoint│  │    kprobe     │   │
+│  │ BRK @ EL2│  │  Static  │  │ S2 Fault/BRK  │   │
+│  └────┬─────┘  └─────┬────┘  └───────┬───────┘   │
+│       │              │               │           │
+│       └─────────────┬┘───────────────┘           │
+│                     ▼                            │
+│          ┌─────────────────────┐                 │
+│          │    TraceContext     │                 │
+│          │ - probe_type        │                 │
+│          │ - vm_id (0=host)    │                 │
+│          │ - cpu_id / vcpu_id  │                 │
+│          │ - regs (EL2 or EL1) │                 │
+│          │ - timestamp         │                 │
+│          └─────────┬───────────┘                 │
+│                    ▼                             │
+│          ┌─────────────────────┐                 │
+│          │   rbpf VM Engine    │                 │
+│          │   Helpers + Maps    │                 │
+│          └─────────────────────┘                 │
+└──────────────────────────────────────────────────┘
+</code></pre>
+<p>几个设计要点：</p>
+<ul>
+<li>TraceContext 统一：扩展现有 <code>TraceContext</code>，增加 <code>probe_type</code>（hprobe/kprobe/tracepoint）和 <code>vm_id</code> 字段。<code>vm_id=0</code> 表示 host/VMM 自身，<code>vm_id&gt;0</code> 表示 guest。</li>
+<li>寄存器上下文区分：hprobe 传入 EL2 的 <code>TrapFrame</code>，kprobe 传入 guest 的 EL1 寄存器状态（从 vCPU 上下文中提取）。eBPF 程序通过统一的偏移访问，但实际内容因 probe_type 而异。</li>
+<li>eBPF helper 扩展：现有的 <code>bpf_get_current_vm_id()</code>（ID 100）等 helper 在 kprobe 上下文中返回实际 VM ID 而非硬编码 0。</li>
+</ul>
+<h3 id="31-探针类型枚举"><a class="header" href="#31-探针类型枚举">3.1 探针类型枚举</a></h3>
+<pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>pub enum ProbeType {
+    Hprobe,          // VMM function entry
+    Hretprobe,       // VMM function return
+    Kprobe,          // Guest kernel function entry
+    Kretprobe,       // Guest kernel function return
+    Tracepoint,      // VMM static probe
+}
+<span class="boring">}</span></code></pre>
+<h2 id="4-kprobeguest-探针实现"><a class="header" href="#4-kprobeguest-探针实现">4. kprobe（Guest 探针）实现</a></h2>
+<h3 id="41-模式一stage-2-fault默认非侵入"><a class="header" href="#41-模式一stage-2-fault默认非侵入">4.1 模式一：Stage-2 fault（默认，非侵入）</a></h3>
+<p>利用 Stage-2 页表控制 guest 内存的执行权限。</p>
+<ol>
+<li>注册：VMM 记录目标 GVA（guest 虚拟地址），通过 guest 页表（TTBR0_EL1/TTBR1_EL1）翻译为 GPA（guest 物理地址），然后将该 GPA 所在页面的 Stage-2 映射标记为不可执行（XN=1）</li>
+<li>触发：guest vCPU 执行到该页面 → Stage-2 Permission Fault → 陷入 EL2</li>
+<li>处理：VMM 的 fault handler 检查 fault 地址是否匹配已注册的 kprobe：
+<ul>
+<li>匹配：构建 TraceContext（从 vCPU 上下文提取 EL1 寄存器），执行 eBPF 程序，临时恢复页面执行权限，单步执行一条指令后重新标记 XN</li>
+<li>不匹配：走正常 Stage-2 fault 流程</li>
+</ul>
+</li>
+<li>优点：不修改 guest 内存，guest 完全无感知</li>
+<li>缺点：页面粒度（4KB），同一页面内多个函数会频繁触发 fault；单步执行需要额外处理</li>
+</ol>
+<h3 id="42-模式二brk-注入高级低延迟"><a class="header" href="#42-模式二brk-注入高级低延迟">4.2 模式二：BRK 注入（高级，低延迟）</a></h3>
+<p>类似 Linux uprobe，直接修改 guest 内核内存。</p>
+<ol>
+<li>注册：GVA → GPA → HVA（通过 Stage-2 页表），将目标指令替换为 <code>BRK #kprobe_guest_brk_imm</code>（使用与 hprobe 不同的立即数以区分来源）</li>
+<li>触发：guest 执行 BRK → EL1 异常 → 因 HCR_EL2.TGE 或路由配置陷入 EL2</li>
+<li>处理：VMM 识别为 guest kprobe，执行 eBPF，恢复原指令并单步</li>
+<li>优点：指令级精度，开销低</li>
+<li>缺点：侵入 guest 内存，需要处理 I-cache 一致性（跨 CPU IPI flush）</li>
+</ol>
+<p>两种模式通过注册时的参数选择：</p>
+<pre><code>trace kprobe vm0:0xffff800080012340          # 默认 Stage-2 fault
+trace kprobe vm0:0xffff800080012340 --inject  # BRK 注入模式
+</code></pre>
+<h3 id="43-kretprobeguest-返回探针"><a class="header" href="#43-kretprobeguest-返回探针">4.3 kretprobe（Guest 返回探针）</a></h3>
+<p>需要劫持 guest EL1 函数的 <code>LR</code>（x30）寄存器：</p>
+<ol>
+<li>在 kprobe 触发时记录原始 LR</li>
+<li>将 LR 修改为一个特殊的 trampoline 地址（VMM 预先在 guest 内存中映射的一段 BRK 指令）</li>
+<li>Guest 函数返回时执行 BRK 陷入 EL2</li>
+<li>VMM 捕获返回值和执行时间后恢复原始 LR</li>
+</ol>
+<p>对 eBPF 程序暴露的接口与 hretprobe 一致：</p>
+<pre><code>probe_type: kretprobe
+regs.x0:   返回值
+duration:   函数执行耗时（entry 到 return）
+</code></pre>
+<h2 id="5-地址翻译与符号解析"><a class="header" href="#5-地址翻译与符号解析">5. 地址翻译与符号解析</a></h2>
+<h3 id="51-地址翻译链"><a class="header" href="#51-地址翻译链">5.1 地址翻译链</a></h3>
+<pre><code>GVA (Guest Virtual Address)
+ │  guest 页表 (TTBR1_EL1, 由 vCPU 上下文持有)
+ ▼
+GPA (Guest Physical Address)
+ │  Stage-2 页表 (VTTBR_EL2, 由 axaddrspace 管理)
+ ▼
+HPA (Host Physical Address)
+ │  phys_to_virt() (线性映射)
+ ▼
+HVA (Host Virtual Address)  ← VMM 可直接读写
+</code></pre>
+<ul>
+<li>Stage-2 fault 模式只需 GPA，用于修改 Stage-2 页表权限</li>
+<li>BRK 注入模式需要完整链到 HVA，用于读写 guest 指令</li>
+</ul>
+<p>新增 <code>GuestAddressTranslator</code> 组件，负责 walk guest 页表（从 vCPU 上下文读取 TTBR1_EL1，按 AArch64 四级页表格式逐级翻译）。</p>
+<h3 id="52-符号解析分阶段"><a class="header" href="#52-符号解析分阶段">5.2 符号解析（分阶段）</a></h3>
+<p>阶段一（MVP）：用户直接指定 GVA 地址。</p>
+<pre><code>trace kprobe vm0:0xffff800080012340
+</code></pre>
+<p>阶段二：支持加载 guest 内核符号表。</p>
+<ul>
+<li>在 VM 配置文件（<code>configs/vms/*.toml</code>）中新增可选字段 <code>kallsyms_path</code> 或 <code>system_map_path</code></li>
+<li>VM 启动时 VMM 加载该文件，为每个 VM 维护独立的 <code>ksym::SymbolTable</code></li>
+<li>用户按符号名注册：<code>trace kprobe vm0:schedule</code></li>
+<li>复用现有 <code>ksym</code> crate，每个 VM 一个实例，存储在 <code>VmSymbolRegistry</code> 中</li>
+</ul>
+<pre><code>trace kprobe vm0:schedule            # 按符号名
+trace kprobe vm0:schedule+0x20       # 符号名 + 偏移
+ksym vm0 list                        # 列出 VM 0 的符号
+ksym vm0 lookup schedule             # 查询 VM 0 中的符号地址
+ksym vm0 load &lt;path&gt;                 # 手动加载符号表
+</code></pre>
+<h2 id="6-模块组织与文件结构"><a class="header" href="#6-模块组织与文件结构">6. 模块组织与文件结构</a></h2>
+<h3 id="61-目录结构"><a class="header" href="#61-目录结构">6.1 目录结构</a></h3>
+<pre><code>modules/axebpf/src/
+├── lib.rs                      # 模块入口，feature 门控，init()
+├── context.rs                  # TraceContext（扩展：probe_type, vm_id）
+├── runtime.rs                  # eBPF VM 封装（不变）
+├── maps.rs / map_ops.rs        # eBPF map（不变）
+├── helpers.rs                  # 标准 helper（不变）
+├── symbols.rs                  # VMM 符号表（不变）
+├── attach.rs                   # 程序附着管理（不变）
+├── output.rs / macros.rs       # 输出与宏（不变）
+│
+├── probe/                      # 统一探针框架
+│   ├── mod.rs                  # ProbeType 枚举，ProbeManager trait
+│   ├── registry.rs             # 全局探针注册表（统一管理所有类型）
+│   │
+│   ├── hprobe/                 # 从现有 kprobe_* 重命名
+│   │   ├── mod.rs
+│   │   ├── manager.rs          # ← kprobe_manager.rs
+│   │   ├── handler.rs          # ← kprobe_handler.rs
+│   │   └── ops.rs              # ← kprobe_ops.rs
+│   │
+│   └── kprobe/                 # Guest 探针
+│       ├── mod.rs
+│       ├── manager.rs          # Guest kprobe 注册/生命周期
+│       ├── handler.rs          # Stage-2 fault / BRK 处理
+│       ├── addr_translate.rs   # GVA→GPA→HVA 地址翻译
+│       └── guest_symbols.rs    # 每 VM 符号表管理
+│
+├── tracepoints/                # 不变
+│   ├── vmm.rs                  # 25+ VMM tracepoint
+│   ├── shell.rs
+│   ├── registry.rs
+│   ├── stats.rs
+│   ├── histogram.rs
+│   └── hypervisor_helpers.rs   # 扩展：真实 vm_id 返回
+│
+├── programs/                   # 不变
+│   ├── bytecode.rs
+│   └── registry.rs
+│
+├── cache.rs                    # I-cache 刷新（hprobe/kprobe 共用）
+├── insn_slot.rs                # 指令槽分配（hprobe 使用）
+└── page_table.rs               # EL2 页表权限修改（hprobe 使用）
+</code></pre>
+<h3 id="62-feature-门控"><a class="header" href="#62-feature-门控">6.2 Feature 门控</a></h3>
+<pre><code class="language-toml">[features]
+default = ["symbols", "tracepoint-support", "runtime", "axhal"]
+hprobe = ["tracepoint-support", "dep:kprobe"]    # 原 kprobe feature 重命名
+guest-kprobe = ["hprobe"]                         # 依赖 hprobe 基础设施
+</code></pre>
+<p><code>hprobe</code> 复用现有 <code>kprobe</code> crate 依赖。<code>guest-kprobe</code> 是新增 feature，依赖 <code>hprobe</code> 因为共享 cache/insn_slot 等基础设施。</p>
+<h2 id="7-shell-命令接口"><a class="header" href="#7-shell-命令接口">7. Shell 命令接口</a></h2>
+<h3 id="71-命令体系"><a class="header" href="#71-命令体系">7.1 命令体系</a></h3>
+<pre><code class="language-bash"># === hprobe (VMM 探针) ===
+trace hprobe &lt;symbol&gt;                    # 注册并启用 hprobe
+trace hprobe &lt;symbol&gt; --ret              # hretprobe
+trace unhprobe &lt;symbol&gt;                  # 移除
+
+# === kprobe (Guest 探针) ===
+trace kprobe vm&lt;id&gt;:&lt;addr&gt;               # 按地址，Stage-2 fault 模式
+trace kprobe vm&lt;id&gt;:&lt;addr&gt; --inject      # 按地址，BRK 注入模式
+trace kprobe vm&lt;id&gt;:&lt;symbol&gt;             # 按符号名（需加载符号表）
+trace kprobe vm&lt;id&gt;:&lt;symbol&gt; --ret       # kretprobe
+trace unkprobe vm&lt;id&gt;:&lt;addr|symbol&gt;      # 移除
+
+# === tracepoint (不变) ===
+trace enable &lt;subsys&gt;:&lt;event&gt;
+trace disable &lt;subsys&gt;:&lt;event&gt;
+
+# === 符号查询 ===
+ksym list                               # VMM 符号
+ksym lookup &lt;name&gt;                       # VMM 符号查找
+ksym vm&lt;id&gt; list                         # Guest 符号
+ksym vm&lt;id&gt; lookup &lt;name&gt;                # Guest 符号查找
+ksym vm&lt;id&gt; load &lt;path&gt;                  # 手动加载 Guest 符号表
+
+# === 统一状态查看 ===
+trace list                               # 列出所有活跃探针
+trace stat                               # 统计信息
+</code></pre>
+<h3 id="72-联调工作流示例"><a class="header" href="#72-联调工作流示例">7.2 联调工作流示例</a></h3>
+<p>追踪 guest 调度引发的 VM Exit：</p>
+<pre><code class="language-bash"># 1. 在 VMM 侧挂 tracepoint，观察 vcpu_run_exit 事件
+trace enable vmm:vcpu_run_exit
+
+# 2. 在 guest 内核的 schedule() 入口挂 kprobe
+trace kprobe vm0:schedule
+
+# 3. 在 VMM 侧的 exit handler 挂 hprobe
+trace hprobe handle_vcpu_exit
+
+# 4. 查看所有活跃探针
+trace list
+  [hprobe]     handle_vcpu_exit        hits: 0
+  [kprobe]     vm0:schedule            hits: 0  mode: s2fault
+  [tracepoint] vmm:vcpu_run_exit       enabled
+
+# 5. 运行 VM，触发事件后查看统计
+trace stat
+</code></pre>
+<p>三种探针协同工作，eBPF 程序通过 <code>bpf_get_current_vm_id()</code> 关联事件，可以在 map 中构建跨层的因果链（guest schedule → VM Exit → VMM handle_vcpu_exit 的时间线）。</p>
+<h2 id="8-实现阶段"><a class="header" href="#8-实现阶段">8. 实现阶段</a></h2>
+<h3 id="阶段一hprobe-重构--基础设施"><a class="header" href="#阶段一hprobe-重构--基础设施">阶段一：hprobe 重构 + 基础设施</a></h3>
+<ul>
+<li>将现有 <code>kprobe_*</code> 文件重命名为 <code>hprobe_*</code>，建立 <code>probe/</code> 目录结构</li>
+<li>定义 <code>ProbeType</code> 枚举和统一 <code>TraceContext</code>（增加 <code>probe_type</code>、<code>vm_id</code> 字段）</li>
+<li>建立 <code>probe/registry.rs</code> 统一探针注册表</li>
+<li>Shell 命令从 <code>trace kprobe</code> 改为 <code>trace hprobe</code></li>
+<li>更新 feature gate：<code>kprobe</code> → <code>hprobe</code></li>
+<li>验收标准：现有 hprobe 功能完全不退化，所有现有测试通过</li>
+</ul>
+<h3 id="阶段二guest-kprobe--stage-2-fault-模式"><a class="header" href="#阶段二guest-kprobe--stage-2-fault-模式">阶段二：Guest kprobe — Stage-2 fault 模式</a></h3>
+<ul>
+<li>实现 <code>GuestAddressTranslator</code>（walk guest 页表，GVA→GPA）</li>
+<li>实现 Stage-2 页表权限修改（XN 位控制）</li>
+<li>实现 guest kprobe manager（注册、启用、禁用生命周期）</li>
+<li>在 Stage-2 fault handler 中增加 kprobe 匹配逻辑</li>
+<li>从 vCPU 上下文提取 EL1 寄存器构建 TraceContext</li>
+<li>支持 <code>trace kprobe vm&lt;id&gt;:&lt;addr&gt;</code> 命令（手动地址）</li>
+<li>验收标准：能在 guest 内核函数入口触发 eBPF 程序并输出</li>
+</ul>
+<h3 id="阶段三增强功能"><a class="header" href="#阶段三增强功能">阶段三：增强功能</a></h3>
+<p>按优先级排列：</p>
+<ol>
+<li>kretprobe（guest）：LR 劫持 + trampoline</li>
+<li>BRK 注入模式：完整 GVA→HVA 翻译 + guest 指令修改</li>
+<li>Guest 符号表加载：<code>VmSymbolRegistry</code> + VM 配置集成</li>
+<li><code>bpf_get_current_vm_id()</code> 真实实现：对接 axvm 的 VM 上下文追踪</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
