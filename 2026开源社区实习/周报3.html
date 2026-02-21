@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>2026开源社区实习 - 2026开源社区实习目标</title>
+        <title>第三周周报 - 2026开源社区实习目标</title>
 
 
         <!-- Custom HTML head -->
@@ -174,28 +174,222 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="2026开源社区实习"><a class="header" href="#2026开源社区实习">2026开源社区实习</a></h1>
-<p>这里是实习相关文档的索引：</p>
+<h1>周报（2.8 - 2.21）</h1>
+<h2>开发分支</h2>
 <ul>
-<li><a href="./实习目标.html">实习目标</a> - 性能追踪技术方案与背景</li>
-<li><a href="./技术选型.html">技术选型</a> - 组件选择依据</li>
-<li><a href="./开发计划.html">开发计划</a> - 详细的任务分解与时间表</li>
-<li><a href="./周报1.html">第一周周报</a> - 2026/01/20 - 2026/01/31 周报</li>
-<li><a href="./周报2.html">第二周周报</a> - 2026/02/01 - 2026/02/07 周报</li>
-<li><a href="./周报3.html">第三周周报</a> - 2026/02/08 - 2026/02/21 周报</li>
-<li><a href="./Iterator支持方案.html">Iterator支持方案</a> - Iterator支持方案</li>
-<li><a href="./统一探针调试系统设计.html">统一探针调试系统方案</a> - 统一探针调试系统方案</li>
+<li>axvisor: <a href="https://github.com/Iscreamx/axvisor/tree/feature/ebpf">https://github.com/Iscreamx/axvisor/tree/feature/ebpf</a></li>
+<li>axebpf: <a href="https://github.com/Iscreamx/axebpf">https://github.com/Iscreamx/axebpf</a></li>
 </ul>
+<hr>
+<h2>一、已完成工作</h2>
+<ul>
+<li><p><strong>Probe 模块重构（axebpf）</strong>：将探针代码重组为 <code>probe/hprobe</code> 与 <code>probe/kprobe</code> 两层结构，并补齐对应 manager/handler 接口（commit: <code>9154c68</code>）。效果：VMM hprobe 与 guest kprobe 的代码边界更清晰，后续功能扩展成本更低。</p>
+</li>
+<li><p><strong>TraceContext 扩展（axebpf）</strong>：新增 <code>probe_type</code> 字段用于区分事件来源（commit: <code>68118bc</code>）。效果：同一统计/输出通路可以识别 tracepoint、hprobe、kprobe 等不同类型。</p>
+</li>
+<li><p><strong>ELF 加载器切换到 aya-obj（axebpf）</strong>：runtime 从手写解析切换到 aya-obj，覆盖 map 重定位和函数调用重定位流程（commit: <code>ab494b8</code>，当前见 <code>modules/axebpf/src/runtime.rs</code>）。效果：ELF 兼容性提升，解析流程与主流 eBPF 工具链对齐。</p>
+</li>
+<li><p><strong>统一事件管线（axebpf）</strong>：新增 <code>event.rs</code>，定义 64B <code>TraceEvent</code>，实现 RingBuf + fallback queue + 内置统计聚合（commit: <code>9a76fd8</code>，文件：<code>modules/axebpf/src/event.rs</code>）。效果：<code>trace stream/dump/stat</code> 可直接消费统一事件流。</p>
+</li>
+<li><p><strong>RingBuf Map 内核侧支撑（axebpf）</strong>：新增 <code>MapType::RingBuf</code>、<code>vmap/unmap</code>、页分配与 PollWaker（<code>modules/axebpf/src/maps.rs</code>、<code>modules/axebpf/src/map_ops.rs</code>、<code>modules/axebpf/src/vmap.rs</code>）。效果：支持事件流式输出所需的 RingBuf 数据面。</p>
+</li>
+<li><p><strong>Helper 能力补充（axebpf）</strong>：新增 <code>bpf_probe_read_kernel</code> 对应 helper ID <code>113</code>，并将 lookup 缓冲区从 256B 扩展到 512B（<code>modules/axebpf/src/helpers.rs</code>）。</p>
+</li>
+<li><p><strong>tracepoint→事件流接入（axebpf）</strong>：<code>tracepoints/stats.rs</code>、<code>tracepoints/vmm.rs</code>、<code>tracepoints/shell.rs</code> 改为通过统一事件/统计管线记录数据（commit: <code>9a76fd8</code>）。效果：tracepoint 与 probe 统计口径统一。</p>
+</li>
+<li><p><strong>Shell 命令面增强（axvisor）</strong>：</p>
+<ul>
+<li>新增 <code>trace stream</code> / <code>trace dump</code>，支持 <code>--filter</code>、<code>-n</code>（commit: <code>662b3e6</code>，文件：<code>kernel/src/shell/commands/trace.rs</code>）</li>
+<li><code>trace stat</code> 增加 <code>--hist</code>、<code>--top</code>（同上）</li>
+<li>将 VMM 侧命令由 <code>kprobe</code> 更名为 <code>hprobe</code>，并增加 guest-kprobe 命令路径（commit: <code>2898252</code>）</li>
+</ul>
+</li>
+<li><p><strong>构建与符号注入流程改造（axvisor）</strong>：</p>
+<ul>
+<li>从 <code>include_bytes!</code> 方式切换到 linker section + build 后注入（commit: <code>96abd6a</code>）</li>
+<li>将 kallsyms 注入改为 ELF 原地写入，修复 cargo hardlink 场景下符号丢失（commit: <code>916b8e7</code>，文件：<code>xtask/src/symbols.rs</code>）</li>
+<li><code>qemu-aarch64</code> 配置默认启用 <code>guest-kprobe</code>（commit: <code>708a828</code>）</li>
+</ul>
+</li>
+<li><p><strong>工程清理（axvisor）</strong>：移除独立 <code>ebpf-programs</code> 与 <code>xtask build-ebpf</code> 流程（commit: <code>eb61c44</code>），并同步子模块指针到支持 hprobe/guest-kprobe 的版本（commit: <code>cfc9e8b</code>）。</p>
+</li>
+</ul>
+<hr>
+<h2>二、待完善</h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>代码现状</th>
+<th>解决方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>guest kprobe 处理未真正“接管”异常</td>
+<td><code>handle_stage2_exec_fault</code> / <code>handle_guest_brk</code> 当前匹配后仍返回 <code>false</code>（<code>modules/axebpf/src/probe/kprobe/handler.rs</code>）</td>
+<td>完成异常路径接管与恢复语义，返回已处理状态</td>
+</tr>
+<tr>
+<td>guest 寄存器上下文尚未接入 eBPF</td>
+<td>运行时调用为 <code>run_program(prog_id, None)</code>（同文件）</td>
+<td>接入真实 guest TrapFrame/pt_regs 上下文</td>
+</tr>
+<tr>
+<td>guest kprobe 注入机制未落地</td>
+<td>manager 中 Stage-2 XN / BRK 写回仍是 TODO（<code>modules/axebpf/src/probe/kprobe/manager.rs</code>）</td>
+<td>实现 GVA→GPA/HVA 转换、写保护切换、原指令恢复</td>
+</tr>
+<tr>
+<td>PerCpu/PerfEventArray 仍未支持</td>
+<td><code>map_ops.rs</code> 中相关能力返回 NotSupported</td>
+<td>按实际需求补齐 map 类型支持</td>
+</tr>
+<tr>
+<td>统计 reset 未实现</td>
+<td>shell 中 <code>trace reset</code> 仍提示不支持（<code>kernel/src/shell/commands/trace.rs</code>）</td>
+<td>增加统计状态重置 API</td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<h2>三、遇到的问题与解决方案</h2>
+<h3>3.1 kallsyms 注入后在后续流程中失效</h3>
+<p><strong>问题</strong>：构建后注入符号在后续步骤中可能失效，导致运行时符号表异常。<br><strong>原因</strong>：<code>rust-objcopy --update-section</code> 会产生新 inode，与 cargo hardlink 机制冲突。<br><strong>解决方案</strong>：改为解析 ELF 后定位 <code>.kallsyms</code> section 并原地写入（<code>xtask/src/symbols.rs::inject_kallsyms</code>），并在需要生成 <code>.bin</code> 时重新导出。</p>
+<h3>3.2 RingBuf 需要页分配与连续虚拟映射支持</h3>
+<p><strong>问题</strong>：事件流输出需要 RingBuf，但早期 map 层不支持 page alloc/vmap。<br><strong>解决方案</strong>：在 <code>AxKernelAuxOps</code> 中实现 <code>alloc_page/free_page/vmap/unmap</code>，新增 <code>vmap.rs</code> 处理页表映射，并配套 PollWaker。</p>
+<h3>3.3 统计与输出路径分散</h3>
+<p><strong>问题</strong>：tracepoint 与 probe 的统计/展示口径不一致。<br><strong>解决方案</strong>：引入统一 <code>TraceEvent</code> 管线，所有来源统一 <code>emit_event()</code>，shell 使用 <code>trace stream/dump/stat</code> 直接消费聚合结果。</p>
+<hr>
+<h2>四、工作量统计</h2>
+<blockquote>
+<p>统计区间：2026-02-08 ~ 2026-02-21（基于本地 <code>git log</code>）</p>
+</blockquote>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>仓库</th>
+<th>提交数</th>
+<th>变更文件数</th>
+<th>新增</th>
+<th>删除</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>axebpf</td>
+<td>8</td>
+<td>38</td>
+<td>2117</td>
+<td>1394</td>
+</tr>
+<tr>
+<td>axvisor</td>
+<td>9</td>
+<td>36</td>
+<td>932</td>
+<td>1212</td>
+</tr>
+</tbody></table>
+</div>
+<p><strong>本期关键新增文件</strong>：</p>
+<ul>
+<li><code>modules/axebpf/src/event.rs</code></li>
+<li><code>modules/axebpf/src/vmap.rs</code></li>
+</ul>
+<p><strong>本期关键命令能力（shell）</strong>：</p>
+<ul>
+<li><code>trace stream [--filter TYPE] [-n N]</code></li>
+<li><code>trace dump [--filter TYPE] [-n N]</code></li>
+<li><code>trace stat [--hist EVENT] [--top N]</code></li>
+<li><code>trace hprobe / hretprobe / unhprobe</code></li>
+<li><code>trace kprobe / unkprobe</code>（guest）</li>
+</ul>
+<hr>
+<h2>五、下阶段计划</h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>优先级</th>
+<th>任务</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>P0</td>
+<td>完成 guest kprobe 异常接管闭环</td>
+<td>handler 命中后返回已处理，并实现恢复路径</td>
+</tr>
+<tr>
+<td>P0</td>
+<td>接入真实 guest 上下文给 eBPF 程序</td>
+<td>替换 <code>run_program(..., None)</code></td>
+</tr>
+<tr>
+<td>P1</td>
+<td>完成 Stage-2 / BRK 注入机制</td>
+<td>落地 manager 中 TODO（地址转换、权限切换、原指令恢复）</td>
+</tr>
+<tr>
+<td>P1</td>
+<td>完善统计重置能力</td>
+<td>提供 <code>trace reset</code> 可用实现</td>
+</tr>
+<tr>
+<td>P2</td>
+<td>扩展 map 能力</td>
+<td>按需补齐 PerCpu/PerfEventArray</td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<h2>六、风险与阻塞项</h2>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr>
+<th>风险项</th>
+<th>影响</th>
+<th>缓解措施</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>guest kprobe 仍处于“注册/命中统计优先”阶段</td>
+<td>端到端探针行为不完整</td>
+<td>先补齐异常接管与恢复语义，再扩大使用范围</td>
+</tr>
+<tr>
+<td>RingBuf/vmap 涉及页表操作</td>
+<td>错误处理不足时可能影响稳定性</td>
+<td>增加异常路径回滚与压力测试</td>
+</tr>
+<tr>
+<td>统计功能快速迭代中</td>
+<td>指标口径可能出现阶段性变化</td>
+<td>在文档中固定字段定义并同步 shell 展示</td>
+</tr>
+</tbody></table>
+</div>
+<hr>
+<h2>七、个人日志</h2>
+<h3>7.1 本期最关键的架构变化</h3>
+<p>从“tracepoint/hprobe/kprobe 各自上报”转为“统一 <code>TraceEvent</code> 上报 + 统一统计聚合”。这使得 shell 侧 <code>stream/dump/stat</code> 不再依赖每条路径的特化代码。</p>
+<h3>7.2 对工程流程的改进</h3>
+<p>kallsyms 原地注入和 QEMU 运行前强制刷新符号，显著降低了“构建成功但符号不可用”的隐性问题。</p>
+<h3>7.3 当前技术判断</h3>
+<p>guest-kprobe 的命令面和 registry 已基本成形，但异常路径接管、上下文传递与注入恢复机制仍是决定可用性的核心缺口，下一阶段应优先闭环这一条主链路。</p>
+
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../2026开源社区实习/周报2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../2026开源社区实习/实习目标.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -205,11 +399,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../2026开源社区实习/周报2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../2026开源社区实习/实习目标.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
