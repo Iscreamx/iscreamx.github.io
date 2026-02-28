@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>第三周周报 - 2026开源社区实习目标</title>
+        <title>第四周周报 - 2026开源社区实习目标</title>
 
 
         <!-- Custom HTML head -->
@@ -174,98 +174,94 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-<h1>周报（2.8 - 2.21）</h1>
+<h1>周报（2026-02-22 至 2026-02-28）</h1>
 <h2>开发分支</h2>
 <ul>
 <li>axvisor: <a href="https://github.com/Iscreamx/axvisor/tree/feature/ebpf">https://github.com/Iscreamx/axvisor/tree/feature/ebpf</a></li>
 <li>axebpf: <a href="https://github.com/Iscreamx/axebpf">https://github.com/Iscreamx/axebpf</a></li>
 </ul>
 <hr>
-<h2>一、已完成工作</h2>
-<ul>
-<li><p><strong>Probe 模块重构（axebpf）</strong>：将探针代码重组为 <code>probe/hprobe</code> 与 <code>probe/kprobe</code> 两层结构，并补齐对应 manager/handler 接口（commit: <code>9154c68</code>）。效果：VMM hprobe 与 guest kprobe 的代码边界更清晰，后续功能扩展成本更低。</p>
-</li>
-<li><p><strong>TraceContext 扩展（axebpf）</strong>：新增 <code>probe_type</code> 字段用于区分事件来源（commit: <code>68118bc</code>）。效果：同一统计/输出通路可以识别 tracepoint、hprobe、kprobe 等不同类型。</p>
-</li>
-<li><p><strong>ELF 加载器切换到 aya-obj（axebpf）</strong>：runtime 从手写解析切换到 aya-obj，覆盖 map 重定位和函数调用重定位流程（commit: <code>ab494b8</code>，当前见 <code>modules/axebpf/src/runtime.rs</code>）。效果：ELF 兼容性提升，解析流程与主流 eBPF 工具链对齐。</p>
-</li>
-<li><p><strong>统一事件管线（axebpf）</strong>：新增 <code>event.rs</code>，定义 64B <code>TraceEvent</code>，实现 RingBuf + fallback queue + 内置统计聚合（commit: <code>9a76fd8</code>，文件：<code>modules/axebpf/src/event.rs</code>）。效果：<code>trace stream/dump/stat</code> 可直接消费统一事件流。</p>
-</li>
-<li><p><strong>RingBuf Map 内核侧支撑（axebpf）</strong>：新增 <code>MapType::RingBuf</code>、<code>vmap/unmap</code>、页分配与 PollWaker（<code>modules/axebpf/src/maps.rs</code>、<code>modules/axebpf/src/map_ops.rs</code>、<code>modules/axebpf/src/vmap.rs</code>）。效果：支持事件流式输出所需的 RingBuf 数据面。</p>
-</li>
-<li><p><strong>Helper 能力补充（axebpf）</strong>：新增 <code>bpf_probe_read_kernel</code> 对应 helper ID <code>113</code>，并将 lookup 缓冲区从 256B 扩展到 512B（<code>modules/axebpf/src/helpers.rs</code>）。</p>
-</li>
-<li><p><strong>tracepoint→事件流接入（axebpf）</strong>：<code>tracepoints/stats.rs</code>、<code>tracepoints/vmm.rs</code>、<code>tracepoints/shell.rs</code> 改为通过统一事件/统计管线记录数据（commit: <code>9a76fd8</code>）。效果：tracepoint 与 probe 统计口径统一。</p>
-</li>
-<li><p><strong>Shell 命令面增强（axvisor）</strong>：</p>
-<ul>
-<li>新增 <code>trace stream</code> / <code>trace dump</code>，支持 <code>--filter</code>、<code>-n</code>（commit: <code>662b3e6</code>，文件：<code>kernel/src/shell/commands/trace.rs</code>）</li>
-<li><code>trace stat</code> 增加 <code>--hist</code>、<code>--top</code>（同上）</li>
-<li>将 VMM 侧命令由 <code>kprobe</code> 更名为 <code>hprobe</code>，并增加 guest-kprobe 命令路径（commit: <code>2898252</code>）</li>
-</ul>
-</li>
-<li><p><strong>构建与符号注入流程改造（axvisor）</strong>：</p>
-<ul>
-<li>从 <code>include_bytes!</code> 方式切换到 linker section + build 后注入（commit: <code>96abd6a</code>）</li>
-<li>将 kallsyms 注入改为 ELF 原地写入，修复 cargo hardlink 场景下符号丢失（commit: <code>916b8e7</code>，文件：<code>xtask/src/symbols.rs</code>）</li>
-<li><code>qemu-aarch64</code> 配置默认启用 <code>guest-kprobe</code>（commit: <code>708a828</code>）</li>
-</ul>
-</li>
-<li><p><strong>工程清理（axvisor）</strong>：移除独立 <code>ebpf-programs</code> 与 <code>xtask build-ebpf</code> 流程（commit: <code>eb61c44</code>），并同步子模块指针到支持 hprobe/guest-kprobe 的版本（commit: <code>cfc9e8b</code>）。</p>
-</li>
-</ul>
+<h2>一句话总结</h2>
+<p>本周核心进展：将 guest-kprobe 的 BrkInject 路径从&quot;能进入流程但不稳定&quot;推进到&quot;可重复验证&quot;——命令解析补齐、keepalive 基线建立、detach 竞态处理完成，形成了可执行的 <code>attach → fire → detach</code> 全流程。</p>
 <hr>
-<h2>二、待完善</h2>
-<div class="table-wrapper">
+<h2>一、已完成工作</h2>
+<h3>1. 命令入口补齐：<code>--inject</code> / <code>--ret</code></h3>
+<p>此前 <code>trace kprobe vm&lt;id&gt;:&lt;addr&gt; ... --inject</code> 被 shell 直接拒绝，原因是命令树只有 usage 文本而未注册对应 flag。本周补齐该缺口，命令可正常进入 manager 路径并走后续注册/回滚逻辑（commit: <code>4f3f5d1</code>，文件：<code>kernel/src/shell/commands/trace.rs</code>）。</p>
+<h3>2. VMM 侧地址翻译 hook 注册</h3>
+<p>新增 <code>register_guest_kprobe_hooks()</code> 统一注册 VMM 侧的 4 组地址翻译回调（commit: <code>4f3f5d1</code>，文件：<code>kernel/src/vmm/mod.rs</code>）：</p>
+<ul>
+<li><code>register_guest_pt_read_hook</code>：读取 guest 页表项</li>
+<li><code>register_vm_ttbr1_hook</code>：获取 VM 的 TTBR1_EL1</li>
+<li><code>register_gpa_to_hpa_hook</code>：GPA→HPA 转换</li>
+<li><code>register_stage2_exec_hook</code>：Stage-2 执行权限切换</li>
+</ul>
+<h3>3. BrkInject 端到端机制实现（axebpf）</h3>
+<p>在 axebpf 侧完成 BrkInject 核心实现（commit: <code>452e641</code>），涉及 11 个文件、+959/-34 行：</p>
+<ul>
+<li><strong>地址翻译</strong>（<code>src/probe/kprobe/addr_translate.rs</code>）：GVA→GPA→HPA 三级地址翻译，通过 hook 回调解耦 VMM 依赖</li>
+<li><strong>BRK 注入与恢复</strong>（<code>src/probe/kprobe/manager.rs</code>）：原指令备份、BRK #4 写入、detach 时原指令还原</li>
+<li><strong>stale-BRK 恢复策略</strong>（<code>src/probe/kprobe/handler.rs</code>）：处理 detach 竞态下残留 BRK 的安全恢复</li>
+<li><strong>新增测试</strong>（4 个测试文件）：覆盖地址翻译、handler、manager、context 四个维度</li>
+</ul>
+<h3>4. 建立 keepalive 验证基线</h3>
+<p>新增 <code>scripts/ostool/prepare_arceos_mini_shell_guest.sh</code> 准备 guest 镜像，支持 <code>mini-shell</code> 和 <code>keepalive</code> 模式。<code>keepalive</code> 模式解决了&quot;guest 很快退出导致验证窗口消失&quot;的问题，主机侧 shell 能在 VM 运行期间保持可交互。</p>
+<h3>5. BrkInject 端到端验证通过</h3>
+<p>在 <code>qemu-aarch64-shell + keepalive guest</code> 场景下验证：</p>
+<pre><code>trace kprobe vm1:0xffff800000002878 printk --inject
+</code></pre>
+<p>验证结果：</p>
+<ul>
+<li>attach 成功，<code>trace list</code> 中 HITS 持续增长</li>
+<li><code>trace stream --filter kprobe -n 5</code> 可观测到事件</li>
+<li>detach 后探针可清理且 VM 保持 Running</li>
+<li>连续多轮快速 <code>attach/detach</code> 压测未再复现 <code>EC_60/Brk64 panic</code></li>
+</ul>
+<h3>6. 文档与集成说明更新（axebpf）</h3>
+<p>更新 README（commit: <code>2383fa5</code>），补充 guest-kprobe 集成指南与验证步骤。</p>
+<hr>
+<h2>二、遇到的问题与解决方案</h2>
+<h3>2.1 detach 后 stale BRK 竞态</h3>
+<p><strong>问题</strong>：快速 <code>attach/detach</code> 场景下，detach 已完成但 guest vCPU 仍在执行 BRK 指令，触发 <code>EC_60/Brk64 panic</code>。
+<strong>原因</strong>：BRK 写入到 guest 内存后，vCPU 可能已 fetch 该指令但尚未执行；detach 恢复原指令后 vCPU 仍会命中 BRK。
+<strong>解决方案</strong>：在 handler 中增加 stale-BRK 检测——若当前 PC 处已无注册探针，识别为 stale BRK，恢复原指令并跳过 eBPF 回调，不触发 panic。</p>
+<h3>2.2 guest 退出窗口过短导致验证失败</h3>
+<p><strong>问题</strong>：默认 guest 启动后快速退出，attach 命令来不及执行。
+<strong>解决方案</strong>：引入 keepalive 模式的 guest 镜像，延长交互窗口，确保 attach/verify/detach 有充足时间。</p>
+<h3>2.3 <code>cpu_ids</code> vs <code>phys_cpu_ids</code> 语义差异</h3>
+<p><strong>问题</strong>：<code>phys_cpu_ids = [1]</code> 在当前配置路径中不生效，导致预期的 CPU 亲和性未应用。
+<strong>现状</strong>：以 <code>cpu_ids = [1]</code> 为准（当前配置解析实现决定），已在验证中统一使用。</p>
+<hr>
+<h2>三、关键验证记录</h2>
 <table>
 <thead>
 <tr>
-<th>问题</th>
-<th>代码现状</th>
-<th>解决方向</th>
+<th>日期</th>
+<th>验证动作</th>
+<th>结果</th>
 </tr>
 </thead>
 <tbody><tr>
-<td>guest kprobe 处理未真正“接管”异常</td>
-<td><code>handle_stage2_exec_fault</code> / <code>handle_guest_brk</code> 当前匹配后仍返回 <code>false</code>（<code>modules/axebpf/src/probe/kprobe/handler.rs</code>）</td>
-<td>完成异常路径接管与恢复语义，返回已处理状态</td>
+<td>02-22</td>
+<td><code>trace kprobe ... --inject</code> 解析链路</td>
+<td>已可解析并进入注册路径；guest 退出窗口下会回滚，且无脏项残留</td>
 </tr>
 <tr>
-<td>guest 寄存器上下文尚未接入 eBPF</td>
-<td>运行时调用为 <code>run_program(prog_id, None)</code>（同文件）</td>
-<td>接入真实 guest TrapFrame/pt_regs 上下文</td>
+<td>02-24</td>
+<td>引入 keepalive 镜像并复验 attach</td>
+<td>解决交互窗口问题；仍出现过 <code>VM TTBR1_EL1 is not ready</code> 的时序失败并自动回滚</td>
 </tr>
 <tr>
-<td>guest kprobe 注入机制未落地</td>
-<td>manager 中 Stage-2 XN / BRK 写回仍是 TODO（<code>modules/axebpf/src/probe/kprobe/manager.rs</code>）</td>
-<td>实现 GVA→GPA/HVA 转换、写保护切换、原指令恢复</td>
-</tr>
-<tr>
-<td>PerCpu/PerfEventArray 仍未支持</td>
-<td><code>map_ops.rs</code> 中相关能力返回 NotSupported</td>
-<td>按实际需求补齐 map 类型支持</td>
-</tr>
-<tr>
-<td>统计 reset 未实现</td>
-<td>shell 中 <code>trace reset</code> 仍提示不支持（<code>kernel/src/shell/commands/trace.rs</code>）</td>
-<td>增加统计状态重置 API</td>
+<td>02-25</td>
+<td>stale-BRK 修复后复验 + 压测</td>
+<td><code>attach → fire → detach</code> 可复现通过；3 轮快速压测无 Brk64 panic</td>
 </tr>
 </tbody></table>
-</div>
-<hr>
-<h2>三、遇到的问题与解决方案</h2>
-<h3>3.1 kallsyms 注入后在后续流程中失效</h3>
-<p><strong>问题</strong>：构建后注入符号在后续步骤中可能失效，导致运行时符号表异常。<br><strong>原因</strong>：<code>rust-objcopy --update-section</code> 会产生新 inode，与 cargo hardlink 机制冲突。<br><strong>解决方案</strong>：改为解析 ELF 后定位 <code>.kallsyms</code> section 并原地写入（<code>xtask/src/symbols.rs::inject_kallsyms</code>），并在需要生成 <code>.bin</code> 时重新导出。</p>
-<h3>3.2 RingBuf 需要页分配与连续虚拟映射支持</h3>
-<p><strong>问题</strong>：事件流输出需要 RingBuf，但早期 map 层不支持 page alloc/vmap。<br><strong>解决方案</strong>：在 <code>AxKernelAuxOps</code> 中实现 <code>alloc_page/free_page/vmap/unmap</code>，新增 <code>vmap.rs</code> 处理页表映射，并配套 PollWaker。</p>
-<h3>3.3 统计与输出路径分散</h3>
-<p><strong>问题</strong>：tracepoint 与 probe 的统计/展示口径不一致。<br><strong>解决方案</strong>：引入统一 <code>TraceEvent</code> 管线，所有来源统一 <code>emit_event()</code>，shell 使用 <code>trace stream/dump/stat</code> 直接消费聚合结果。</p>
+<p>补充说明：</p>
+<ul>
+<li>高频热点下 <code>hprobe_entry</code> 仍可能产生 OOB 日志噪声，本周验证主用 <code>printk</code> 规避干扰。</li>
+</ul>
 <hr>
 <h2>四、工作量统计</h2>
-<blockquote>
-<p>统计区间：2026-02-08 ~ 2026-02-21（基于本地 <code>git log</code>）</p>
-</blockquote>
-<div class="table-wrapper">
 <table>
 <thead>
 <tr>
@@ -278,118 +274,141 @@
 </thead>
 <tbody><tr>
 <td>axebpf</td>
-<td>8</td>
-<td>38</td>
-<td>2117</td>
-<td>1394</td>
+<td>2</td>
+<td>12</td>
+<td>+1125</td>
+<td>-210</td>
 </tr>
 <tr>
 <td>axvisor</td>
-<td>9</td>
-<td>36</td>
-<td>932</td>
-<td>1212</td>
+<td>2</td>
+<td>4</td>
+<td>+108</td>
+<td>-5</td>
 </tr>
 </tbody></table>
-</div>
-<p><strong>本期关键新增文件</strong>：</p>
+<p><strong>本期关键新增 / 变更文件</strong>：</p>
 <ul>
-<li><code>modules/axebpf/src/event.rs</code></li>
-<li><code>modules/axebpf/src/vmap.rs</code></li>
-</ul>
-<p><strong>本期关键命令能力（shell）</strong>：</p>
-<ul>
-<li><code>trace stream [--filter TYPE] [-n N]</code></li>
-<li><code>trace dump [--filter TYPE] [-n N]</code></li>
-<li><code>trace stat [--hist EVENT] [--top N]</code></li>
-<li><code>trace hprobe / hretprobe / unhprobe</code></li>
-<li><code>trace kprobe / unkprobe</code>（guest）</li>
+<li><code>src/probe/kprobe/addr_translate.rs</code>（地址翻译机制扩展）</li>
+<li><code>src/probe/kprobe/manager.rs</code>（BrkInject 核心逻辑）</li>
+<li><code>src/probe/kprobe/handler.rs</code>（stale-BRK 恢复）</li>
+<li><code>tests/guest_addr_translate_tests.rs</code>、<code>tests/guest_kprobe_handler_tests.rs</code>、<code>tests/guest_kprobe_manager_tests.rs</code>（新增测试）</li>
+<li><code>kernel/src/vmm/mod.rs</code>（VMM hook 注册）</li>
 </ul>
 <hr>
-<h2>五、下阶段计划</h2>
-<div class="table-wrapper">
+<h2>五、当前判断</h2>
+<ul>
+<li>BrkInject 路径已达到&quot;本阶段可验收&quot;的稳定度，建议继续作为 guest-kprobe 的主验证通道。</li>
+<li>Stage-2 fault 路径仍未完善，当前策略保持&quot;明确标注限制 + 不作为本周验收前置条件&quot;。</li>
+</ul>
+<hr>
+<h2>六、遗留问题</h2>
+<table>
+<thead>
+<tr>
+<th>问题</th>
+<th>现状</th>
+<th>影响</th>
+<th>解决方向</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Stage-2 fault 命中后恢复不完整</td>
+<td>缺少 <code>MDSCR_EL1.SS + EC::SingleStepLowerEL</code> 完整机制</td>
+<td>命中点可能重复 fault，形成忙循环</td>
+<td>实现 single-step 基础设施，命中后单步执行原指令再重新挂 XN</td>
+</tr>
+<tr>
+<td><code>interrupt_mode = &quot;emu&quot;/&quot;no_irq&quot;</code> 路径未实现</td>
+<td>仍可能触发 <code>not yet implemented</code> panic</td>
+<td>无法覆盖所有中断模式场景</td>
+<td>按需补齐分支或显式拒绝不支持的模式</td>
+</tr>
+<tr>
+<td>全仓 clippy 基线问题</td>
+<td><code>cargo xtask clippy</code> 受历史 lint 阻塞</td>
+<td>本功能线无法独立完成质量门禁</td>
+<td>分批清理历史 lint，或在 CI 中按模块单独检查</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>七、提交摘要</h2>
+<table>
+<thead>
+<tr>
+<th>仓库</th>
+<th>提交</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>axvisor</td>
+<td><a href="https://github.com/Iscreamx/axvisor/commit/4f3f5d1"><code>4f3f5d1</code></a></td>
+<td>guest-kprobe VMM hook 注册 + <code>--inject</code> 命令链路接入</td>
+</tr>
+<tr>
+<td>axvisor</td>
+<td><a href="https://github.com/Iscreamx/axvisor/commit/55db87c"><code>55db87c</code></a></td>
+<td>同步 axebpf 子模块到 guest-kprobe 实现版本</td>
+</tr>
+<tr>
+<td>axebpf</td>
+<td><a href="https://github.com/Iscreamx/axebpf/commit/452e641"><code>452e641</code></a></td>
+<td>地址翻译 hook、BrkInject 核心实现、stale-BRK 恢复 + 测试</td>
+</tr>
+<tr>
+<td>axebpf</td>
+<td><a href="https://github.com/Iscreamx/axebpf/commit/2383fa5"><code>2383fa5</code></a></td>
+<td>文档：guest-kprobe 集成验证指南更新</td>
+</tr>
+</tbody></table>
+<hr>
+<h2>八、下周计划</h2>
 <table>
 <thead>
 <tr>
 <th>优先级</th>
 <th>任务</th>
-<th>说明</th>
+<th>验收标准</th>
 </tr>
 </thead>
 <tbody><tr>
 <td>P0</td>
-<td>完成 guest kprobe 异常接管闭环</td>
-<td>handler 命中后返回已处理，并实现恢复路径</td>
+<td>Stage-2 单步恢复基础设施</td>
+<td>命中后可执行原指令并重新挂回 XN，不再循环 fault</td>
 </tr>
 <tr>
 <td>P0</td>
-<td>接入真实 guest 上下文给 eBPF 程序</td>
-<td>替换 <code>run_program(..., None)</code></td>
+<td>稳定化 BrkInject 验证脚本</td>
+<td>固化一键复验流程（build/attach/stream/detach）并可重复通过</td>
 </tr>
 <tr>
 <td>P1</td>
-<td>完成 Stage-2 / BRK 注入机制</td>
-<td>落地 manager 中 TODO（地址转换、权限切换、原指令恢复）</td>
+<td>降低高频热点下 OOB 噪声</td>
+<td><code>hprobe_entry</code> 在热点函数下可稳定运行</td>
 </tr>
 <tr>
 <td>P1</td>
-<td>完善统计重置能力</td>
-<td>提供 <code>trace reset</code> 可用实现</td>
-</tr>
-<tr>
-<td>P2</td>
-<td>扩展 map 能力</td>
-<td>按需补齐 PerCpu/PerfEventArray</td>
+<td>清理 clippy 历史阻塞项</td>
+<td><code>cargo xtask clippy</code> 在主线配置可通过</td>
 </tr>
 </tbody></table>
-</div>
 <hr>
-<h2>六、风险与阻塞项</h2>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr>
-<th>风险项</th>
-<th>影响</th>
-<th>缓解措施</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>guest kprobe 仍处于“注册/命中统计优先”阶段</td>
-<td>端到端探针行为不完整</td>
-<td>先补齐异常接管与恢复语义，再扩大使用范围</td>
-</tr>
-<tr>
-<td>RingBuf/vmap 涉及页表操作</td>
-<td>错误处理不足时可能影响稳定性</td>
-<td>增加异常路径回滚与压力测试</td>
-</tr>
-<tr>
-<td>统计功能快速迭代中</td>
-<td>指标口径可能出现阶段性变化</td>
-<td>在文档中固定字段定义并同步 shell 展示</td>
-</tr>
-</tbody></table>
-</div>
-<hr>
-<h2>七、个人日志</h2>
-<h3>7.1 本期最关键的架构变化</h3>
-<p>从“tracepoint/hprobe/kprobe 各自上报”转为“统一 <code>TraceEvent</code> 上报 + 统一统计聚合”。这使得 shell 侧 <code>stream/dump/stat</code> 不再依赖每条路径的特化代码。</p>
-<h3>7.2 对工程流程的改进</h3>
-<p>kallsyms 原地注入和 QEMU 运行前强制刷新符号，显著降低了“构建成功但符号不可用”的隐性问题。</p>
-<h3>7.3 当前技术判断</h3>
-<p>guest-kprobe 的命令面和 registry 已基本成形，但异常路径接管、上下文传递与注入恢复机制仍是决定可用性的核心缺口，下一阶段应优先闭环这一条主链路。</p>
+<h2>九、个人复盘</h2>
+<p>这周最大的变化不是&quot;新增了多少功能&quot;，而是<strong>验证方法本身被固化了</strong>。</p>
+<p>之前的问题是多因素叠加：命令解析、guest 生命周期窗口、detach 竞态——任一环节出问题都会让结论失真。现在通过 keepalive 基线和 stale-BRK 恢复策略，BrkInject 已经具备重复回放能力，后续可以把精力集中在 Stage-2 单步机制完善，而不是反复排查环境偶发因素。</p>
+<p>另一个收获是：<strong>地址翻译的 hook 解耦设计证明了可行性</strong>——axebpf 不直接依赖 VMM 实现，而是通过回调注册让 VMM 在启动时注入翻译能力，这使得 guest-kprobe 模块可以独立测试（4 个新增测试文件均不依赖完整 VMM 环境）。</p>
+
 
 
                     </main>
-
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../2026开源社区实习/周报2.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../2026开源社区实习/周报3.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../2026开源社区实习/周报4.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -399,11 +418,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../2026开源社区实习/周报2.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../2026开源社区实习/周报3.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../2026开源社区实习/周报4.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
