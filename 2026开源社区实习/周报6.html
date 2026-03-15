@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>第五周周报 - 2026开源社区实习目标</title>
+        <title>第六周周报 - 2026开源社区实习目标</title>
 
 
         <!-- Custom HTML head -->
@@ -174,256 +174,153 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-<h1 id="周报2026-03-02-至-2026-03-08">周报（2026-03-02 至
-2026-03-08）</h1>
-<h2 id="开发分支">开发分支</h2>
+<h1 id="周报2026-03-09-至-2026-03-15"><a class="header" href="#周报2026-03-09-至-2026-03-15">周报（2026-03-09 至 2026-03-15）</a></h1>
+<h2 id="开发分支"><a class="header" href="#开发分支">开发分支</a></h2>
 <ul>
-<li>axvisor: <a
-href="https://github.com/Iscreamx/axvisor/tree/feature/ebpf">https://github.com/Iscreamx/axvisor/tree/feature/ebpf</a></li>
-<li>axebpf: <a
-href="https://github.com/Iscreamx/axebpf/tree/main">https://github.com/Iscreamx/axebpf/tree/main</a></li>
+<li>axvisor: <a href="https://github.com/Iscreamx/axvisor/tree/feature/ebpf">https://github.com/Iscreamx/axvisor/tree/feature/ebpf</a></li>
+<li>axebpf: <a href="https://github.com/Iscreamx/axebpf/tree/feature/deferred-guest-kprobe-enable">https://github.com/Iscreamx/axebpf/tree/feature/deferred-guest-kprobe-enable</a></li>
 </ul>
 <hr />
-<h2 id="总结">总结</h2>
-<p>本周核心进展：将 guest-kprobe 的 Stage-2 fault
-路径从“已有基础设施但难以稳定命中”推进到“支持符号化定位、支持 deferred
-attach、可在 QEMU 中反复观测到命中 / 单步 / 恢复日志”的状态；同时保留
-BrkInject 作为对照路径，用于验证 deferred attach
-的时序处理是否正确。</p>
+<h2 id="总结"><a class="header" href="#总结">总结</a></h2>
+<p>本周核心进展：在上周 Stage-2 / BrkInject 双路径和 deferred attach 机制基本落地的基础上，完成了 guest kretprobe 返回探针机制的实现——包括 per-vCPU return stack、动态 BRK 注入/回收的引用计数管理、以及 handler 侧的 entry/return 分流处理；同时完成了上周遗留的 deferred attach 收口提交和 VMM 依赖解耦。</p>
 <hr />
-<h2 id="一已完成工作">一、已完成工作</h2>
-<h3 id="1-补齐-guest-symbol-工作流">1. 补齐 guest symbol 工作流</h3>
-<p>本周先补齐了 guest symbol 相关入口，完成了：</p>
+<h2 id="一已完成工作"><a class="header" href="#一已完成工作">一、已完成工作</a></h2>
+<h3 id="1-deferred-attach-收口"><a class="header" href="#1-deferred-attach-收口">1. deferred attach 收口</a></h3>
 <ul>
-<li>guest 符号表支持</li>
-<li><code>trace kprobe vm&lt;id&gt;:&lt;symbol&gt;</code> 形式的符号目标
-attach</li>
-<li><code>trace list</code> 中目标地址的符号化展示</li>
+<li><strong>axvisor 侧</strong>（<code>d379ab7</code>）：shell 的 <code>trace kprobe</code> 命令支持 pending attach 提示，当 <code>TTBR1_EL1</code> 尚未就绪时显式输出 "registered pending enable" 而非报错退出。</li>
+<li><strong>VMM 依赖解耦</strong>（<code>ac1068a</code>）：将 VM-exit 通知收回到 <code>kernel/src/vmm/mod.rs</code>，去掉对 <code>axvm</code> 新接口的直接依赖，使 guest-kprobe 功能可在不修改 axvm crate 的前提下工作。</li>
 </ul>
-<p>这样后续排查 Stage-2
-路径时，不再需要每次手工查地址，降低了验证成本。</p>
-<h3 id="2-stage-2-single-step-基础能力完善">2. Stage-2 single-step
-基础能力完善</h3>
-<p>在 axebpf 侧完成了 restored-instruction single-step 基础设施，使
-Stage-2 fault 命中后可以先放开执行权限、单步执行原指令、再恢复
-XN，避免停留在简单的重复 fault 模式。</p>
-<p>本周相关推进包括：</p>
+<h3 id="2-guest-kretprobe-返回探针实现axebpf"><a class="header" href="#2-guest-kretprobe-返回探针实现axebpf">2. guest kretprobe 返回探针实现（axebpf）</a></h3>
+<p>本周最主要的新功能是 guest kretprobe（<code>a77d6ec</code>），变更量为 +1126/-145 行，涉及 10 个文件。核心设计包括：</p>
+<h4 id="21-per-vcpu-return-stackreturn_stackrs新增文件"><a class="header" href="#21-per-vcpu-return-stackreturn_stackrs新增文件">2.1 per-vCPU return stack（<code>return_stack.rs</code>，新增文件）</a></h4>
 <ul>
-<li>补齐 guest TraceContext 中的 x0-x7 透传</li>
-<li>增加 VM 生命周期清理入口，减少 VM stop/restart 后的脏状态</li>
-<li>修复 multi-vCPU stepping race，并补强 manager 测试稳定性</li>
+<li>每个 vCPU 维护一个 LIFO 栈（最大深度 16），记录待返回的 probe 信息</li>
+<li>支持 <code>push</code>、<code>pop_matching</code>（按 vm_id + return_gva 匹配弹出）、<code>retain</code>（批量清理）</li>
+<li>提供 <code>clear_for_vm</code> 和 <code>clear_for_vm_probe</code> 用于 VM 销毁或 probe detach 时的资源回收</li>
 </ul>
-<h3 id="3-deferred-attach--auto-enable-机制落地">3. deferred attach /
-auto-enable 机制落地</h3>
-<p>针对 <code>TTBR1_EL1</code> 尚未就绪时 attach
-失败的问题，本周改为：</p>
+<h4 id="22-动态-return-brk-引用计数managerrs"><a class="header" href="#22-动态-return-brk-引用计数managerrs">2.2 动态 return BRK 引用计数（<code>manager.rs</code>）</a></h4>
 <ul>
-<li>允许先注册 probe，保留为 pending 状态</li>
-<li>等待 guest 首次满足条件后再 enable</li>
-<li>shell 输出显式区分“attached”与“registered pending enable”</li>
+<li>新增 <code>RETURN_BRK_REFCOUNT</code> 全局注册表，管理 return 地址处的动态 BRK 注入</li>
+<li><code>acquire_return_brk</code>：首次调用时注入 BRK 并保存原指令，后续调用仅增加引用计数</li>
+<li><code>release_return_brk</code>：引用计数归零时恢复原指令</li>
+<li>解决了多个 entry probe 共享同一 return 地址时的 BRK 生命周期问题</li>
 </ul>
-<p>这让 <code>trace kprobe</code> 不再强依赖手工卡时序，也使 keepalive /
-非 keepalive 场景都更容易复现。</p>
-<h3 id="4-修复-stage-2-huge-page-barrier-下的-same-page-fault">4. 修复
-Stage-2 huge-page barrier 下的 same-page fault</h3>
-<p>之前在 2MB Stage-2 barrier 页上，非目标 GVA 的 execute fault 会被视为
-unhandled，导致 VM 直接退出。<br />
-本周在 handler / manager 中增加了同 barrier 页按 GPA 反查 probe
-的逻辑，使这些 fault 能进入 page-step，再回到目标地址命中真正的
-probe。</p>
-<p>这一步是本周 Stage-2 路径从“偶尔看见
-fault”到“可以连续命中”的关键修复。</p>
-<h3 id="5-qemu-侧完成-deferred-attach--stage-2-命中验证">5. QEMU 侧完成
-deferred attach + Stage-2 命中验证</h3>
-<p>本周在单核 keepalive guest 上完成了多轮 QEMU
-复验，已经能稳定看到以下关键证据：</p>
+<h4 id="23-handler-侧-entryreturn-分流handlerrs"><a class="header" href="#23-handler-侧-entryreturn-分流handlerrs">2.3 handler 侧 entry/return 分流（<code>handler.rs</code>）</a></h4>
 <ul>
-<li>deferred enable</li>
-<li>auto-enabled after VM-exit</li>
-<li>stage2 page-step</li>
-<li>matched stage2 fault</li>
-<li>single-step complete / XN restored</li>
+<li><code>handle_guest_brk</code> 增加 <code>is_ret</code> 分支：
+<ul>
+<li>entry hit：直接执行 eBPF 程序（与此前行为一致）</li>
+<li>return hit（<code>is_ret=true</code>）：从 <code>x30</code> 读取返回地址 → 翻译为 HVA → 调用 <code>acquire_return_brk</code> 注入 BRK → 压入 return stack</li>
+</ul></li>
+<li>新增 <code>ReturnProbeHitSingleStep</code> 返回值，指示 caller 需进入 single-step 流程</li>
+<li>寄存器接口从 <code>[u64; 8]</code> 扩展为 <code>[u64; 31]</code>，覆盖 AArch64 全部通用寄存器</li>
 </ul>
-<p>对照路径上，BrkInject 也验证了 deferred attach
-行为，说明“先注册、后启用”的时序方案本身是成立的。</p>
+<h3 id="3-trace-stream-修复"><a class="header" href="#3-trace-stream-修复">3. trace stream 修复</a></h3>
+<p>修复了 <code>trace stream -n &lt;count&gt;</code> 模式下的一个交互问题：当指定了事件数量上限时，不再轮询键盘输入，避免在非交互场景下误触退出。</p>
+<h3 id="4-vmm-配置-cmdline-透传"><a class="header" href="#4-vmm-配置-cmdline-透传">4. VMM 配置 cmdline 透传</a></h3>
+<p>在 <code>kernel/src/vmm/config.rs</code> 中将 guest 的 <code>cmdline</code> 配置项透传到 <code>AxVMConfig</code>，为后续 guest 启动参数定制提供基础。</p>
 <hr />
-<h2 id="二遇到的问题与解决方案">二、遇到的问题与解决方案</h2>
-<h3 id="21-ttbr1_el1-时序不稳定">2.1 <code>TTBR1_EL1</code>
-时序不稳定</h3>
-<p><strong>问题</strong>：VM 刚启动时，guest-kprobe attach 可能早于
-<code>TTBR1_EL1</code> 初始化，导致地址翻译失败。<br />
-<strong>解决方案</strong>：引入 deferred attach；attach
-阶段只登记，启用阶段延后到 guest 首次运行后。</p>
-<h3 id="22-2mb-barrier-页上的非目标-fault-会把-vm-打死">2.2 2MB barrier
-页上的非目标 fault 会把 VM 打死</h3>
-<p><strong>问题</strong>：Stage-2 XN 命中后，同一 barrier
-页上的其他指令也会触发 execute
-fault；旧逻辑只接受“精确命中目标地址”，因此把同页 fault
-当成异常退出。<br />
-<strong>解决方案</strong>：改为按 barrier 页范围识别 stepping
-状态，并支持 same-page page-step。</p>
+<h2 id="二遇到的问题与解决方案"><a class="header" href="#二遇到的问题与解决方案">二、遇到的问题与解决方案</a></h2>
+<h3 id="21-多个-entry-probe-共享-return-地址"><a class="header" href="#21-多个-entry-probe-共享-return-地址">2.1 多个 entry probe 共享 return 地址</a></h3>
+<p><strong>问题</strong>：当多个不同入口函数恰好返回到同一地址时，简单的 "注入 BRK / 恢复原指令" 会导致提前恢复，遗漏后续 return hit。 <strong>解决方案</strong>：引入引用计数（<code>ReturnBrkState.refcount</code>），仅在最后一个引用释放时才恢复原指令。</p>
+<h3 id="22-寄存器宽度不足"><a class="header" href="#22-寄存器宽度不足">2.2 寄存器宽度不足</a></h3>
+<p><strong>问题</strong>：kretprobe 需要读取 <code>x30</code>（LR 寄存器）获取返回地址，但此前 handler 只接收 <code>x0-x7</code>（8 个寄存器）。 <strong>解决方案</strong>：将接口统一扩展为 <code>[u64; 31]</code>，覆盖 AArch64 全部通用寄存器，同时在 <code>build_guest_ctx</code> 中仍只取 <code>x0-x7</code> 作为 eBPF 上下文参数，保持兼容。</p>
+<h3 id="23-热点地址不是合法-kretprobe-入口"><a class="header" href="#23-热点地址不是合法-kretprobe-入口">2.3 热点地址不是合法 kretprobe 入口</a></h3>
+<p><strong>问题</strong>：最早用 <code>keepalive_hotspot</code> 做验证时，能反复触发 entry hit，但始终看不到 return hit，return stack 最终被顶满。 <strong>根因</strong>：<code>keepalive_hotspot</code> 是函数内部热点指令，不是函数入口；此时 <code>x30</code> 只是内部 <code>bl</code> 的返回地址，不是真正的函数返回点。 <strong>解决方案</strong>：改用真实函数入口做验证，并构建专用 keepalive guest，避免把验证点错误与实现问题混淆。</p>
+<h3 id="24-return-stack-溢出风险"><a class="header" href="#24-return-stack-溢出风险">2.4 return stack 溢出风险</a></h3>
+<p><strong>问题</strong>：递归或高频函数可能导致 return stack 无限增长。 <strong>解决方案</strong>：设置固定上限 <code>MAX_RETURN_DEPTH = 16</code>，超出时 <code>push</code> 返回错误并自动释放已 acquire 的 return BRK，不会泄漏。</p>
 <hr />
-<h2 id="三关键验证记录">三、关键验证记录</h2>
-<h3 id="31-stage-2-路径">3.1 Stage-2 路径</h3>
-<p>关键日志文件：</p>
-<ul>
-<li><code>tmp/logs/ax_stage2_deferred_fix_1773052351.raw.log</code></li>
-<li><code>tmp/logs/ax_stage2_trace_list_1773052397.raw.log</code></li>
-</ul>
-<p>关键现象：</p>
-<ul>
-<li>出现
-<code>deferred enable vm1:0xffff800000002878 until TTBR1_EL1 is ready</code></li>
-<li>出现
-<code>auto-enabled deferred probe vm1:0xffff800000002878</code></li>
-<li>出现
-<code>stage2 page-step vm1 fault_gva=... probe_gva=0xffff800000002878</code></li>
-<li>出现
-<code>matched stage2 fault vm1 gva=0xffff800000002878 prog_id=0</code></li>
-<li>出现
-<code>single-step complete vm1:0xffff800000002878 on cpu1, XN restored</code></li>
-</ul>
-<p>其中 <code>ax_stage2_trace_list_1773052397.raw.log</code>
-中可观察到多次连续的
-<code>matched stage2 fault</code>，说明命中不是一次性的偶发行为。</p>
-<h3 id="32-brkinject-对照路径">3.2 BrkInject 对照路径</h3>
-<p>关键日志文件：</p>
-<ul>
-<li><code>tmp/logs/ax_brk_deferred_1773052020.raw.log</code></li>
-<li><code>tmp/logs/ax_brk_deferred_wait_1773052087.raw.log</code></li>
-</ul>
-<p>关键现象：</p>
-<ul>
-<li>deferred enable 生效</li>
-<li>auto-enable 生效</li>
-<li>能看到
-<code>BRK hit vm1:0xffff800000002878, pending single-step on cpu1</code></li>
-</ul>
-<p>BrkInject 对照结果说明：deferred attach 机制本身工作正常，Stage-2
-路径的问题主要集中在 barrier page-step 与恢复流程。</p>
-<h3 id="33-构建--测试记录">3.3 构建 / 测试记录</h3>
-<ul>
-<li><code>cargo test -p axebpf --features guest-kprobe,test-utils,runtime,tracepoint-support --test guest_kprobe_manager_tests</code>：通过</li>
-<li><code>cargo test -p axebpf --features guest-kprobe,test-utils,runtime,tracepoint-support --test guest_kprobe_handler_tests</code>：通过</li>
-<li><code>cargo xtask build</code>：通过</li>
-<li><code>cargo xtask clippy</code>：仍被仓库既有 lint
-阻塞，当前主要落在 <code>modules/axvmconfig</code> 与
-<code>modules/axebpf</code></li>
-</ul>
-<hr />
-<h2 id="四提交摘要">四、提交摘要</h2>
-<h3 id="本周主线提交">本周主线提交</h3>
+<h2 id="三提交摘要"><a class="header" href="#三提交摘要">三、提交摘要</a></h2>
+<h3 id="axvisor已提交"><a class="header" href="#axvisor已提交">axvisor（已提交）</a></h3>
 <table>
 <thead>
 <tr class="header">
-<th>仓库</th>
 <th>提交</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>axvisor</td>
-<td><code>5534c54</code></td>
-<td>支持 guest symbol 命令和 symbol-target kprobe</td>
+<td><code>d379ab7</code></td>
+<td>shell 侧支持 deferred attach pending 提示</td>
 </tr>
 <tr class="even">
-<td>axvisor</td>
-<td><code>da90229</code></td>
-<td><code>trace list</code> 支持 guest-kprobe 符号化显示</td>
-</tr>
-<tr class="odd">
-<td>axvisor</td>
-<td><code>7edcfc1</code></td>
-<td>接入 guest-kprobe Stage-2 hook</td>
-</tr>
-<tr class="even">
-<td>axebpf</td>
-<td><code>24b5738</code></td>
-<td>restored-instruction single-step</td>
-</tr>
-<tr class="odd">
-<td>axebpf</td>
-<td><code>8df1b19</code></td>
-<td>guest symbol table</td>
-</tr>
-<tr class="even">
-<td>axebpf</td>
-<td><code>c7c669c</code></td>
-<td>VM lifecycle cleanup entrypoints</td>
-</tr>
-<tr class="odd">
-<td>axebpf</td>
-<td><code>cd59d31</code></td>
-<td>guest x0-x7 透传到 TraceContext</td>
-</tr>
-<tr class="even">
-<td>axebpf</td>
-<td><code>6996e05</code></td>
-<td>修复 multi-vCPU stepping race</td>
-</tr>
-<tr class="odd">
-<td>axebpf</td>
-<td><code>ae803a6</code></td>
-<td>稳定 manager 测试</td>
+<td><code>ac1068a</code></td>
+<td>将 VM-exit 通知收回 root，去掉对 axvm 新接口的依赖</td>
 </tr>
 </tbody>
 </table>
-<h3 id="本周收口补充2026-03-09">本周收口补充（2026-03-09）</h3>
+<h3 id="axebpf已提交"><a class="header" href="#axebpf已提交">axebpf（已提交）</a></h3>
 <table>
 <thead>
 <tr class="header">
-<th>仓库</th>
 <th>提交</th>
 <th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>axebpf</td>
 <td><code>54740f1</code></td>
 <td>deferred attach：允许先注册、首次条件满足后 enable</td>
 </tr>
 <tr class="even">
-<td>axvisor</td>
-<td><code>d379ab7</code></td>
-<td>shell 侧支持 pending attach 提示</td>
-</tr>
-<tr class="odd">
-<td>axvisor</td>
-<td><code>ac1068a</code></td>
-<td>将 VM-exit 通知收回 root，去掉对 <code>axvm</code> 新接口的依赖</td>
+<td><code>a77d6ec</code></td>
+<td>guest kretprobe return handling：return stack + 引用计数 + handler 分流</td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="六遗留问题">六、遗留问题</h2>
+<h3 id="工作区未提交"><a class="header" href="#工作区未提交">工作区（未提交）</a></h3>
 <table>
 <thead>
 <tr class="header">
-<th>问题</th>
-<th>现状</th>
-<th>影响</th>
-<th>解决方向</th>
+<th>文件</th>
+<th>说明</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>多核下的 Stage-2 TLB shootdown</td>
-<td>当前按单核基线处理</td>
-<td>多核场景可能需要更精确的跨核失效</td>
-<td>后续按需补 SGI / per-VMID TLBI 方案</td>
+<td><code>kernel/src/shell/commands/trace.rs</code></td>
+<td>修复 <code>trace stream -n</code> 模式下误触退出</td>
 </tr>
 <tr class="even">
-<td>Stage-2 路径长期稳定性</td>
-<td>已可重复命中，但仍以 keepalive 单核 guest 为主</td>
-<td>复杂 guest / 多核 guest 下仍需扩展验证</td>
-<td>继续补多场景回归脚本和日志对照</td>
+<td><code>kernel/src/vmm/config.rs</code></td>
+<td>透传 guest cmdline 到 AxVMConfig</td>
+</tr>
+<tr class="odd">
+<td><code>.cargo/config.toml</code></td>
+<td>启用 <code>git-fetch-with-cli</code> 解决网络拉取问题</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="七下周计划">七、下周计划</h2>
+<h2 id="四工作量统计"><a class="header" href="#四工作量统计">四、工作量统计</a></h2>
+<table>
+<thead>
+<tr class="header">
+<th>仓库</th>
+<th>提交数</th>
+<th>新增</th>
+<th>删除</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>axvisor</td>
+<td>2</td>
+<td>+46</td>
+<td>-26</td>
+</tr>
+<tr class="even">
+<td>axebpf</td>
+<td>2</td>
+<td>+1680</td>
+<td>-183</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="五下两周计划03-16-至-03-29"><a class="header" href="#五下两周计划03-16-至-03-29">五、下两周计划（03-16 至 03-29）</a></h2>
+<h3 id="第一周03-16-至-03-22starryos--linux-guest-全功能验证"><a class="header" href="#第一周03-16-至-03-22starryos--linux-guest-全功能验证">第一周（03-16 至 03-22）：StarryOS / Linux guest 全功能验证</a></h3>
 <table>
 <thead>
 <tr class="header">
@@ -435,43 +332,78 @@ fault；旧逻辑只接受“精确命中目标地址”，因此把同页 fault
 <tbody>
 <tr class="odd">
 <td>P0</td>
-<td>固化 Stage-2 / BrkInject 双路径回归脚本</td>
-<td>一键复现 attach → hit → detach，日志可自动收集</td>
+<td>StarryOS guest 上跑通 hprobe 全流程</td>
+<td>tracepoint、hprobe attach/detach/stream 均可稳定工作</td>
 </tr>
 <tr class="even">
 <td>P0</td>
-<td>继续收敛 deferred attach 行为</td>
-<td>start-before-attach / attach-before-start 两种路径均可稳定复现</td>
+<td>StarryOS / Linux guest 上跑通 guest-kprobe（BrkInject + Stage-2）</td>
+<td>attach → hit → detach 可复现，日志可观测</td>
 </tr>
 <tr class="odd">
-<td>P1</td>
-<td>评估多核 shootdown 需求边界</td>
-<td>明确 3.2 是否需要 SGI / per-CPU 失效</td>
+<td>P0</td>
+<td>StarryOS / Linux guest 上跑通 kretprobe</td>
+<td>entry hit → return hit → detach 全流程通过</td>
 </tr>
 <tr class="even">
 <td>P1</td>
-<td>清理 guest-kprobe 相关 clippy 历史项</td>
-<td>至少不再被当前改动链路新增 lint 阻塞</td>
+<td>提交本周工作区变更并清理</td>
+<td>trace stream 修复和 cmdline 透传正式提交</td>
+</tr>
+<tr class="odd">
+<td>P1</td>
+<td>固化回归脚本</td>
+<td>一键复现各路径 attach → hit → detach，适配 StarryOS / Linux 两种 guest</td>
+</tr>
+</tbody>
+</table>
+<h3 id="第二周03-23-至-03-29uprobe-设计与原型"><a class="header" href="#第二周03-23-至-03-29uprobe-设计与原型">第二周（03-23 至 03-29）：uprobe 设计与原型</a></h3>
+<table>
+<thead>
+<tr class="header">
+<th>优先级</th>
+<th>任务</th>
+<th>验收标准</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P0</td>
+<td>uprobe 方案设计文档</td>
+<td>输出设计文档，覆盖 guest 用户态地址翻译、ELF 符号解析、BRK 注入策略、与 kprobe 的复用/差异分析</td>
+</tr>
+<tr class="even">
+<td>P0</td>
+<td>uprobe 核心数据结构与 manager 原型</td>
+<td>axebpf 中新增 <code>probe/uprobe</code> 模块骨架，定义 attach/detach 接口</td>
+</tr>
+<tr class="odd">
+<td>P1</td>
+<td>评估 uprobe 地址翻译路径</td>
+<td>明确 guest 用户态 VA → PA 翻译需要哪些新 hook（TTBR0_EL1、用户页表遍历）</td>
+</tr>
+<tr class="even">
+<td>P1</td>
+<td>评估 vCPU 迁移对 return stack 的影响</td>
+<td>明确 kretprobe 是否需要改为 per-vcpu 索引</td>
 </tr>
 </tbody>
 </table>
 <hr />
-<h2 id="八个人复盘">八、个人复盘</h2>
-<p>如果没有 deferred attach，很多失败其实只是时序问题；如果没有
-same-page page-step，很多 fault
-又会被误判成实现错误。把这两类问题拆开后，Stage-2
-路径终于从“看起来快通了”变成“能用日志反复证明已经通了哪一段、还差哪一段”。</p>
-
-
+<h2 id="七个人复盘"><a class="header" href="#七个人复盘">七、个人复盘</a></h2>
+<p>这周的重心从"让基础路径跑通"转到"在已验证的基础设施上扩展能力"。kretprobe 是 guest-kprobe 功能链中第一个需要在 handler 中动态修改 guest 内存的特性（return 地址处的 BRK 注入），和 entry probe 的静态 BRK 注入不同，它的生命周期完全由运行时事件驱动，引入了引用计数和 per-CPU 栈两个新的状态管理维度。</p>
+<p>好的一面是：上周建立的 deferred attach 机制和 single-step 基础设施直接被 kretprobe 复用了，没有出现"为新功能重新搭基础"的情况。这说明之前的分层设计（manager 管注册/启用、handler 管命中/分发、single_step 管恢复）是合理的。</p>
+<p>需要注意的风险是：return stack 按物理 CPU 索引，如果 vCPU 在两次 VM-exit 之间被调度到不同物理核，return hit 会找不到对应记录。这个问题在单核 guest 上不会暴露，需要在多核验证阶段重点关注。</p>
 
 </main>
+
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../2026开源社区实习/周报4.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../2026开源社区实习/周报5.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../2026开源社区实习/周报6.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -481,11 +413,11 @@ same-page page-step，很多 fault
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../2026开源社区实习/周报4.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../2026开源社区实习/周报5.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../2026开源社区实习/周报6.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
