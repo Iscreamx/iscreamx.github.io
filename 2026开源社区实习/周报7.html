@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>2026开源社区实习 - 2026开源社区实习目标</title>
+        <title>第七周周报 - 2026开源社区实习目标</title>
 
 
         <!-- Custom HTML head -->
@@ -174,33 +174,153 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="2026开源社区实习"><a class="header" href="#2026开源社区实习">2026开源社区实习</a></h1>
-<p>这里是实习相关文档的索引：</p>
+<h1 id="周报2026-03-16-至-2026-03-22"><a class="header" href="#周报2026-03-16-至-2026-03-22">周报（2026-03-16 至
+2026-03-22）</a></h1>
+<h2 id="开发分支"><a class="header" href="#开发分支">开发分支</a></h2>
 <ul>
-<li><a href="./实习目标.html">实习目标</a> - 性能追踪技术方案与背景</li>
-<li><a href="./技术选型.html">技术选型</a> - 组件选择依据</li>
-<li><a href="./开发计划.html">开发计划</a> - 详细的任务分解与时间表</li>
-<li><a href="./周报1.html">第一周周报</a> - 2026/01/20 - 2026/01/31 周报</li>
-<li><a href="./周报2.html">第二周周报</a> - 2026/02/01 - 2026/02/07 周报</li>
-<li><a href="./周报3.html">第三周周报</a> - 2026/02/08 - 2026/02/21 周报</li>
-<li><a href="./周报4.html">第四周周报</a> - 2026/02/22 - 2026/02/28 周报</li>
-<li><a href="./周报5.html">第五周周报</a> - 2026/03/02 - 2026/03/08 周报</li>
-<li><a href="./周报6.html">第六周周报</a> - 2026/03/09 - 2026/03/15 周报</li>
-<li><a href="./周报7.html">第七周周报</a> - 2026/03/16 - 2026/03/22 周报</li>
-<li><a href="./月报1.html">第一期月报</a> - 2026/01/20 - 2026/02/22 月报</li>
-<li><a href="./Iterator支持方案.html">Iterator支持方案</a> - Iterator支持方案</li>
-<li><a href="./统一探针调试系统设计.html">统一探针调试系统方案</a> - 统一探针调试系统方案</li>
+<li>axvisor: <a
+href="https://github.com/Iscreamx/axvisor/tree/feature/ebpf">https://github.com/Iscreamx/axvisor/tree/feature/ebpf</a></li>
+<li>axebpf: <a
+href="https://github.com/Iscreamx/axebpf/tree/main">https://github.com/Iscreamx/axebpf/tree/main</a></li>
+<li>axvm: <a
+href="https://github.com/Iscreamx/axvm/tree/feature/ebpf">https://github.com/Iscreamx/axvm/tree/feature/ebpf</a></li>
+<li>arm_vcpu: <a
+href="https://github.com/Iscreamx/arm_vcpu/tree/feature/ebpf">https://github.com/Iscreamx/arm_vcpu/tree/feature/ebpf</a></li>
 </ul>
+<hr />
+<h2 id="总结"><a class="header" href="#总结">总结</a></h2>
+<p>这周最重要的一件事，是把 Linux guest uprobe
+从“内部代码路径已经通了”做到“在 QEMU AArch64 + Linux guest
+里真的能打到用户态函数”。现在这条链路已经能看到
+<code>pending -&gt; active -&gt; real-hit</code>。除此之外，还顺手修了几个一直影响验证体验的问题，包括
+guest-kprobe 的 single-step 执行窗口、deferred probe
+的自动启用、<code>trace stream -n</code> 的等待逻辑，以及 shell 线程占着
+boot CPU 的干扰。</p>
+<hr />
+<h2 id="一已完成工作"><a class="header" href="#一已完成工作">一、已完成工作</a></h2>
+<h3 id="1-linux-guest-uprobe-链路"><a class="header" href="#1-linux-guest-uprobe-链路">1. Linux guest uprobe 链路</a></h3>
+<ul>
+<li><strong>axebpf 核心实现</strong>（<code>e491af7</code>）：新增
+<code>probe/uprobe/*</code> 运行时，覆盖 guest
+用户态地址翻译、对象符号加载、hidden runtime observer、pending/active
+管理，以及 EL0 BRK 命中后的 single-step 恢复；同时补上了一批
+guest-uprobe 测试。</li>
+<li><strong>axvisor 主线接入</strong>（<code>bfcd54f</code>）：接入
+<code>guest-uprobe</code> feature，增加 <code>trace uprobe</code> /
+<code>trace unuprobe</code> / <code>trace uloadelf</code> /
+<code>trace list</code> 命令，并把 uprobe 依赖的 VMM hook 和 VM-exit
+时机接进主仓。</li>
+<li><strong>运行时状态准备</strong>（<code>136bba1</code>、<code>9c95f10</code>）：在
+<code>axvm</code> / <code>arm_vcpu</code> 中把
+<code>TTBR0_EL1</code>、<code>CONTEXTIDR_EL1</code>、<code>TPIDR_EL0</code>
+等 guest exit state 暴露出来并缓存，hidden observer 才能拿到 Linux guest
+runtime token。</li>
+<li><strong>底层依赖补充</strong>（<code>a859bb8</code>、<code>6d07494</code>）：一边让
+executable guest mappings 可用，一边把 tracing symbol sections
+导出出来，userspace patching 这条链路才算有了落脚点。</li>
+</ul>
+<h3 id="2-guest-kprobe-链路"><a class="header" href="#2-guest-kprobe-链路">2. guest-kprobe 链路</a></h3>
+<ul>
+<li><strong>single-step
+执行窗口修复</strong>（<code>e638119</code>）：single-step 前先打开
+execute
+window，避免命中后恢复原指令时还被执行权限拦住；<code>guest_kprobe_handler_tests</code>
+也补上了这条测试。</li>
+<li><strong>VM-exit 后自动启用 deferred
+probe</strong>（<code>065714d</code>）：在
+<code>notify_guest_vmexit()</code>
+里自动尝试启用已经注册、但之前条件还不满足的 guest-kprobe，attach
+时序不再那么挑人。</li>
+<li><strong>子模块版本统一收口</strong>（<code>c0d78ea</code>）：把本周
+axebpf / axvm / arm_vcpu / axaddrspace / 平台层依赖的提交统一同步到
+axvisor 主线，避免主仓和子模块状态继续错位。</li>
+</ul>
+<h3 id="3-观测和交互"><a class="header" href="#3-观测和交互">3. 观测和交互</a></h3>
+<ul>
+<li><strong>guest-kprobe
+日志降噪并补命中进度</strong>（<code>f893848</code>）：热点路径不再刷一堆没用日志，命中了多少次也能更直接地从日志里看出来。</li>
+<li><strong><code>trace stream -n</code>
+改成真正按数量等待</strong>（<code>0a6f21f</code>）：修掉指定事件数后还去轮询键盘输入的问题，非交互脚本现在能老老实实等到目标条数。</li>
+<li><strong>shell 线程移到非 boot
+CPU</strong>（<code>bd44cf0</code>）：把 shell 线程从 boot CPU
+挪开，host shell 对 guest tracing 路径的打扰少了一截。</li>
+</ul>
+<h3 id="4-运行配置"><a class="header" href="#4-运行配置">4. 运行配置</a></h3>
+<ul>
+<li><strong>guest cmdline 透传修复</strong>（<code>dc1c8c4</code>）：VM
+配置转换时不再把 guest <code>cmdline</code> 丢掉，Linux guest
+的验证配置和用户态程序自启动终于能按预期带进去。</li>
+</ul>
+<hr />
+<h2 id="二遇到的问题与解决方案"><a class="header" href="#二遇到的问题与解决方案">二、遇到的问题与解决方案</a></h2>
+<h3 id="21-linux-guest-uprobe-只有-pending没有真实激活事件"><a class="header" href="#21-linux-guest-uprobe-只有-pending没有真实激活事件">2.1 Linux
+guest uprobe 只有 pending，没有真实激活事件</a></h3>
+<p><strong>问题</strong>：MVP 阶段最多只能把 uprobe 挂成
+pending。真正缺的不是 patching 代码，而是 Linux guest 里的
+<code>exec/mmap</code> 事件源；没有这层 runtime 观察，probe 永远进不了
+active。 <strong>解决方案</strong>：<code>e491af7</code> 里补了
+<code>linux_runtime_observer</code>，再配合
+<code>bfcd54f</code>、<code>136bba1</code>、<code>9c95f10</code> 提供的
+runtime state，在 VM-exit 后注册 hidden observer，把 Linux guest runtime
+事件真正接进 pending -&gt; active 这条激活链。</p>
+<h3 id="22-guest-kprobe-命中后-single-step-仍可能卡在执行权限窗口"><a class="header" href="#22-guest-kprobe-命中后-single-step-仍可能卡在执行权限窗口">2.2
+guest-kprobe 命中后 single-step 仍可能卡在执行权限窗口</a></h3>
+<p><strong>问题</strong>：如果 single-step 前不先打开 execute
+window，恢复原指令时还是会撞上执行权限限制，结果就是命中链路时好时坏。 <strong>解决方案</strong>：<code>e638119</code> 把 handler
+时序调整了一下，在 single-step
+前先把执行窗口打开，并加测试把这条修复钉住。</p>
+<h3 id="23-自动化验证容易受交互行为干扰"><a class="header" href="#23-自动化验证容易受交互行为干扰">2.3
+自动化验证容易受交互行为干扰</a></h3>
+<p><strong>问题</strong>：自动化验证里有两个很烦人的干扰项。一个是
+<code>trace stream -n</code> 指定条数后还会去看键盘输入，另一个是 shell
+一直压在 boot CPU 上，guest tracing 的观测结果容易被搅乱。 <strong>解决方案</strong>：<code>0a6f21f</code> 让
+<code>stream -n</code> 只盯着目标事件数，<code>bd44cf0</code> 把 shell
+线程移到非 boot CPU，脚本化验证终于清净一些了。</p>
+<hr />
+<h2 id="三下周计划"><a class="header" href="#三下周计划">三、下周计划</a></h2>
+<table>
+<thead>
+<tr class="header">
+<th>优先级</th>
+<th>任务</th>
+<th>验收标准</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>P0</td>
+<td>固化 Linux guest uprobe 一键 fresh 验证流程</td>
+<td>镜像准备、启动、日志采集、日志校验脚本可一键跑通</td>
+</tr>
+<tr class="even">
+<td>P0</td>
+<td>继续收敛 guest-uprobe 稳定性</td>
+<td><code>pending -&gt; active -&gt; hit</code> 在多次 fresh run
+下可重复复现</td>
+</tr>
+<tr class="odd">
+<td>P1</td>
+<td>评估 uretprobe / 返回探针在 Linux guest 用户态的可行性</td>
+<td>明确返回地址维护方式与风险边界</td>
+</tr>
+<tr class="even">
+<td>P1</td>
+<td>扩展 guest-uprobe 目标范围</td>
+<td>评估共享库、<code>dlopen</code>、多进程/多 <code>mm</code>
+场景需要的补充机制</td>
+</tr>
+</tbody>
+</table>
 
-                    </main>
+</main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../2026开源社区实习/周报6.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../2026开源社区实习/实习目标.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -210,11 +330,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../2026开源社区实习/周报6.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../2026开源社区实习/实习目标.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>
