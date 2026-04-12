@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>第八周周报 - 2026开源社区实习目标</title>
+        <title>第九周周报 - 2026开源社区实习目标</title>
 
 
         <!-- Custom HTML head -->
@@ -174,8 +174,8 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-<h1 id="周报2026-03-23-至-2026-03-29">周报（2026-03-23 至
-2026-03-29）</h1>
+<h1 id="周报2026-03-30-至-2026-04-12">周报（2026-03-30 至
+2026-04-12）</h1>
 <h2 id="开发分支">开发分支</h2>
 <ul>
 <li>axvisor: <a
@@ -185,138 +185,228 @@ href="https://github.com/Iscreamx/axebpf/tree/main">https://github.com/Iscreamx/
 </ul>
 <hr />
 <h2 id="总结">总结</h2>
-<p>这周正式提交的内容不算多，但方向比较集中，基本都围着 Linux guest
-uprobe/uretprobe 往前推了一步。现在这条链路已经不只是“能挂上
-probe”，而是把返回探针、进程隔离，以及 shell
-侧的实例可见性都补到了能拿来稳定排查问题的程度。</p>
-<p>如果只看当前已经落进仓库的结果，可以把它概括成一句话：guest
-uprobe/uretprobe 已经能覆盖 QEMU AArch64 上 Linux guest
-主程序用户态探针的主要路径，主程序场景下的基础 ASLR
-适配和按进程隔离也已经具备，但对象模型还停留在“主程序文本段”这一层，暂时还没有进入共享库和完整动态装载语义。</p>
+<p>这两周没有再往共享库
+<code>uprobe/uretprobe</code>、<code>dlopen</code>
+生命周期这些方向扩功能，主要还是把已经做出来的主线能力尽量联调透、验证透、文档也补齐。现在
+<code>tracepoint</code>、<code>hprobe/hretprobe</code>、<code>guest-kprobe/kretprobe</code>、<code>guest-uprobe/uretprobe</code>
+已经能放进同一条真实的 <code>QEMU + AxVisor + Linux guest</code>
+链路里跑，现场手工演示、fresh 验证和日志验收也都整理出来了。</p>
+<p>这两周做下来，边界其实也更清楚了。主程序场景下的
+<code>guest-uprobe/guest-uretprobe</code>
+已经基本可以算做成了；但共享库、多对象映射、<code>dlopen/dlclose</code>
+动态装载生命周期这条线没有闭环，所以这次没有继续硬往前推，而是把为什么没做完、后面如果有人接着看应该从哪里下手，单独写成了说明文档。</p>
 <hr />
-<h2 id="一已完成工作">一、已完成工作</h2>
-<h3 id="1-linux-guest-uretprobe-主链路接入">1. Linux guest uretprobe
-主链路接入</h3>
-<ul>
-<li><strong>axebpf 返回探针实现</strong>（<code>6c7917b</code>）：补上
-Linux guest uretprobe 的核心流程，新增 return stack，补齐 entry/return
-两段命中处理，并把相关测试一起补上。</li>
-<li><strong>axvisor 主仓接线</strong>（<code>196b447</code>）：shell
-侧把 <code>uretprobe</code> 视为 <code>uprobe</code>
-事件族的一部分，<code>trace stream</code> 过滤条件现在可以直接覆盖
-<code>PROBE_UPROBE</code> 和
-<code>PROBE_URETPROBE</code>，跑验证时不用再靠其他类型绕过去看事件。</li>
-</ul>
-<h3 id="2-guest-uprobe-实例元数据与进程隔离继续收口">2. guest-uprobe
-实例元数据与进程隔离继续收口</h3>
-<ul>
-<li><strong>按进程 mm 隔离实例</strong>（<code>409dab0</code>）：同一个
-probe 模板现在可以按不同 <code>mm/pid/tgid</code>
-激活为独立实例；进程退出、<code>exit_mm</code>
-后也能按目标进程清理，uretprobe 的返回栈状态同样按 <code>mm</code>
-维度隔离。</li>
-<li><strong>shell
-列表信息补全</strong>（<code>5c0eaf8</code>）：<code>trace list</code>
-现在除了路径、符号、offset、状态和命中次数，还能直接看到 active uprobe
-对应的 <code>mm</code>、<code>pid</code>、<code>tgid</code> 和
-<code>comm</code>。排查“为什么同一个符号挂了多个实例”“当前 hit
-到底来自哪个进程”时，信息终于够用了。</li>
-</ul>
-<h3 id="3-当前-guest-uprobeuretprobe-的能力边界">3. 当前
-guest-uprobe/uretprobe 的能力边界</h3>
-<ul>
-<li>现阶段主线能力已经比较明确：在 Linux guest on QEMU AArch64
-场景下，主程序用户态探针链路已经基本可用，核心实现集中在
-<code>modules/axebpf/src/probe/uprobe/mod.rs</code>。</li>
-<li>host 侧已经支持侧载 ELF 符号元数据，并按
-<code>(vm_id, guest_path)</code> 把符号解析到文件内 offset；guest
-侧则通过隐藏的 guest-kprobe 观察
-<code>exec</code>、<code>mmap</code>、<code>munmap</code>、<code>exit_mmap</code>、<code>exit</code>
-这些事件，去维护用户态运行时映射并驱动 probe 激活。</li>
-<li>ASLR
-目前也不是完全没处理。对“主程序映射基址变化”这类情况，当前实现已经能把文件
-offset
-正确映射到运行时地址，相关测试也覆盖了等待主程序真实映射起点出现之后再激活
-probe 的路径。</li>
-<li>但这套模型目前只维护主程序文本段这一条映射，不维护一个进程里的多对象映射集合。换句话说，现在处理的是主程序级、单映射级的
-ASLR，而不是完整对象级的 ASLR 语义。</li>
-<li>这也意味着共享库还不在当前支持范围内。现有逻辑通过
-<code>guest_path basename == comm</code> 去识别主程序，所以
-<code>libc.so</code>、<code>libpthread.so</code>、<code>dlopen</code>
-动态加载的 <code>.so</code> 目前都不会进入可匹配集合。</li>
-<li>另外，对象身份机制现在主要还是依赖 <code>guest_path</code>，还没有
-build-id、inode
-这类更稳的标识；断点语义也还是第一阶段方案，也就是“断点可能对同 VM
-的共享代码页可见，但事件按进程过滤”，还不是 Linux 原生那种严格的 pid
-级断点隔离。</li>
-</ul>
-<hr />
-<h2 id="二遇到的问题与解决方案">二、遇到的问题与解决方案</h2>
-<h3 id="21-uretprobe-已经能命中但缺少足够的实例上下文排查成本偏高">2.1
-uretprobe 已经能命中，但缺少足够的实例上下文，排查成本偏高</h3>
-<p><strong>问题</strong>：在 uprobe/uretprobe
-开始进入多进程、多实例场景后，只看路径、符号和命中次数已经不够了。尤其是同一个主程序被多次激活时，很难快速判断
-active probe 到底对应哪个进程。<br />
-<strong>解决方案</strong>：<code>5c0eaf8</code> 把 shell
-列表视图补齐到实例级，直接暴露
-<code>mm</code>、<code>pid</code>、<code>tgid</code> 和
-<code>comm</code>，把“有没有激活”“是谁激活的”“当前 hit
-来自谁”放到一个视图里看。</p>
-<h3 id="22-同一-probe-模板在多进程场景下需要真正拆成独立实例">2.2 同一
-probe 模板在多进程场景下需要真正拆成独立实例</h3>
-<p><strong>问题</strong>：如果只按 probe 模板管理
-guest-uprobe，主程序多进程并发时会把不同进程的激活态、清理时机和返回栈状态搅在一起，后面再补隔离会很被动。<br />
-<strong>解决方案</strong>：<code>409dab0</code> 把实例粒度下沉到
-<code>mm</code> 维度，同一个模板可以按不同 <code>mm/pid/tgid</code>
-激活为独立实例；退出路径和 uretprobe 返回栈也一起按 <code>mm</code>
-收口，隔离语义总算和当前实现对齐了。</p>
-<h3 id="23-当前-aslr-适配只够覆盖主程序不够覆盖完整对象模型">2.3 当前
-ASLR 适配只够覆盖主程序，不够覆盖完整对象模型</h3>
-<p><strong>问题</strong>：现阶段已经能处理主程序 load
-bias，但共享库各自独立的 load bias、重定位后地址，以及
-<code>dlopen</code>
-带来的动态装载生命周期，都还没有纳入统一模型。对象匹配也主要靠
-<code>guest_path</code>，复杂运行时场景下不够稳。<br />
-<strong>现状处理</strong>：这一周没有继续把范围扩大到共享库，而是先把主程序场景下的链路、隔离和观测信息做扎实。也就是说，当前阶段先把“主程序可用”做稳，再考虑把对象模型从单映射扩到多对象。</p>
-<hr />
-<h2 id="三下周计划">三、下周计划</h2>
+<h2 id="一这两周完成的主要工作">一、这两周完成的主要工作</h2>
+<h3 id="1-把七类能力收成一条主线联调链路">1.
+把七类能力收成一条主线联调链路</h3>
+<p>这两周最主要的事情，是把原来分开验证的 tracing
+能力收成一条主线联调链路。现在在同一次真实运行里，已经可以覆盖：</p>
 <table>
 <thead>
 <tr class="header">
-<th>优先级</th>
-<th>任务</th>
-<th>验收标准</th>
+<th>类型</th>
+<th>目标点</th>
+<th>当前状态</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>P0</td>
-<td>固化 Linux guest uprobe/uretprobe 的 fresh-run 验证流程</td>
-<td>主程序场景下 attach、hit、detach、日志校验可一键复现</td>
+<td><code>uprobe</code></td>
+<td><code>/usr/bin/axebpf_integration_demo:demo_user_entry</code></td>
+<td><code>pass</code></td>
 </tr>
 <tr class="even">
-<td>P1</td>
-<td>评估共享库支持所需的对象模型扩展</td>
-<td>明确多对象映射表、对象身份标识、动态装载事件管理需要补哪些状态</td>
+<td><code>uretprobe</code></td>
+<td><code>/usr/bin/axebpf_integration_demo:demo_user_compute</code></td>
+<td><code>pass</code></td>
 </tr>
 <tr class="odd">
-<td>P1</td>
-<td>评估严格 pid 级断点隔离的实现代价</td>
-<td>明确当前“事件按进程过滤”的阶段性方案与 Linux
-原生语义之间还差哪些机制</td>
+<td><code>guest-kprobe</code></td>
+<td><code>vm1:gic_handle_irq</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="even">
+<td><code>guest-kretprobe</code></td>
+<td><code>vm1:__arm64_sys_getpid</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="odd">
+<td><code>hprobe</code></td>
+<td><code>notify_guest_vmexit</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="even">
+<td><code>hretprobe</code></td>
+<td><code>notify_guest_vmexit</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="odd">
+<td><code>tracepoint</code></td>
+<td><code>vmm:timer_tick</code></td>
+<td><code>pass</code></td>
 </tr>
 </tbody>
 </table>
+<p>这里真正有价值的，不只是“这些点能 attach 上”，而是 attach、guest
+启动、运行期命中、收尾 <code>trace list</code>、收尾
+<code>trace stat</code>
+这几段已经能前后接起来，不再是靠零散实验凑证据。</p>
+<h3 id="2-统一了-guest-demorootfs-和触发路径">2. 统一了 guest
+demo、rootfs 和触发路径</h3>
+<ul>
+<li>使用单 guest
+demo：<code>scripts/ostool/assets/linux_axebpf_integration_demo/axebpf_integration_demo.c</code></li>
+<li>demo 在一次运行里主动触发用户态函数、<code>getpid</code>、文件 I/O
+和重复窗口，作为七类能力联调的统一触发源</li>
+<li>固化 rootfs
+准备脚本：<code>scripts/ostool/prepare_linux_axebpf_integration_demo_rootfs.sh</code></li>
+<li>继续通过 <code>inittab + launcher</code> 直接拉起 demo，避免 guest
+shell 和 host AxVisor shell 争用串口</li>
+</ul>
+<p>这套东西整理完之后，现场演示和 fresh 回归都不用再临时拼步骤了。</p>
+<h3 id="3-补齐自动化验收和人工联调文档">3.
+补齐自动化验收和人工联调文档</h3>
+<ul>
+<li>新增总控脚本：<code>tmp/run_axebpf_mainline_integration_real.py</code></li>
+<li>新增日志验收脚本：<code>scripts/verify/check_axebpf_mainline_integration_log.py</code></li>
+<li>固化主线
+workflow：<code>docs/ebpf-tracing/axebpf-mainline-integration-workflow.md</code></li>
+<li>固化现场手工演示手册：<code>docs/ebpf-tracing/axebpf-mainline-integration-manual-workflow.md</code></li>
+<li>固化能力矩阵：<code>docs/ebpf-tracing/axebpf-mainline-integration-matrix.md</code></li>
+</ul>
+<p>现在脚本已经能自动完成构建、镜像准备、attach、guest
+启动、日志抓取、<code>trace list/stat</code> 收尾和最终 PASS/FAIL
+校验；手工手册则对应现场演示，按文档一步步走，也能看到同样的结果。</p>
+<hr />
+<h2 id="二最新联调结果">二、最新联调结果</h2>
+<p>这轮 fresh 验证已经通过，验收摘要如下：</p>
+<ul>
+<li><code>hprobe_entry=2781</code></li>
+<li><code>hretprobe=2781</code></li>
+<li><code>guest-kprobe gic_handle_irq=1129</code></li>
+<li><code>guest-kretprobe __arm64_sys_getpid=14</code></li>
+<li><code>vmm:timer_tick</code> 的 attachment 和 map activity
+都存在</li>
+</ul>
+<p>联调过程中，几类关键证据现在都能稳定看到：</p>
+<ol type="1">
+<li>guest 启动后可以看到
+<code>axebpf_integration_demo wrapper: launch</code> 和
+<code>demo:start</code></li>
+<li>运行期可以看到 <code>guest_uprobe_hit</code> 和
+<code>guest_uretprobe_hit</code></li>
+<li>同一运行窗口里可以看到
+<code>guest_kprobe_hits: kprobe vm1:gic_handle_irq ...</code></li>
+<li>同时也可以看到
+<code>guest_kprobe_hits: kretprobe vm1:__arm64_sys_getpid ...</code></li>
+<li>host 侧能持续看到
+<code>[hprobe] ENTRY/EXIT ... notify_guest_vmexit</code></li>
+<li>demo 结束后，收尾 <code>trace list</code> 和 <code>trace stat</code>
+都能拿到非零命中结果</li>
+</ol>
+<p>这里有两个点需要单独说明。</p>
+<h3 id="21-guest-uprobeguest-uretprobe-的收尾表现">2.1
+<code>guest-uprobe/guest-uretprobe</code> 的收尾表现</h3>
+<p>guest 进程退出后，收尾 <code>trace list</code> 里不会保留 active
+实例，而只会剩下 <code>pending</code> 模板，并显示
+<code>waiting-for-instance</code>。这不是失败，而是当前实现下实例会随着进程退出一起回收。</p>
+<p>所以这类能力到底有没有跑通，主要还是看运行期 raw log 里的：</p>
+<ul>
+<li><code>guest_uprobe_hit</code></li>
+<li><code>guest_uretprobe_arm</code></li>
+<li><code>guest_uretprobe_hit</code></li>
+</ul>
+<h3 id="22-hprobe-日志比较密">2.2 <code>hprobe</code> 日志比较密</h3>
+<p><code>hprobe/hretprobe</code> 的命中频率很高。如果 demo
+结束后不及时关闭
+verbose，串口很容易被刷屏，最后抓快照反而不好看。所以现在 workflow
+和手工手册里都统一要求在 <code>demo:done</code> 之后立即执行：</p>
+<ul>
+<li><code>trace verbose off</code></li>
+</ul>
+<p>再抓最终的 <code>trace list</code> 和 <code>trace stat</code>。</p>
+<hr />
+<h2
+id="三为什么共享库等功能当前不可用">三、为什么共享库等功能当前不可用</h2>
+<p>这两周没有继续把共享库
+<code>uprobe/uretprobe</code>、<code>dlopen</code>
+场景往下推进，不是因为“只差最后一点”，而是因为它已经超出了当前这个收尾阶段适合继续扩展的范围。</p>
+<h3 id="31-现在做成的是主程序场景还不是完整对象模型">3.1
+现在做成的是“主程序场景”，还不是“完整对象模型”</h3>
+<p>现在主线里已经能用的是：</p>
+<ul>
+<li>主程序路径下的 <code>guest-uprobe</code></li>
+<li>主程序路径下的 <code>guest-uretprobe</code></li>
+<li>基于当前运行实例的进程隔离和回收</li>
+</ul>
+<p>但共享库场景要处理的，不只是主程序映射基址，而是一个真正的“多对象运行时模型”，至少包括：</p>
+<ul>
+<li>每个共享库各自独立的 load bias</li>
+<li>重定位后的运行时地址</li>
+<li><code>dlopen/dlclose</code> 带来的对象创建、激活、回收生命周期</li>
+<li>同一进程内多个 file-backed executable mapping 的对象识别</li>
+</ul>
+<p>这些状态，目前都还没有在主线里统一建模完成。</p>
+<h3 id="32-真实失败点在-runtime-observer-的对象识别阶段">3.2
+真实失败点在 runtime observer 的对象识别阶段</h3>
+<p>这轮共享库验证里，guest 内部其实已经能把下面几步跑起来：</p>
+<ul>
+<li>动态程序启动</li>
+<li><code>dlopen</code> 成功</li>
+<li>目标共享库函数被调用</li>
+</ul>
+<p>但 host 侧没有把这次共享库映射识别成一个能和
+<code>pending binding</code> 对上的目标对象，所以 probe 一直停在
+<code>pending</code>。也就是说，真实问题不在“公式是不是算对了”，而是在
+observer 的对象路径和实例识别这一步就没接上。</p>
+<p>这轮实际看到的典型现象是：</p>
+<ul>
+<li><code>dlopen</code> 后 observer 能看到 executable file-backed
+<code>mmap</code></li>
+<li>但日志里会出现 <code>reason=no_pending_path</code></li>
+<li>最终 <code>trace list</code> 中始终只有 <code>pending</code>
+模板，没有共享库实例进入 <code>active</code></li>
+</ul>
+<h3 id="33-这时候更适合收口不适合继续开新功能">3.3
+这时候更适合收口，不适合继续开新功能</h3>
+<p>这次没有继续修共享库能力，主要有三个原因：</p>
+<ol type="1">
+<li>这已经不是补一个小接口就能结束的问题，而是要继续改 runtime observer
+的对象路径来源和实例识别逻辑</li>
+<li>主程序场景和主线联调能力已经可以形成一份完整交付，再继续扩共享库，会把收尾重新拖回新功能开发</li>
+<li>现阶段更合理的目标，是把已经做成的能力联调清楚、验证清楚、文档写清楚，便于后续交接</li>
+</ol>
+<p>所以这两周的取舍是明确的：先不扩共享库，而是把已经做成的能力收成一条可复现、可演示、可验收的完整链路。</p>
+<p>共享库未完成原因已经单独整理到：</p>
+<ul>
+<li><code>docs/ebpf-tracing/shared-library-uprobe-status.md</code></li>
+</ul>
+<hr />
+<h2 id="四下一步收口方向">四、下一步收口方向</h2>
+<p>后续工作不再增加新功能，而是继续围绕现有主线能力做交接式收口：</p>
+<ol type="1">
+<li>继续以 <code>tmp/run_axebpf_mainline_integration_real.py</code> 作为
+fresh 回归主入口</li>
+<li>如需现场演示，优先按
+<code>docs/ebpf-tracing/axebpf-mainline-integration-manual-workflow.md</code>
+执行</li>
+<li>如需回看主线联调逻辑，优先看 workflow、matrix 和最新 PASS raw
+log</li>
+<li>如果后续有人继续做共享库支持，直接从
+<code>docs/ebpf-tracing/shared-library-uprobe-status.md</code> 和对应
+raw log 入手</li>
+</ol>
+<p>接下来工作的重点，不再是继续往外扩，而是把已经做完的这部分能力保持在可联调、可复现、可交接的状态。就这两周的目标来说，这部分已经基本达到预期。</p>
 
 </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../2026开源社区实习/周报7.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../2026开源社区实习/周报8.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="../2026开源社区实习/周报9.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                             </a>
 
@@ -326,11 +416,11 @@ bias，但共享库各自独立的 load bias、重定位后地址，以及
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../2026开源社区实习/周报7.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../2026开源社区实习/周报8.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="../2026开源社区实习/周报9.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next prefetch" href="../2026开源社区实习/Iterator支持方案.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
                     </a>
             </nav>

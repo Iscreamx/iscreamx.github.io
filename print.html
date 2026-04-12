@@ -186,6 +186,7 @@
 <li><a href="#axvisor-ebpf-开发计划">开发计划</a> - 详细的任务分解与时间表</li>
 <li><a href="#周报120---131">第一周周报</a> - 2026/01/20 - 2026/01/31 周报</li>
 <li><a href="#周报21---27">第二周周报</a> - 2026/02/01 - 2026/02/07 周报</li>
+<li><a href="#周报2026-03-30-至-2026-04-12">第九周周报</a> - 2026/03/30 - 2026/04/12 周报</li>
 <li><a href="#bpf-iterator-支持方案">Iterator支持方案</a> - Iterator支持方案</li>
 <li><a href="#axvisor-统一探针调试系统设计">统一探针调试系统方案</a> - 统一探针调试系统方案</li>
 </ul>
@@ -2224,6 +2225,231 @@ fn save_original_pc(pc: usize) {
 <li>递归 kprobe 的重入保护：当 eBPF 程序或 helper 函数本身触发 kprobe 时如何避免死循环</li>
 <li>x86_64 适配：INT3 单字节指令的处理、VMX root mode 异常处理差异</li>
 </ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="周报2026-03-30-至-2026-04-12">周报（2026-03-30 至
+2026-04-12）</h1>
+<h2 id="开发分支">开发分支</h2>
+<ul>
+<li>axvisor: <a
+href="https://github.com/Iscreamx/axvisor/tree/feature/ebpf">https://github.com/Iscreamx/axvisor/tree/feature/ebpf</a></li>
+<li>axebpf: <a
+href="https://github.com/Iscreamx/axebpf/tree/main">https://github.com/Iscreamx/axebpf/tree/main</a></li>
+</ul>
+<hr />
+<h2 id="总结">总结</h2>
+<p>这两周没有再往共享库
+<code>uprobe/uretprobe</code>、<code>dlopen</code>
+生命周期这些方向扩功能，主要还是把已经做出来的主线能力尽量联调透、验证透、文档也补齐。现在
+<code>tracepoint</code>、<code>hprobe/hretprobe</code>、<code>guest-kprobe/kretprobe</code>、<code>guest-uprobe/uretprobe</code>
+已经能放进同一条真实的 <code>QEMU + AxVisor + Linux guest</code>
+链路里跑，现场手工演示、fresh 验证和日志验收也都整理出来了。</p>
+<p>这两周做下来，边界其实也更清楚了。主程序场景下的
+<code>guest-uprobe/guest-uretprobe</code>
+已经基本可以算做成了；但共享库、多对象映射、<code>dlopen/dlclose</code>
+动态装载生命周期这条线没有闭环，所以这次没有继续硬往前推，而是把为什么没做完、后面如果有人接着看应该从哪里下手，单独写成了说明文档。</p>
+<hr />
+<h2 id="一这两周完成的主要工作">一、这两周完成的主要工作</h2>
+<h3 id="1-把七类能力收成一条主线联调链路">1.
+把七类能力收成一条主线联调链路</h3>
+<p>这两周最主要的事情，是把原来分开验证的 tracing
+能力收成一条主线联调链路。现在在同一次真实运行里，已经可以覆盖：</p>
+<table>
+<thead>
+<tr class="header">
+<th>类型</th>
+<th>目标点</th>
+<th>当前状态</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>uprobe</code></td>
+<td><code>/usr/bin/axebpf_integration_demo:demo_user_entry</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="even">
+<td><code>uretprobe</code></td>
+<td><code>/usr/bin/axebpf_integration_demo:demo_user_compute</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="odd">
+<td><code>guest-kprobe</code></td>
+<td><code>vm1:gic_handle_irq</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="even">
+<td><code>guest-kretprobe</code></td>
+<td><code>vm1:__arm64_sys_getpid</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="odd">
+<td><code>hprobe</code></td>
+<td><code>notify_guest_vmexit</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="even">
+<td><code>hretprobe</code></td>
+<td><code>notify_guest_vmexit</code></td>
+<td><code>pass</code></td>
+</tr>
+<tr class="odd">
+<td><code>tracepoint</code></td>
+<td><code>vmm:timer_tick</code></td>
+<td><code>pass</code></td>
+</tr>
+</tbody>
+</table>
+<p>这里真正有价值的，不只是“这些点能 attach 上”，而是 attach、guest
+启动、运行期命中、收尾 <code>trace list</code>、收尾
+<code>trace stat</code>
+这几段已经能前后接起来，不再是靠零散实验凑证据。</p>
+<h3 id="2-统一了-guest-demorootfs-和触发路径">2. 统一了 guest
+demo、rootfs 和触发路径</h3>
+<ul>
+<li>使用单 guest
+demo：<code>scripts/ostool/assets/linux_axebpf_integration_demo/axebpf_integration_demo.c</code></li>
+<li>demo 在一次运行里主动触发用户态函数、<code>getpid</code>、文件 I/O
+和重复窗口，作为七类能力联调的统一触发源</li>
+<li>固化 rootfs
+准备脚本：<code>scripts/ostool/prepare_linux_axebpf_integration_demo_rootfs.sh</code></li>
+<li>继续通过 <code>inittab + launcher</code> 直接拉起 demo，避免 guest
+shell 和 host AxVisor shell 争用串口</li>
+</ul>
+<p>这套东西整理完之后，现场演示和 fresh 回归都不用再临时拼步骤了。</p>
+<h3 id="3-补齐自动化验收和人工联调文档">3.
+补齐自动化验收和人工联调文档</h3>
+<ul>
+<li>新增总控脚本：<code>tmp/run_axebpf_mainline_integration_real.py</code></li>
+<li>新增日志验收脚本：<code>scripts/verify/check_axebpf_mainline_integration_log.py</code></li>
+<li>固化主线
+workflow：<code>docs/ebpf-tracing/axebpf-mainline-integration-workflow.md</code></li>
+<li>固化现场手工演示手册：<code>docs/ebpf-tracing/axebpf-mainline-integration-manual-workflow.md</code></li>
+<li>固化能力矩阵：<code>docs/ebpf-tracing/axebpf-mainline-integration-matrix.md</code></li>
+</ul>
+<p>现在脚本已经能自动完成构建、镜像准备、attach、guest
+启动、日志抓取、<code>trace list/stat</code> 收尾和最终 PASS/FAIL
+校验；手工手册则对应现场演示，按文档一步步走，也能看到同样的结果。</p>
+<hr />
+<h2 id="二最新联调结果">二、最新联调结果</h2>
+<p>这轮 fresh 验证已经通过，验收摘要如下：</p>
+<ul>
+<li><code>hprobe_entry=2781</code></li>
+<li><code>hretprobe=2781</code></li>
+<li><code>guest-kprobe gic_handle_irq=1129</code></li>
+<li><code>guest-kretprobe __arm64_sys_getpid=14</code></li>
+<li><code>vmm:timer_tick</code> 的 attachment 和 map activity
+都存在</li>
+</ul>
+<p>联调过程中，几类关键证据现在都能稳定看到：</p>
+<ol type="1">
+<li>guest 启动后可以看到
+<code>axebpf_integration_demo wrapper: launch</code> 和
+<code>demo:start</code></li>
+<li>运行期可以看到 <code>guest_uprobe_hit</code> 和
+<code>guest_uretprobe_hit</code></li>
+<li>同一运行窗口里可以看到
+<code>guest_kprobe_hits: kprobe vm1:gic_handle_irq ...</code></li>
+<li>同时也可以看到
+<code>guest_kprobe_hits: kretprobe vm1:__arm64_sys_getpid ...</code></li>
+<li>host 侧能持续看到
+<code>[hprobe] ENTRY/EXIT ... notify_guest_vmexit</code></li>
+<li>demo 结束后，收尾 <code>trace list</code> 和 <code>trace stat</code>
+都能拿到非零命中结果</li>
+</ol>
+<p>这里有两个点需要单独说明。</p>
+<h3 id="21-guest-uprobeguest-uretprobe-的收尾表现">2.1
+<code>guest-uprobe/guest-uretprobe</code> 的收尾表现</h3>
+<p>guest 进程退出后，收尾 <code>trace list</code> 里不会保留 active
+实例，而只会剩下 <code>pending</code> 模板，并显示
+<code>waiting-for-instance</code>。这不是失败，而是当前实现下实例会随着进程退出一起回收。</p>
+<p>所以这类能力到底有没有跑通，主要还是看运行期 raw log 里的：</p>
+<ul>
+<li><code>guest_uprobe_hit</code></li>
+<li><code>guest_uretprobe_arm</code></li>
+<li><code>guest_uretprobe_hit</code></li>
+</ul>
+<h3 id="22-hprobe-日志比较密">2.2 <code>hprobe</code> 日志比较密</h3>
+<p><code>hprobe/hretprobe</code> 的命中频率很高。如果 demo
+结束后不及时关闭
+verbose，串口很容易被刷屏，最后抓快照反而不好看。所以现在 workflow
+和手工手册里都统一要求在 <code>demo:done</code> 之后立即执行：</p>
+<ul>
+<li><code>trace verbose off</code></li>
+</ul>
+<p>再抓最终的 <code>trace list</code> 和 <code>trace stat</code>。</p>
+<hr />
+<h2
+id="三为什么共享库等功能当前不可用">三、为什么共享库等功能当前不可用</h2>
+<p>这两周没有继续把共享库
+<code>uprobe/uretprobe</code>、<code>dlopen</code>
+场景往下推进，不是因为“只差最后一点”，而是因为它已经超出了当前这个收尾阶段适合继续扩展的范围。</p>
+<h3 id="31-现在做成的是主程序场景还不是完整对象模型">3.1
+现在做成的是“主程序场景”，还不是“完整对象模型”</h3>
+<p>现在主线里已经能用的是：</p>
+<ul>
+<li>主程序路径下的 <code>guest-uprobe</code></li>
+<li>主程序路径下的 <code>guest-uretprobe</code></li>
+<li>基于当前运行实例的进程隔离和回收</li>
+</ul>
+<p>但共享库场景要处理的，不只是主程序映射基址，而是一个真正的“多对象运行时模型”，至少包括：</p>
+<ul>
+<li>每个共享库各自独立的 load bias</li>
+<li>重定位后的运行时地址</li>
+<li><code>dlopen/dlclose</code> 带来的对象创建、激活、回收生命周期</li>
+<li>同一进程内多个 file-backed executable mapping 的对象识别</li>
+</ul>
+<p>这些状态，目前都还没有在主线里统一建模完成。</p>
+<h3 id="32-真实失败点在-runtime-observer-的对象识别阶段">3.2
+真实失败点在 runtime observer 的对象识别阶段</h3>
+<p>这轮共享库验证里，guest 内部其实已经能把下面几步跑起来：</p>
+<ul>
+<li>动态程序启动</li>
+<li><code>dlopen</code> 成功</li>
+<li>目标共享库函数被调用</li>
+</ul>
+<p>但 host 侧没有把这次共享库映射识别成一个能和
+<code>pending binding</code> 对上的目标对象，所以 probe 一直停在
+<code>pending</code>。也就是说，真实问题不在“公式是不是算对了”，而是在
+observer 的对象路径和实例识别这一步就没接上。</p>
+<p>这轮实际看到的典型现象是：</p>
+<ul>
+<li><code>dlopen</code> 后 observer 能看到 executable file-backed
+<code>mmap</code></li>
+<li>但日志里会出现 <code>reason=no_pending_path</code></li>
+<li>最终 <code>trace list</code> 中始终只有 <code>pending</code>
+模板，没有共享库实例进入 <code>active</code></li>
+</ul>
+<h3 id="33-这时候更适合收口不适合继续开新功能">3.3
+这时候更适合收口，不适合继续开新功能</h3>
+<p>这次没有继续修共享库能力，主要有三个原因：</p>
+<ol type="1">
+<li>这已经不是补一个小接口就能结束的问题，而是要继续改 runtime observer
+的对象路径来源和实例识别逻辑</li>
+<li>主程序场景和主线联调能力已经可以形成一份完整交付，再继续扩共享库，会把收尾重新拖回新功能开发</li>
+<li>现阶段更合理的目标，是把已经做成的能力联调清楚、验证清楚、文档写清楚，便于后续交接</li>
+</ol>
+<p>所以这两周的取舍是明确的：先不扩共享库，而是把已经做成的能力收成一条可复现、可演示、可验收的完整链路。</p>
+<p>共享库未完成原因已经单独整理到：</p>
+<ul>
+<li><code>docs/ebpf-tracing/shared-library-uprobe-status.md</code></li>
+</ul>
+<hr />
+<h2 id="四下一步收口方向">四、下一步收口方向</h2>
+<p>后续工作不再增加新功能，而是继续围绕现有主线能力做交接式收口：</p>
+<ol type="1">
+<li>继续以 <code>tmp/run_axebpf_mainline_integration_real.py</code> 作为
+fresh 回归主入口</li>
+<li>如需现场演示，优先按
+<code>docs/ebpf-tracing/axebpf-mainline-integration-manual-workflow.md</code>
+执行</li>
+<li>如需回看主线联调逻辑，优先看 workflow、matrix 和最新 PASS raw
+log</li>
+<li>如果后续有人继续做共享库支持，直接从
+<code>docs/ebpf-tracing/shared-library-uprobe-status.md</code> 和对应
+raw log 入手</li>
+</ol>
+<p>接下来工作的重点，不再是继续往外扩，而是把已经做完的这部分能力保持在可联调、可复现、可交接的状态。就这两周的目标来说，这部分已经基本达到预期。</p>
+
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="bpf-iterator-支持方案"><a class="header" href="#bpf-iterator-支持方案">BPF Iterator 支持方案</a></h1>
 <h2 id="1-概述"><a class="header" href="#1-概述">1. 概述</a></h2>
