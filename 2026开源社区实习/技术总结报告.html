@@ -1,0 +1,408 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>AxVisor eBPF Tracing 技术总结报告 - 2026开源社区实习目标</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-2459343d.css">
+        <link rel="stylesheet" href="../css/chrome-ae938929.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-a2c3ad6f.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-5402f447.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">2026开源社区实习目标</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+<h1 id="axvisor-ebpf-tracing-技术总结报告">AxVisor eBPF Tracing 技术总结报告</h1>
+<h2 id="1-引言">1. 引言</h2>
+<p>本阶段工作的目标，是在 AxVisor 中建立一套统一的 tracing 系统，使 Hypervisor 一侧能够持续观察 VMM、Guest Kernel 和 Guest Userspace 的关键运行路径。这个问题之所以需要单独处理，是因为 AxVisor 的观测对象天然分布在不同执行层次中：VMM 运行在 EL2，Guest Kernel 运行在 EL1，Guest Userspace 运行在 EL0。实际联调时，很多问题都跨越这些边界。仅依赖 VMM 日志，通常只能看到 VM-exit、异常类型和少量上下文；仅依赖 Guest 内部工具，又难以把 Guest 的执行位置与 Hypervisor 侧的异常接管、执行权限变化和探针状态对应起来。</p>
+<p>因此，这项工作关注的是一条完整的运行时观测链路。系统需要回答以下几个问题：程序如何进入系统，用户如何表达探测意图，目标在什么条件下能够真正启用或激活，命中之后怎样形成统一上下文，eBPF 程序如何执行，结果如何进入统一事件流，以及生命周期结束后相关状态如何回收。本文围绕这些问题，讨论这套 tracing 系统的整体组织方式、基础设施建立过程、Guest Kernel Tracing、Guest Userspace Tracing，以及相应的验证路径和当前边界。</p>
+<h2 id="2-总体架构">2. 总体架构</h2>
+<h3 id="21-一条统一的运行链路">2.1 一条统一的运行链路</h3>
+<p>从使用者角度看，系统最终提供了四类主要入口：静态 <code>tracepoint</code>、VMM 自探针 <code>hprobe/hretprobe</code>、Guest Kernel 探针 <code>guest-kprobe/kretprobe</code>，以及 Guest Userspace 探针 <code>guest-uprobe/uretprobe</code>。从内部实现看，这四类能力共享一条统一运行链路：</p>
+<ol type="1">
+<li>用户先把 eBPF 程序装入系统。</li>
+<li>用户再把程序绑定到某个事件源或探测目标。</li>
+<li>目标在运行中被触发或命中。</li>
+<li>系统把这次触发整理成统一上下文。</li>
+<li>runtime 执行对应程序。</li>
+<li>执行结果进入统一事件流和状态统计。</li>
+<li>用户通过统一命令查看状态、事件和统计结果。</li>
+</ol>
+<p>这条链路的意义在于，系统被自然分成了两个部分。前半段负责让不同来源的命中成立，后半段负责把这些命中统一整理成程序执行和事件输出。前半段会随着 probe 类型变化而变化，后半段则尽量保持稳定。这样，系统后续继续扩展新的 probe 类型时，重点会落在目标管理、命中条件、恢复和生命周期处理上，而不需要每次都重做一套新的程序执行和输出方式。</p>
+<h3 id="22-程序目标绑定和实例">2.2 程序、目标、绑定和实例</h3>
+<p>这套系统内部一直围绕四类对象组织状态：程序、目标、绑定和实例。</p>
+<p>程序是已经装入系统、可以被执行的 eBPF 程序。它包含字节码、关联 map 和必要元数据。程序先进入系统，随后再被不同目标引用。</p>
+<p>目标是用户希望观察的对象。对 tracepoint 来说，目标是某个静态事件；对 <code>hprobe</code> 来说，目标是某个 VMM 符号；对 <code>guest-kprobe</code> 来说，目标是某个 Guest Kernel 地址或符号；对 <code>guest-uprobe</code> 来说，目标是某个路径对象中的符号或偏移。</p>
+<p>绑定表示程序与目标之间的关系。例如，一段程序可以绑定到某个 tracepoint，也可以绑定到某个 hprobe 或 guest-kprobe 目标。绑定关系在目标生命周期中通常比实例更稳定。</p>
+<p>实例表示某个目标在运行时真正活跃的状态。这个概念在 userspace 场景中尤为重要，因为 userspace 目标在注册时只是逻辑对象，只有当路径对象真正进入某个地址空间后，系统才会生成对应实例。实例会随着运行条件变化而生成和回收。</p>
+<p>这套划分的直接作用，是让系统可以自然表达几类真实状态：程序已经装入但尚未使用，目标已经登记但尚未启用，userspace 目标已经存在绑定但尚未激活出运行实例。没有这层划分，很多运行时状态就只能被硬塞进同一种结构里，后续逻辑会很快变乱。</p>
+<h3 id="23-统一上下文和统一事件流">2.3 统一上下文和统一事件流</h3>
+<p>不同 probe 的命中方式差异很大，系统没有试图把这些差异全部消掉，而是把差异保留在命中前后的管理阶段，把命中之后的输入和输出统一起来。</p>
+<p>统一上下文是第一步。一次命中进入 runtime 之前，系统会整理出一份统一输入，其中至少包含事件或探针标识、时间戳、VM 与 vCPU 信息、探针类型以及若干通用参数。在 Guest 探针场景下，还会附带 Guest 的寄存器内容。这样，程序面对的是稳定输入模型，而不是随着 probe 类型变化的多套完全不同的数据结构。</p>
+<p>统一事件流是第二步。命中完成后，系统会把结果写成统一事件记录。事件中保存 probe 类型、事件标识、归属信息、时间戳、参数和值得保留的时长信息。事件优先进入统一事件通道；若主通道当前不可用，系统仍会保留近期事件的本地副本，保证 shell 侧能够继续读取结果。这样，<code>trace stream</code>、<code>trace dump</code> 和 <code>trace stat</code> 面对的始终是一类统一事件，只是来源和语义不同。</p>
+<p>这里还需要说明一个实现上的差别。tracepoint 的程序执行是通过统一事件发射路径触发的：静态事件先生成事件，再根据事件名查找已绑定程序并执行。动态 probe 则不是这样。<code>hprobe</code>、<code>guest-kprobe</code> 和 <code>guest-uprobe</code> 的程序执行是在各自的命中处理逻辑中直接调用 runtime 完成的，同时再把结果写入统一事件流。也就是说，事件流对所有 probe 都统一存在，但“程序执行发生在事件发射前还是事件发射阶段”这一点，在静态 tracepoint 和动态 probe 之间是不同的。</p>
+<h3 id="24-四类-probe-的运行差异">2.4 四类 probe 的运行差异</h3>
+<p>虽然系统使用统一上下文和统一事件流，但不同 probe 的主要差异仍然很明显。</p>
+<p><code>tracepoint</code> 的目标在代码里已经定义好，命中条件由事件点自身决定。<br />
+<code>hprobe/hretprobe</code> 面向 EL2 自身代码，需要处理入口和返回路径上的动态探测。<br />
+<code>guest-kprobe/kretprobe</code> 需要先解决 Guest 地址翻译、启用条件、异常接管和单步恢复。<br />
+<code>guest-uprobe/uretprobe</code> 在此基础上还要处理对象元数据装入、运行时激活以及地址空间级实例管理。</p>
+<p>也就是说，这套系统真正稳定下来的，是命中之后的统一处理链；而命中之前的目标管理和运行时控制，则根据 probe 类型各自展开。</p>
+<h2 id="3-第一阶段hostvmm-侧基础设施的建立">3. 第一阶段：Host/VMM 侧基础设施的建立</h2>
+<h3 id="31-建立顺序">3.1 建立顺序</h3>
+<p>第一阶段的工作有明确顺序。系统先解决程序装载和执行问题，再建立统一事件流，随后用静态 tracepoint 验证整条基础链能否跑通，最后把 <code>hprobe/hretprobe</code> 作为第一类动态事件源接入。</p>
+<p>这个顺序的意义很直接。动态探针一旦进入系统，运行时问题会立刻增多：目标怎么命中，命中后如何整理上下文，程序能否执行，结果从哪里输出，命中后是否需要恢复。如果程序装载和事件输出本身都还不稳定，后续调试时很难判断问题到底出在命中逻辑，还是出在 runtime 或输出链路。因此，系统先把 tracing 的后半段建立起来，再逐步补前半段的命中逻辑。</p>
+<h3 id="32-程序如何进入系统">3.2 程序如何进入系统</h3>
+<p>程序装载链路是第一阶段最先建立的部分。用户加载 eBPF 程序时，系统先识别输入是原始字节码还是 ELF 对象。如果是 ELF，对象解析会继续向下展开：识别程序段、map 定义和重定位信息，为每个 map 创建运行时对象，并把对象中的 map 名称和系统中创建出的 map 实例对应起来。</p>
+<p>map 创建完成后，系统继续处理两类重定位。一类是 map 相关重定位，使程序中的 map 引用能够正确指向系统中已创建的对象；另一类是对象内部函数调用重定位，使程序能够正确跳转到对象中的其他函数。只有这些步骤完成之后，系统才得到一段真正可执行的 eBPF 指令流。</p>
+<p>装载结束后，程序会被登记到统一注册表中，并保留与之关联的 map 集合和必要元数据。后续 tracepoint 或 probe 命中时，系统根据程序标识直接取出对应实例执行，无需重复解析对象。换句话说，程序装载和探针注册在系统中是两条分开的链：程序先进入系统，探针之后再引用它。</p>
+<h3 id="33-运行环境如何建立">3.3 运行环境如何建立</h3>
+<p>程序装入系统之后，还需要稳定运行环境。这个环境主要由 map、helper 和程序实例构成。</p>
+<p>map 在 tracing 中承担多个角色。它既可以保存命中计数，也可以保留跨命中状态，还可以承载一些需要在 shell 中读取的执行结果。由于 map 在装载阶段已经创建好，因此后续程序执行时可以直接访问这些对象，而不需要临时构造外围状态。</p>
+<p>helper 为程序提供运行期能力。系统在 runtime 初始化时统一注册一组 helper，包括时间获取、CPU 信息获取、map 操作，以及与 Hypervisor 场景直接相关的 VM、vCPU 和退出原因等信息获取能力。这样，程序在执行时既可以读取统一上下文中的输入，也可以通过 helper 主动获取当前运行环境。</p>
+<p>程序实例是真正执行的运行单元。装载阶段生成的程序对象，在这里被封装成“可执行程序体 + 关联 map + 元数据”的组合。命中发生时，系统不再回到装载逻辑，而是直接取出实例、构造 VM、注册 helper、传入上下文并执行。</p>
+<h3 id="34-统一上下文和统一事件流如何立起来">3.4 统一上下文和统一事件流如何立起来</h3>
+<p>在第一阶段，系统先定义了统一上下文，再建立统一事件流。</p>
+<p>统一上下文的目的，是让不同事件源都能进入同一条程序执行路径。上下文中至少包含事件或探针标识、时间戳、VM 与 vCPU 信息、探针类型以及若干参数。后面 Guest 侧探针接进来时，还会在这份上下文中附加寄存器内容。这样，程序面对的输入模型保持稳定，不需要随着事件来源变化而切换到完全不同的结构。</p>
+<p>在上下文之上，系统继续建立统一事件流。每次命中和程序执行之后，系统都会把结果整理成固定格式事件记录。事件优先进入统一事件通道；若主通道当前不可用，系统仍会保留近期事件的本地副本。这样一来，shell 侧的观察路径从一开始就是统一的：无论事件来自 tracepoint 还是后续的动态 probe，都会进入同一类事件输出。</p>
+<h3 id="35-tracepoint-为什么最先接入">3.5 Tracepoint 为什么最先接入</h3>
+<p>在程序装载、运行环境和事件流已经建立之后，tracepoint 成为第一类接入系统的事件源。原因很清楚：tracepoint 的触发条件由代码本身决定，不涉及地址翻译、断点注入或单步恢复，因此最适合用来验证整条基础链是否成立。</p>
+<p>一次 tracepoint 触发时，系统会完成以下动作：构造上下文，检查当前是否有程序绑定在该事件上，生成统一事件，更新统计信息，并根据事件名查找已绑定程序并执行。只要这条链能够稳定工作，就说明程序装载、上下文组织、runtime 执行和事件输出已经形成完整路径。</p>
+<p>因此，tracepoint 在第一阶段承担的作用不仅是提供最早可用功能，也用于验证 tracing 的基础设施是否已经站稳。</p>
+<h3 id="36-hprobehretprobe-如何接入现有基础设施">3.6 <code>hprobe/hretprobe</code> 如何接入现有基础设施</h3>
+<p>当 tracepoint 路径已经成立之后，系统接入了 <code>hprobe/hretprobe</code>。这时新增的重点不再是“命中之后如何执行程序”，而是“VMM 自身函数如何进入这条已有链路”。</p>
+<p>用户注册 <code>hprobe</code> 时，系统先解析目标符号并保存探针记录。为了支持同一函数同时观察入口和返回路径，系统按地址维护成对的探针槽位：一个对应入口探针，一个对应返回探针。</p>
+<p>启用之后，入口探针在函数进入时触发，返回探针则维护额外的返回路径状态。命中发生后，入口探针会直接在命中回调中执行绑定程序。随后，异常处理路径再写入一条统一的 hprobe 事件记录。返回探针则在返回回调中执行绑定程序，并写入一条 hretprobe 事件记录。这样，<code>hprobe/hretprobe</code> 成为 tracing 中的第一类动态事件源，但仍然建立在第一阶段已经完成的基础设施之上。</p>
+<h3 id="37-第一阶段的结果">3.7 第一阶段的结果</h3>
+<p>到第一阶段结束时，系统已经具备了完整基础链：</p>
+<ul>
+<li>程序可以装载、解析、重定位并进入系统；</li>
+<li>map 和 helper 可以为程序执行提供稳定运行环境；</li>
+<li>统一上下文和统一事件流已经建立；</li>
+<li>shell 侧已有统一命令入口；</li>
+<li>tracepoint 可以稳定触发程序执行；</li>
+<li><code>hprobe/hretprobe</code> 已经作为动态事件源接入同一条链路。</li>
+</ul>
+<p>后面的 Guest Kernel Tracing 和 Guest Userspace Tracing，都是建立在这条基础链之上的扩展。</p>
+<h2 id="4-第二阶段guest-kernel-tracing-的运行逻辑">4. 第二阶段：Guest Kernel Tracing 的运行逻辑</h2>
+<h3 id="41-用户输入之后系统先做什么">4.1 用户输入之后，系统先做什么</h3>
+<p>用户注册一条 Guest 内核探针时，通常会给出 VM 标识、目标地址或符号、探针类型以及要绑定的程序。系统收到请求后，第一步并不是立即建立命中条件，而是先把这条探针记录下来。</p>
+<p>这样处理的原因在于，Guest Kernel Tracing 是否能立即启用，取决于当前 Guest 的运行时状态。系统此时虽然已经知道“用户想观察哪个目标”，但还不一定具备“现在就能安全启用这条探针”的条件。因此，探针生命周期被拆成两个阶段：注册阶段负责保存目标和参数；启用阶段负责在条件满足后真正建立命中条件。</p>
+<h3 id="42-地址翻译为什么是前提">4.2 地址翻译为什么是前提</h3>
+<p>Guest 内核探针的目标最初是 Guest 虚拟地址。Hypervisor 若要控制这个目标，就必须把它一步步翻译到可操作位置。这要求 VMM 向 tracing 子系统提供一组运行时能力：获取 Guest 页表根信息、读取 Guest 页表、把 Guest 物理地址映射到 Hypervisor 可访问位置，以及修改对应执行区域的 Stage-2 执行属性。</p>
+<p>有了这些能力之后，系统才能判断目标地址当前是否可翻译、属于哪个执行区域，以及是否已经具备启用条件。因此，地址翻译在 Guest Kernel Tracing 中是前提条件，而不是一个附属工具。</p>
+<h3 id="43-延迟启用如何发生">4.3 延迟启用如何发生</h3>
+<p>注册完成后，系统会立即尝试启用探针。如果此时 Guest 页表上下文已经可用，启用过程会继续向下执行；如果系统还拿不到必要翻译信息，探针就停留在已注册但未启用状态。之后，系统会在 Guest 真实运行的关键时机重新尝试启用，尤其是在 VM-exit 之后。此时若上下文已经具备，探针会自动进入已启用状态。</p>
+<p>这样处理之后，用户可以先登记目标，再等待 Guest 进入可探测状态。对系统来说，这使 Guest 的运行时不确定性能够被纳入探针生命周期管理中。</p>
+<h3 id="44-两种命中模式如何工作">4.4 两种命中模式如何工作</h3>
+<p>系统为 Guest Kernel Tracing 保留了两种命中方式。</p>
+<p>第一种通过 Stage-2 执行权限控制建立命中条件。启用探针后，系统会限制目标执行区域的可执行属性。Guest 一旦运行到该区域，会因为执行异常回到 EL2。系统随后判断这次 fault 是否对应已启用探针，若匹配成功，就把它解释为一次 probe 命中。</p>
+<p>第二种通过断点注入建立命中条件。启用时，系统先保存目标位置的原始指令，再把该位置改写为断点指令。Guest 运行到该位置时，通过断点异常进入 EL2。系统据此识别 probe 命中。</p>
+<p>这两种方式都能让 Guest 把控制权带回 EL2，但后续恢复逻辑不同。执行权限控制侧重执行区域管理与临时执行窗口；断点注入侧重原始指令保存、重新注入和中间状态清理。系统同时保留两种模式，使不同调试场景可以选择不同命中路径。</p>
+<h3 id="45-命中之后系统怎样处理一次-guest-probe">4.5 命中之后，系统怎样处理一次 Guest Probe</h3>
+<p>无论采用哪种命中方式，一次 Guest Kernel Probe 命中后，系统都会进入统一处理链。系统先在 EL2 异常入口识别当前 VM 和异常类型，再判断这次异常是否对应某条已启用探针。若匹配成功，就提取 Guest 当前寄存器和相关上下文，构造统一输入，执行绑定程序，并把结果写入统一事件流和统计信息中。</p>
+<p>到这里，命中只是完成了一半。剩下的一半，是系统必须把 Guest 带回原控制流。Guest 侧 tracing 最困难的地方，主要就落在这一段。</p>
+<h3 id="46-恢复为什么是关键环节">4.6 恢复为什么是关键环节</h3>
+<p>Guest 命中探针之后仍然要继续运行，因此恢复是 Guest Kernel Tracing 中最关键的环节之一。</p>
+<p>如果系统在断点命中后只记录一次事件而不恢复原始指令，Guest 会在同一位置反复异常，无法继续向前执行。反过来，如果系统恢复了原始指令，但不再重新建立探针条件，那么这条探针只会命中一次，之后就失去作用。执行权限控制路径也有类似问题：如果系统不在合适时机重新恢复执行限制，Guest 要么反复 fault，要么失去后续探测能力。</p>
+<p>因此，恢复链必须完成以下动作：</p>
+<ul>
+<li>让当前命中对应的原始执行内容能够继续执行；</li>
+<li>使用单步或等价方式把 Guest 安全带过当前探测点；</li>
+<li>在执行通过之后重新建立探针条件；</li>
+<li>最后把 Guest 送回正常控制流。</li>
+</ul>
+<p>恢复失败会直接带来两类后果：Guest 在同一位置重复异常，或者探针在首次命中后失效。也正因为这一点，恢复链是命中链的一部分。</p>
+<h3 id="47-guest-kretprobe-如何工作">4.7 <code>guest-kretprobe</code> 如何工作</h3>
+<p><code>guest-kprobe</code> 关注的是函数进入时发生了什么，<code>guest-kretprobe</code> 关注的是这一次进入最终怎样返回。因此，返回探针比入口探针多出一层调用级状态管理。</p>
+<p>在入口命中时，系统会记录与当前调用对应的返回路径信息；函数真正返回时，系统再利用这部分信息识别返回命中，补充返回值和持续时间，并在结束后清理对应状态。这里增加的内容不是简单“多拿一个返回值”，而是让系统能够把某次入口命中和稍后发生的一次返回关联起来。</p>
+<h3 id="48-卸载和回收">4.8 卸载和回收</h3>
+<p>Guest 探针生命周期结束时，系统还要处理运行中的残留状态。例如，探针启用时可能已经修改过执行权限，或在断点模式下替换过原始指令，还可能在返回路径上保留中间状态。如果这些状态不被回收，Guest 后续运行时仍可能撞上已失效探针留下的执行条件。因此，探针卸载和 VM 生命周期结束时，系统会一并清理这些状态。系统还专门保留了 stale BRK 处理逻辑，用来消化探针卸载后可能残留的旧断点命中。</p>
+<h3 id="49-第二阶段的结果">4.9 第二阶段的结果</h3>
+<p>到第二阶段结束时，Guest Kernel Tracing 已经形成了完整运行链：</p>
+<ul>
+<li>用户可以按地址或按符号注册目标；</li>
+<li>探针可以先注册，再在条件满足后启用；</li>
+<li>系统能够通过两种模式建立命中条件；</li>
+<li>EL2 能够识别并接管 Guest 探针命中；</li>
+<li>命中后能够执行程序、生成事件并完成恢复；</li>
+<li>卸载和 VM 生命周期结束时，相关状态能够回收。</li>
+</ul>
+<h2 id="5-第三阶段guest-userspace-tracing-的运行逻辑">5. 第三阶段：Guest Userspace Tracing 的运行逻辑</h2>
+<h3 id="51-对象元数据如何进入系统">5.1 对象元数据如何进入系统</h3>
+<p>Userspace 场景中，用户输入的是 VM、路径、符号或偏移，以及要绑定的程序。系统首先要理解目标对象本身，因此 userspace tracing 的起点是对象元数据装载。加载完成后，系统能够把某个路径对象中的符号和偏移解析出来。之后注册 <code>uprobe</code> 时，系统根据“路径 + 符号/偏移”建立一条待激活绑定。</p>
+<p>这一阶段得到的只是逻辑目标。系统知道将来需要观察哪个对象里的哪个位置，但还不知道这个对象是否已经被执行，也不知道它当前位于哪个地址空间位置。</p>
+<h3 id="52-待激活绑定和运行实例">5.2 待激活绑定和运行实例</h3>
+<p>Userspace Tracing 内部同时维护两类对象：待激活绑定和运行实例。</p>
+<p>待激活绑定记录用户的探测意图，它在对象元数据已经进入系统后建立，可以长期存在。<br />
+运行实例则表示某条绑定在某个具体地址空间中的一次真实激活。运行实例只在对象真正进入地址空间之后生成，并在地址空间退出后回收。</p>
+<p>这种分层非常必要。因为 userspace probe 在注册时只有逻辑目标，没有运行地址。只有在对象真正被执行并映射之后，系统才知道应该在哪个 runtime PC 上建立命中条件。</p>
+<h3 id="53-observer-如何把逻辑目标变成实例">5.3 observer 如何把逻辑目标变成实例</h3>
+<p>运行期 observer 的作用，就是把逻辑目标变成运行实例。它通过跟踪程序执行和可执行映射建立来回答两个问题：某个路径对象是否已经和某个进程建立关系，以及它是否已经真正映射到某个地址空间中。</p>
+<p>实现上，这个 observer 并不是独立运行的一套旁路，而是建立在一组隐藏的 Guest 内核探针之上。系统会在 Guest 内核侧挂接与 <code>execve</code>、<code>execveat</code>、<code>vm_mmap_pgoff</code>、运行期重试激活以及 <code>exit_mmap</code> 等过程相关的隐藏探针，用它们采集 userspace 对象进入地址空间时所需的关键信息。</p>
+<p>一旦这两个条件都满足，系统就根据映射起点、文件偏移和对象内偏移计算 runtime PC，把待激活绑定推进成运行实例。直到这一步完成，userspace probe 才真正具备可命中的运行位置。</p>
+<h3 id="54-为什么按地址空间管理实例">5.4 为什么按地址空间管理实例</h3>
+<p>系统采用地址空间级实例管理。也就是说，userspace probe 的管理单位不是“某条路径”，而是“某条路径在某个具体地址空间中的一次映射实例”。</p>
+<p>这样做的原因在于，同一路径对象可以被多个进程同时执行，而不同进程拥有不同的地址空间、运行地址和命中状态。如果系统只按路径维护状态，一个进程中的命中和返回路径信息会影响另一个进程。地址空间级管理之后，每次命中都可以明确归属到某个实例上，返回路径管理和后续回收也都围绕这个实例展开。</p>
+<h3 id="55-命中和恢复">5.5 命中和恢复</h3>
+<p>实例激活完成后，系统才会真正建立 userspace probe 的命中条件。命中发生时，系统先确认当前 PC 属于哪个实例，再提取对应上下文，执行绑定程序，更新实例命中次数，并生成统一事件。之后，系统还要完成恢复，让用户态程序继续运行。</p>
+<p><code>uretprobe</code> 会在此基础上增加一层返回路径状态管理。入口命中时，系统保存与当前实例对应的返回路径信息；返回命中时，再补充返回值和执行时间，并清理相关状态。</p>
+<h3 id="56-回收">5.6 回收</h3>
+<p>userspace tracing 的实例具有天然生命周期。某个对象实例一旦所在进程退出，或者地址空间被销毁，它就不应继续保留在运行实例集合中。因此，observer 不仅负责激活实例，也负责在适当时机回收实例。回收时，系统会删除与该地址空间相关的运行实例，并同时清理与这些实例绑定的运行期状态。</p>
+<p>这里回收的是“这一次运行实例”，不是“用户的探测意图”。待激活绑定仍然保留，因此当同一路径对象将来再次进入某个地址空间时，系统仍然可以重新生成新实例。</p>
+<h3 id="57-第三阶段的结果">5.7 第三阶段的结果</h3>
+<p>到第三阶段结束时，Guest Userspace Tracing 已经形成完整生命周期链：</p>
+<ul>
+<li>用户加载对象元数据；</li>
+<li>系统建立待激活绑定；</li>
+<li>observer 在运行中识别对象进入地址空间；</li>
+<li>待激活绑定被激活成实例；</li>
+<li>实例建立命中条件并在运行中触发；</li>
+<li>命中结果进入统一上下文和事件流；</li>
+<li>地址空间退出后，实例和相关状态被回收。</li>
+</ul>
+<p>主程序场景已经覆盖这条完整路径。共享库动态装载场景仍保留在后续工作范围内。</p>
+<h2 id="6-验证体系与工程化支撑">6. 验证体系与工程化支撑</h2>
+<h3 id="61-验证对象分成三层">6.1 验证对象分成三层</h3>
+<p>这套 tracing 系统的验证对象可以分成三层：配置是否生效，命中是否发生，命中后系统状态是否仍然正确。</p>
+<p>第一层验证配置是否生效，主要关注程序是否已经装入、目标是否已经登记，以及当前是否处于已启用或已激活状态。<br />
+第二层验证命中是否发生，主要关注运行中是否真的出现对应事件。<br />
+第三层验证命中后的系统状态，主要关注恢复是否完成、实例是否仍然归属正确、回收是否在正确时机发生。</p>
+<p>只有这三层都成立，某条 tracing 链路才可以被视为稳定可用。</p>
+<h3 id="62-统一验证入口">6.2 统一验证入口</h3>
+<p>系统通过统一 shell 入口提供这三层验证能力。状态类命令回答“系统当前处于什么状态”；事件类命令回答“运行过程中实际发生了什么”；统计类命令回答“一段运行之后系统累计得到了什么结果”。</p>
+<p>不同 probe 的重点落在不同层面上。例如，userspace probe 更依赖运行期事件与实例状态，guest-kprobe 更依赖命中和恢复路径是否完成。但无论重点落在哪里，使用者都沿着同一条入口查看系统状态，而不必为不同 probe 使用不同工具。</p>
+<h3 id="63-固定联调流程">6.3 固定联调流程</h3>
+<p>当系统已经包含 tracepoint、hprobe、guest-kprobe 和 guest-uprobe 之后，验证工作逐渐围绕固定联调流程展开。这条流程至少包括：</p>
+<ul>
+<li>装载程序；</li>
+<li>登记目标；</li>
+<li>检查当前是否处于待启用或待激活状态；</li>
+<li>驱动运行场景；</li>
+<li>观察运行期命中；</li>
+<li>查看收尾状态和统计结果。</li>
+</ul>
+<p>这条流程把 tracing 的验证建立在系统真实状态上，而不是建立在零散日志或一次性操作经验上。</p>
+<p>不同 probe 在这条流程中的判据也可以进一步细化。例如，对 <code>guest-kprobe</code> 来说，除了看到命中事件，还要确认恢复完成后 Guest 能继续越过探测点执行；对 <code>guest-uprobe</code> 来说，除了看到命中事件，还要确认实例始终归属于正确地址空间，并能在地址空间退出后被及时回收。</p>
+<h2 id="7-当前边界与后续工作">7. 当前边界与后续工作</h2>
+<p>当前系统已经能够覆盖一组连续场景：VMM 静态事件、VMM 自探针、Guest Kernel 探针以及主程序场景下的 Guest Userspace 探针。但系统边界同样明确。</p>
+<p>性能测量尚未系统展开。当前阶段重点放在功能链路完整性和运行逻辑正确性上，后续仍需补齐不同探针模式的开销、恢复成本和对目标 VM 的影响评估。</p>
+<p>程序安全约束仍以可信输入为前提。系统已经具备程序装载和执行能力，但完整 verifier 尚未纳入这一阶段工作范围。</p>
+<p>Userspace 更复杂对象场景仍需继续推进。共享库动态装载带来的对象识别、实例匹配和返回路径管理问题，比主程序场景复杂得多，适合在现有主线稳定之后继续处理。</p>
+<h2 id="8-结论">8. 结论</h2>
+<p>这三个月里，AxVisor 的 tracing 已经从若干局部实现发展成一套结构清楚的系统。系统先建立了程序装载、runtime、统一上下文、统一事件输出和命令入口，随后沿着 VMM 自身、Guest Kernel 和 Guest Userspace 三条路径继续扩展，把命中前后的运行时管理逻辑逐步补齐。</p>
+<p>整个实现过程始终围绕完整运行链展开。系统处理的不只是目标能否命中，还包括程序是否已经装入、目标是否已经建立绑定、当前条件是否允许启用或激活、命中之后能否恢复执行，以及生命周期结束后状态是否能够回收。也正因为这些环节都逐步建立起来，最终形成的是一套后续仍可继续扩展的 tracing 基础设施。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../2026开源社区实习/月报1.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../2026开源社区实习/月报1.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-c2a407aa.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
